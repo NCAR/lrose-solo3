@@ -1,0 +1,143 @@
+# script to produce dorade sweep files from a dorade tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "PIRAQ_FORMAT"
+#
+setenv OUTPUT_FLAGS "NO_ CATALOG SWEEP_FILES UF._DATA DORADE._DATA"
+#
+#setenv SWEEP_SKIP 4
+#setenv SWEEP_COUNT 11
+#
+setenv DORADE_DIR /scr/hotlips/oye/jwurman/tmp
+setenv DORADE_DIR /scr/stout/oye/piraq
+setenv DORADE_DIR /scr/hotlips/oye/piraq/tmp
+setenv DORADE_DIR /scr/ale/oye/piraq/tmp
+setenv DORADE_DIR /scr/ale/oye/josh
+#
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/piraq_electra.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/piraq_cp2SD.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/piraq_cp2S.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/piraq_cp2X.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/DOW9508hdr.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/viraqHeaderx.tape
+#setenv VOLUME_HEADER /scr/hotlips/oye/headers/bsSoHdr.tape
+#
+#setenv SCAN_LIST /data/dmg/scanlists/Q20306.scans # July 8
+#setenv SCAN_LIST /data/dmg/scanlists/Q20311.scans # July 13
+#setenv SCAN_LIST /data/dmg/scanlists/Q20308.scans # July 10
+#setenv TIME_DRIFT .0001234		# seconds per hour
+#setenv DRIFT_REFERENCE_TIME "07/08/95:12:32:44"
+#setenv SWEEP_TIME_TOLERANCE 1.5		# seconds
+#setenv ROTATION_ANGLE_TOLERANCE 1.25	# degrees
+#
+setenv SOURCE_DEV /scr/hotlips/oye/piraq_cp2SD.tape
+setenv SOURCE_DEV /dev/nexa0
+setenv SOURCE_DEV /scr/hotlips/oye/piraq_binary
+setenv SOURCE_DEV /scr/hotlips/oye/viraq.tape
+setenv SOURCE_DEV /scr/hotlips/oye/DOW.tape
+setenv SOURCE_DEV /scr/stout/oye/piraq/96081413.58z
+setenv SOURCE_DEV /cdrom/960815_2019/dow4/exec/96081518.17z
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /scr/hotlips/oye/bsNo27May.tape
+setenv SOURCE_DEV /scr/hotlips/oye/bsSpol27May.tape
+setenv SOURCE_DEV /dev/rst6
+setenv SOURCE_DEV /dev/rmt/4bn
+setenv SOURCE_DEV /dev/nrst6
+setenv SOURCE_DEV /dev/rmt/2bn
+setenv SOURCE_DEV /scr/science4/oye/bsCe30May0130.tape
+setenv SOURCE_DEV /scr/science4/oye/bsNo30May0129.tape
+setenv SOURCE_DEV /dev/nrst2
+setenv SOURCE_DEV /scr/science4/oye/bsSo30May0130.tape
+setenv SOURCE_DEV /h/3/jwurman/98053101.35z
+setenv SOURCE_DEV /dev/rmt/0bn
+setenv SOURCE_DEV /scr/science20/rilling/P25232_a.tape
+setenv SOURCE_DEV /scr/ale/oye/josh/99101815.59z
+setenv SOURCE_DEV /scr/hotlips2/oye/tapes/viraq15.tape
+#
+#setenv RCONST_CORRECTION 5.5	    # radar constant 
+#setenv RANGE_CORRECTION -1050.	    # S-BAND
+#setenv RANGE_CORRECTION -1100.	    # X-BAND
+#
+#setenv TIME_CORRECTION 2.5		# seconds
+#setenv TIME_CORRECTION 473299200.		# seconds
+#
+setenv MAX_RHI_DIFF 9.  # HELPS TO TERMINATE A SERIES OF RHIs
+setenv MIN_AZ_DIFF 0.5  # defines a PPI 0.15
+setenv MIN_EL_DIFF 0.5  # defines a RHI 0.2
+setenv MIN_FXD_DIFF 0.4
+setenv NUM_AZ_DIFFS_AVGD 20 #4
+setenv NUM_EL_DIFFS_AVGD 20 #4
+setenv NUM_SHORT_AVG 11
+#
+setenv MIN_RAYS_PER_SWEEP 22
+setenv MAX_RHI_DIFF 9.	# helps to terminate a series of RHIs
+
+setenv MIN_AZ_DIFF 0.15	# defines a PPI
+setenv MIN_AZ_DIFF 0.08	# defines a PPI
+setenv MIN_EL_DIFF 0.25  # defines a RHI
+setenv MIN_FXD_DIFF 0.88  # maybe determines a new sweep for PPIs
+
+setenv NUM_AZ_DIFFS_AVGD 6
+setenv NUM_AZ_DIFFS_AVGD 22
+#
+setenv MIN_RAYS_PER_SWEEP 22
+setenv NUM_AZ_DIFFS_AVGD 11
+setenv NUM_EL_DIFFS_AVGD 33
+setenv NUM_EL_DIFFS_AVGD 22
+#setenv MIN_EL_DIFF 0.045  # defines a RHI
+setenv NUM_SHORT_AVG 11
+setenv RHI_AZ_TOL 1.5
+setenv PPI_EL_TOL .77
+#
+#setenv OPTIONS "AIRBORNE_DATA"
+#setenv OPTIONS "DESC_SEARCH"
+#setenv OPTIONS "SIMPLE_SWEEPS"
+#setenv OPTIONS "FORCE._POLYPP FORCE_REV_1"
+#setenv OPTIONS "FULL_MATRIX"
+setenv  OPTIONS "DOW_FLAG"
+#setenv DOW_RHI_TRIP 11.1
+#
+#setenv RENAME "X-BAND -> CP2-XPRQ"
+#setenv RADAR_LATITUDE 39.791333
+#setenv RADAR_LONGITUDE -104.568333
+#setenv RADAR_ALTITUDE 1710.2
+# for MAP
+setenv RADAR_LATITUDE 45.71667
+setenv RADAR_LONGITUDE 8.73333
+setenv RADAR_ALTITUDE 280
+setenv PROJECT_NAME S-POL
+#
+setenv TIME_LIMITS " 05/31/98:01:37:34 01:37:37"
+setenv TIME_LIMITS " 05/31/98:01:37:36 01:39:07"
+setenv TIME_LIMITS " 05/31/98:01:39:14.400 01:41:39.25 "
+setenv TIME_LIMITS " 05/31/98:01:42:16.25 01:44:03 " # RHIs
+setenv TIME_LIMITS " 05/31/98:01:44:05.25 01:45:21 "
+setenv TIME_LIMITS " "
+setenv TIME_LIMITS "05/24/100:19:13:23 < 05/24/100:19:19:45"
+setenv TIME_LIMITS "05/24/2000:19:13:23 < 05/24/100:19:19:45"
+#
+#setenv PRF_LIMITS "800 < 2000"
+#setenv SWEEP_MODES "RHI PPI SUR"
+#
+#setenv FIXED_ANGLES "0.0 < 1.5"
+#
+setenv NCP_THRESHOLD_VAL "NCP .2"
+setenv DERIVED_FIELDS "VE < VT"
+setenv DERIVED_FIELDS "SW < ZAP  DCZ < ZAP PHI < KDP"
+setenv DERIVED_FIELDS "SW < ZAP  DCZ < ZAP  DL < ZAP  PHI < KDP"
+setenv DERIVED_FIELDS " "
+#
+#setenv ALTITUDE_LIMITS "-5 < 22.5"
+#
+#setenv UF_DEV "TF > /dev/null   TA > /dev/null"
+#
+#setenv DORADE_VOLUME_INTERVAL 300
+#setenv DORADE_DEV /dev/null
+#
+#xltrs
+nice +11 gdb xltrs
+#
+

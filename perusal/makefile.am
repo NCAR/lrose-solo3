@@ -1,0 +1,79 @@
+###############################################
+# makefile.am template for automake
+###############################################
+
+# compile flags - include header subdirectory
+
+if OS_IS_CENTOS
+OS_IS_CENTOS_CFLAG = -DOS_IS_CENTOS
+else
+OS_IS_CENTOS_CFLAG =
+endif
+
+AM_CFLAGS = -I. -I../include -I../translate -I../editor \
+	$(GTKP_CFLAGS) $(GTKMM_CFLAGS) $(OS_IS_CENTOS_CFLAG)
+AM_CXXFLAGS = $(AM_CFLAGS)
+AM_LDFLAGS = -L../translate -L../editor
+
+LDADD = -lsolo_edit -lsolo_s3
+LDADD += $(GTKP_LIBS) $(GTKMM_LIBS)
+
+# target app
+
+bin_PROGRAMS = solo3
+
+# sources
+
+solo3_SOURCES = \
+	./CRectangle.cc \
+	./Circle.cc \
+	./ClickQueue.cc \
+	./ColorManager.cc \
+	./ColorNamesWindow.cc \
+	./ColorPalettesWindow.cc \
+	./ColorTable.cc \
+	./ColorTableManager.cc \
+	./ColorTablesWindow.cc \
+	./DataWindow.cc \
+	./EditCmdHelpWindow.cc \
+	./EditCmdListHelpWindow.cc \
+	./EditFilesWindow.cc \
+	./EditWindow.cc \
+	./ExamineWindow.cc \
+	./ExamineDisplayWindow.cc \
+	./Graphic.cc \
+	./ImageGenWindow.cc \
+	./ImportColorTableWindow.cc \
+	./Label.cc \
+	./Line.cc \
+	./MainConfigWindow.cc \
+	./PaletteManager.cc \
+	./ParameterWindow.cc \
+	./RGBImage.cc \
+	./SiiPalette.cc \
+	./SoloMainWindow.cc \
+	./SoloState.cc \
+	./SoloSubFrame.cc \
+	./sii_bscan.cc \
+	./sii_callbacks.cc \
+	./sii_colors_stuff.cc \
+	./sii_config_stuff.cc \
+	./sii_exam_widgets.cc \
+	./sii_frame_menu.cc \
+	./sii_links_widget.cc \
+	./sii_param_widgets.cc \
+	./sii_perusal.cc \
+	./sii_png_image.cc \
+	./sii_utils.cc \
+	./sii_xyraster.cc \
+	./solo2.cc \
+	./soloii.cc \
+	./sp_accepts.cc \
+	./sp_basics.cc \
+	./sp_clkd.cc \
+	./sp_dorade.cc \
+	./sp_lists.cc \
+	./sp_save_frms.cc \
+	./SweepfileWindow.cc \
+	./SweepfilesListWindow.cc \
+	./ViewWindow.cc

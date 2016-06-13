@@ -1,0 +1,18 @@
+#! /bin/csh
+
+# loop through files
+
+foreach file (nex_dd.c)
+
+# create .X file
+
+gcc -g -O2 -g -m32 -DPACKAGE_NAME=\"perusal/soloii.c\" -DPACKAGE_TARNAME=\"perusal-soloii-c\" -DPACKAGE_VERSION=\"1.20\" -DPACKAGE_STRING=\"perusal/soloii.c\ 1.20\" -DPACKAGE_BUGREPORT=\"\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_SYS_MTIO_H=1 -DHAVE_LIBM=1 -DUNIX -DLITTLENDIAN -I./ -I../include -I/usr/include -c $file -aux-info $file:r.X
+
+# run protoize
+
+protoize -c "-I./ -I../include -I/usr/include" -g $file
+
+# done
+
+end
+

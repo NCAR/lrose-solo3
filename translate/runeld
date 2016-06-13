@@ -1,0 +1,75 @@
+# script to produce dorade sweep files from an eldora aircraft tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "ELDORA_FORMAT"
+#
+# SOURCE_DEV should point to the right thing
+# change SOURCE_TAPE_ID
+# change GPRO_TAPES
+# use correct REFL_CORRs
+# time correction?
+# include_dh_dp?
+#
+setenv DD_DIR /scr/thor/craig
+setenv DD_DIR /scr/amber/oye/tmp/tmp
+#
+setenv SOURCE_DEV /scr/amber/oye/tmp/11july.tape
+setenv SOURCE_DEV /scr/amber/oye/eld27junb.tape
+#setenv SOURCE_TAPE_ID "Tape P70021" # tag for catalog
+setenv SOURCE_DEV /dev/nexa
+#
+#setenv SWEEP_TRIP_ANGLE 0
+setenv OUTPUT_FLAGS "DORADE._DATA UF._DATA GECHO._DATA SWEEP_FILES \
+    .CATALOG"
+#
+#setenv DORADE_DEV /dev/null
+#setenv DORADE_DEV /dev/nexa2
+#setenv DORADE_VOLUME_INTERVAL 14   # seconds
+#
+#setenv UF_DEV "TF > /dev/nrsx0   TA > /dev/nrsx1"
+#
+#setenv SELECT_RADARS "TA"
+#
+#setenv GPRO_TAPES "/scr/amber/oye/gpro/RF32A /scr/amber/oye/gpro/RF32B "
+#
+setenv ELDORA_VOLUME_HEADER /scr/amber/oye/feb18hedr.tape
+#
+#setenv CFAC_FILES "TA > /home/steam/oye/radar/dorade/cfac.txt \
+#  TF > /home/steam/oye/radar/dorade/cfac.txt"
+#
+setenv ALTITUDE_LIMITS "-5. < 22.5"
+#
+#setenv INCLUDE_DH_DP
+#
+#setenv  AFT_REFL_CORR -0.585 	# 14 Jan
+#setenv FORE_REFL_CORR -0.585  	# 14 Jan
+#setenv  AFT_REFL_CORR -0.4275 	# 16 Jan
+#setenv FORE_REFL_CORR -0.4275 	# 16 Jan
+#setenv  AFT_REFL_CORR -0.1375  # 18 Jan
+#setenv FORE_REFL_CORR -0.1375  # 18 Jan
+#setenv  AFT_REFL_CORR -0.15 	# 27 Jan
+#setenv FORE_REFL_CORR -0.15  	# 27 Jan
+#setenv  AFT_REFL_CORR 2.055 	# 06 Feb
+#setenv FORE_REFL_CORR 2.055  	# 06 Feb
+#setenv  AFT_REFL_CORR 2.09   	# 18 Feb
+#setenv FORE_REFL_CORR 2.09  	# 18 Feb
+#
+#setenv JULIAN_DAY_BIAS 1    	# subtract one day
+#setenv TIME_CORRECTION 6128.06	# add it to correct time for Jan 18
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv OPTIONS "THRESHOLDED._FIELDS DESPECKLING NOTCH_REMOVAL \
+#     UNFOLDING AIR_MOTION COARE_FIXES"
+#
+# setenv TIME_LIMITS "02/18/93:21:35 < 02/18/93:21:40"
+# setenv TIME_LIMITS "02/18/93:21:59 < 02/18/93:22:11"
+# setenv TIME_LIMITS "02/18/93:22:33 < 02/18/93:22:42"
+# setenv TIME_LIMITS "02/19/93:00:02 < 02/19/93:01:03:30"
+#
+nice +11 gdb /rdss/solo/translate/xltrs
+#
+
+
+
+

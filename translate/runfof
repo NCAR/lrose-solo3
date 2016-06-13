@@ -1,0 +1,28 @@
+# script to produce dorade sweep files from sigmet radar tapes
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "FOF_FORMAT"
+#
+setenv SOURCE_DEV /dev/nexa1
+setenv SOURCE_DEV "/scr/amber/oye/cp2.tape"
+setenv SOURCE_DEV /scr/science4/rilling/cape/Q12202_2.tape
+#
+#setenv DORADE_DEV /dev/nrst2
+#
+setenv OUTPUT_FLAGS "NO_CATALOG SWEEP._FILES DORADE._DATA UF._DATA"
+setenv OUTPUT_FIELDS "DZ VE NC"
+setenv OUTPUT_FIELDS "DM DZ VT SW NC XM XL XZ XY ZD LD"
+#
+setenv FOF_CATALOG_HEADER_DIR /net/data/dmg/catalog/header
+#setenv OPTIONS "FOF_64HSK"
+#
+setenv DORADE_DIR /scr/zin/oye/data/fof
+#setenv UF_DIRECTORY /scr/amber/oye/tmp
+#
+#setenv TIME_LIMITS "02/18/93:21:59 < 02/18/93:22:02"
+#
+#
+#nice +11 xltrs
+#gdb /scr/port/oye/code/oye/bin/xltrs
+nice +11 gdb ./xltrs
+#

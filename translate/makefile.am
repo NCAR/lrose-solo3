@@ -1,0 +1,143 @@
+###############################################
+# makefile.am template for automake
+###############################################
+
+# compile flags - include header subdirectory
+
+AM_CFLAGS = -I. -I../include
+AM_CXXFLAGS = $(AM_CFLAGS)
+AM_LDFLAGS = -L.
+
+# target libraries
+
+lib_LIBRARIES = \
+	libsolo_s3.a \
+	libsolo_dap.a
+
+# target apps
+
+bin_PROGRAMS = \
+	xltrs3 \
+	ddex3 \
+	nx_reblock3
+
+# headers to be installed
+
+#includedir = .
+
+pkginclude_HEADERS = \
+	../include/CellSpacingFP.h \
+	../include/CellSpacing.h \
+	../include/CellVector.h \
+	../include/Comment.h \
+	../include/Correction.h \
+	../include/date_stamp.h \
+	../include/dd_crackers.h \
+	../include/dd_defines.h \
+	../include/dd_files.h \
+	../include/dd_general_info.h \
+	../include/dd_math.h \
+	../include/dd_time.h \
+	../include/dd_types.h \
+	../include/dgi_func_decl.h \
+	../include/dorade_data_descriptors.h \
+	../include/dorade.h \
+	../include/dorade_headers.h \
+	../include/dorade_shared_defs.h \
+	../include/dorade_share.h \
+	../include/eldora.h \
+	../include/FieldLidar.h \
+	../include/FieldParam.h \
+	../include/FieldRadar.h \
+	../include/input_sweepfiles.h \
+	../include/InSituData.h \
+	../include/InSitu.h \
+	../include/LidarDesc.h \
+	../include/LidarParam.h \
+	../include/LittleEndian.hh \
+	../include/NavDesc.h \
+	../include/Parameter.h \
+	../include/Pdata.h \
+	../include/Platform.h \
+	../include/point_in_space.h \
+	../include/Qdata.h \
+	../include/radar_angles.h \
+	../include/RadarDesc.h \
+	../include/Ray.h \
+	../include/seds.h \
+	../include/sed_shared_structs.h \
+	../include/sii_enums.h \
+	../include/sii_image.h \
+	../include/sii_widget_content_structs.h \
+	../include/solo_defs.h \
+	../include/solo_editor_structs.h \
+	../include/solo_io_var.h \
+	../include/solo_list_widget_ids.h \
+	../include/solo_window_structs.h \
+	../include/super_SWIB.h \
+	../include/Sweep.h \
+	../include/TimeSeries.h \
+	../include/Volume.h \
+	../include/Waveform.h \
+	../include/Xtra_stuff.h \
+	../include/piraq_dd_crackers.h \
+	../include/piraq_dd_defines.h \
+	../include/piraq_dd_types.h \
+	../include/piraq.h \
+	../include/piraqx.h
+
+# sources
+
+#DAPLIB_FSRCS = qdap.F
+
+DAPLIB_CSRCS = dap_common.cc qdap.cc
+
+DDLB_SRCS = dd_files.cc dda_common.cc ddb_common.cc dorade_share.cc \
+	dd_time.cc swp_file_acc.cc dd_io_mgmt.cc
+
+XLT_SRCS = ddin.cc ddout.cc dd_uf.cc dd_ncdf.cc \
+	gneric_dd.cc hrd_dd.cc sigm_dd.cc uf_dd.cc nex_dd.cc \
+	toga_dd.cc elda_dd.cc eldb_dd.cc gpro_data.cc ground_echo.cc \
+	stdhrd.cc xwsrqc.cc fof_dd.cc piraq_dd.cc tdwr_dd.cc etl_dd.cc \
+	cimm_dd.cc nc_dd.cc piraqx_dd.cc \
+	LittleEndian.cc
+
+PROD_SRCS = by_products.cc dd_catalog.cc gecho.cc dorade_uf.cc \
+	product_x.cc dd_der_flds.cc nssl_mrd.cc dd_swp_files.cc \
+	dorade_tape.cc shane.cc dd_crackers.cc dorade_ncdf.cc dd_swpfi.cc
+
+NXR_MAIN = nx_reblock.cc
+
+DDEX_MAIN = dd_examine.cc
+
+TO_FB_SRCS = to_fb.cc
+
+XLTRS3_MAIN = ddmain.cc
+
+libsolo_s3_a_SOURCES = \
+	$(XLT_SRCS) \
+	$(DDLB_SRCS) \
+	$(PROD_SRCS)
+
+libsolo_dap_a_SOURCES = \
+	$(DAPLIB_FSRCS) \
+	$(DAPLIB_CSRCS)
+
+xltrs3_SOURCES = \
+	$(XLTRS3_MAIN) \
+	$(XLT_SRCS) \
+	$(DDLB_SRCS) \
+	$(PROD_SRCS)
+
+ddex3_SOURCES = \
+	$(DDEX_MAIN) \
+	$(XLT_SRCS) \
+	$(DDLB_SRCS) \
+	$(PROD_SRCS)
+
+nx_reblock3_SOURCES = \
+	$(NXR_MAIN) \
+	$(XLT_SRCS) \
+	$(DDLB_SRCS) \
+	$(PROD_SRCS)
+

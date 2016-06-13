@@ -1,0 +1,69 @@
+# script to run the hrd to dorade sweep files conversion software
+#
+setenv INTERACTIVE_MODE
+setenv INPUT_FORMAT "HRD_FORMAT"
+setenv OUTPUT_FLAGS ".CATALOG UF._DATA GECHO._DATA SWEEP._FILES\
+    DORADE._DATA"
+#setenv UF_DEV "TF > /dev/nexa   TA > /dev/nexa1"
+#
+setenv DD_DIR /scr/amber/oye/wlee
+#
+#setenv HRD_IO_TYPE BINARY_IO
+#setenv HRD_VOLUME_HEADER /scr/amber/oye/hrd9106022353.tape
+setenv HRD_VOLUME_HEADER /scr/amber/oye/LFtimetest.tape
+setenv SOURCE_DEV /scr/amber/oye/kingsmill.tape
+setenv SOURCE_DEV /scr/amber/oye/9feb1726P3.tape
+setenv SOURCE_DEV /scr/amber/oye/hrd9106022353.tape
+setenv SOURCE_DEV /dev/nexa
+setenv SOURCE_DEV /scr/amber/oye/LFtimetest.tape
+#
+setenv RANGE_LIMITS ".123 < 78.9"
+setenv AFT_ANGLE_LIMITS "-25 < -5"
+setenv FORE_ANGLE_LIMITS "5 < 25"
+#setenv KEEP_ORTHOG0NAL_DATA
+#
+#setenv SWEEP_TRIP_ANGLE 0
+#setenv SOURCE_TAPE_ID "Tape #921119H"
+#
+#setenv SELECT_RADARS "TA TF"
+setenv SELECT_RADARS "LF"
+#
+#setenv CFAC_FILES "TA > /scr/port/wlee/cfac.txt.930209p342 \
+#  TF > /scr/port/wlee/cfac.txt.930209p342"
+#
+#setenv CFAC_FILES "TA > /rdss/solo/translate/hrd/cfac.txt \
+#  TF > /rdss/solo/translate/hrd/cfac.txt"
+#
+setenv DORADE_VOLUME_INTERVAL 40
+#setenv DORADE_DEV /dev/null
+#setenv PRESERVE_SWEEP_FILES
+#
+setenv UNFOLD_QUE_SIZE 5
+#setenv SIDELOBE_RING 3
+setenv DERIVED_FIELDS "VE < VG VE < VU"
+setenv ALTITUDE_LIMITS "-5 < 22.5"
+#
+#setenv SWEEP_SKIP 5
+#
+#setenv SITE_NAME "HONIARA "
+#setenv PROJECT_NAME "TOGACOARE"
+#setenv PROJECT_NAME "CAPE"
+#
+#setenv SWEEP_COUNT 21
+#
+#setenv HRD_RANGE_DELAY 19
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv TIME_LIMITS "06/02/91:23:53 < 06/02/91:23:55"
+#setenv TIME_LIMITS "11/19/92:15:03 < 11/19/92:15:09"
+#setenv TIME_LIMITS "12/14/92:18:16 < 12/14/92:18:26"
+#setenv TIME_LIMITS "02/09/93:17:25 < 02/09/93:17:40"
+#
+#setenv GECHO_MIN_GATES 33
+setenv GECHO_REFL "DZ"
+setenv GECHO_VEL "VE"
+#
+#
+nice +11 gdb xltrs
+#xltrs
+#

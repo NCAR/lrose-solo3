@@ -1,0 +1,143 @@
+#! /bin/bash
+
+#--------------------------------------------------------------------
+#
+# prepare solo binary release
+#
+# Mike Dixon, EOL, NCAR, Boulder, CO, USA
+# Sept 2013
+#
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------
+# usage function
+#
+
+function usage() {
+    echo
+    echo "Usage: $0 [ -h ] [ prefix ]"
+    echo
+    echo "  -h: produce this usage list"
+    echo "  optionally set the prefix to the tmp staging area"
+    echo
+}
+
+# set the path
+
+export PATH=.:/bin:./make_bin:/usr/bin:/sbin:/usr/sbin:/usr/bin/X11:/usr/local/bin:/usr/local/sbin:$HOME/bin
+
+# set package name
+
+package=solo3
+
+# set default prefix to temporary staging area
+
+prefix=/tmp/${package}
+
+# set the install prefix from command line, if provided
+
+if [ $# -gt 0 ]
+then
+  if [ "$1" == -h -o "$2" == -h ] 
+  then
+    usage
+    exit 0
+  fi
+  prefix=$1
+fi
+
+echo "Using tmp area: $prefix"
+
+# clean tmp area
+
+/bin/rm -rf ${prefix}
+
+#######################################################
+# get run time
+
+year=`date +'%Y'`
+month=`date +'%m'`
+day=`date +'%d'`
+hour=`date +'%H'`
+min=`date +'%M'`
+sec=`date +'%S'`
+
+#--------------------------------------------------------------------
+
+# is this 32-bit or 64-bit?
+
+os_type=x86_64
+uname -a | grep x86_64
+if [ "$?" = 1 ]
+then
+    os_type=i686
+fi
+
+echo "os_type is: $os_type"
+
+echo
+echo "*********************************************************************"
+echo
+echo "  Preparing ${package} binary release"
+echo "  OS type: $os_type"
+echo
+echo "  NCAR, Boulder, CO, USA"
+echo
+echo "  $year/$month/$day $hour:$min:$sec"
+echo
+echo "*********************************************************************"
+echo
+
+# compute release name and dir name
+
+today=${year}${month}${day}
+distName=${package}-${today}.${os_type}
+binTarName=${distName}.tgz
+echo Preparing binary release file $binTarName
+
+# set up tar directory
+
+tarDir=${prefix}/${distName}
+mkdir -p $tarDir || exit 1
+
+# perform the build
+
+./build_${package} ${prefix} || exit 1
+
+# detect which dynamic libs are needed
+# copy the dynamic libraries into runtime area:
+#     $prefix/bin/${package}_runtime_libs
+
+./installOriginLibFiles.py --binDir ${prefix}/bin \
+    --relDir ${package}_runtime_libs --debug || exit 1
+
+# copy the required files into the tar dir
+
+/bin/cp -f README_INSTALL_BIN.TXT $tarDir
+/bin/cp -f COPYRIGHT.TXT $tarDir
+/bin/cp -f install_bin_release $tarDir || exit 1
+/bin/cp -rf ${prefix}/bin $tarDir || exit 1
+
+# strip the binaries
+
+strip ${tarDir}/bin/*
+
+# make the tar file
+
+myDir=`pwd`
+cd $prefix
+tar cvfz $binTarName $distName || exit 1
+mv $binTarName $myDir
+cd $myDir
+
+#--------------------------------------------------------------------
+# done
+
+echo
+echo "  **************************************************"
+echo "  *** Done preparing release ***"
+echo "  *** binary tar file name: $binTarName ***"
+echo "  **************************************************"
+echo
+
+exit 0

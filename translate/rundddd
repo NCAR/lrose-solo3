@@ -1,0 +1,34 @@
+#
+# script to update cfac info in sweepfiles
+#
+#setenv BATCH_MODE   # redundant for scripts where input is SWEEP_FILES
+setenv INPUT_FORMAT "SWEEP_FILES"
+setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES"
+#
+setenv SELECT_RADARS "SPOL"
+setenv SELECT_RADARS "TF TA"
+#
+#setenv CFAC_FILES "TF > /scr/science1/snorman/990920/990920.0631.cfac.fore \
+#                   TA > /scr/science1/snorman/990920/990920.0631.cfac.aft"
+#
+setenv DORADE_DIR /scr/ale/oye/batch	# where the sweepfiles are
+setenv ELD_CFAC_FILES "\
+ TA:highres2 > /code/oye/soloii/translate/highres2.cfac.aft\
+ TF:highres2 > /code/oye/soloii/translate/highres2.cfac.fore\
+ TA:sensitivity3 > /code/oye/soloii/translate/sensitivity3.cfac.aft\
+ TF:sensitivity3 > /code/oye/soloii/translate/sensitivity3.cfac.fore\
+ TA:default > /code/oye/soloii/translate/sensitivity3.cfac.aft\
+ TF:default > /code/oye/soloii/translate/sensitivity3.cfac.fore\
+"
+#
+gdb ./xltrs
+#/usr/local/bin/xltrsii
+#
+#
+#
+#
+#
+#
+#
+#
+#

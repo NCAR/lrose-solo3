@@ -1,0 +1,132 @@
+# script to produce dorade sweep files from sigmet radar tapes
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "UF_FORMAT"
+#
+setenv SOURCE_DEV /scr/hotlips2/oye/data/csu/dor/dor2/ufd.990211100916.SPOL.0.tape
+setenv SOURCE_DEV /scr/zin/oye/data/csu/orig/chill_25jul98_2150z_dop.puf
+setenv SOURCE_DEV /scr/ale/oye/data/csu/ufd.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /scr/zin/oye/data/csu/ufd.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /scr/ale/oye/data/csu/uf/ufd.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /scr/ale/oye/data/uf/ufd.950507201325.TF-ELDR.0.tape
+setenv SOURCE_DEV /scr/science9/wlee/950507/leg1new/ufd.950507201325.TF-ELDR.0.tape
+setenv SOURCE_DEV /scr/science1/yyang/caa/8705170015.uf
+setenv SOURCE_DEV /scr/ale/oye/uw/ufd.1011112224354.SPOL.0.tape 
+setenv SOURCE_DEV /scr/ale/oye/uf20020109_025001.UF
+setenv SOURCE_DEV /scr/zebu3-80/oye/tapes/ufd.980515062011.C_Pol.0.tape
+setenv SOURCE_DEV /scr/zebu3-80/oye/tapes/uf980515_062002.PPI
+#
+setenv DORADE_DIR /scr/ale/oye/data/
+setenv DORADE_DIR /scr/zebu3-80/oye/data/jjang
+#
+setenv IO_TYPE FB_IO
+#
+#setenv DORADE_DEV /dev/nrst2
+#
+#setenv MIN_RAYS_PER_SWEEP 22
+#setenv SWEEP_COUNT 22
+#setenv SWEEP_COUNT 3
+#setenv SWEEP_COUNT 11
+#setenv LIDAR_SWEEP_TIME_LIMIT 60.0    # seconds
+#
+setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES DORADE_DATA UF_DATA"
+setenv OUTPUT_FLAGS "NO_CATALOG"
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#setenv RENAME "FWD < ELDR_TF"
+#
+#setenv GENERATE_SUBSECOND_TIMES .1
+#
+setenv DERIVED_FIELDS "DM < ZAP SW < ZAP DCZ < ZAP PHI < ZAP RHOHV < ZAP \
+	KDP < ZAP"
+setenv DERIVED_FIELDS "SW < ZAP LD < ZAP DL < ZAP " 
+setenv DERIVED_FIELDS " "
+#
+#setenv UF_ALIASES " DB -> DZ "
+setenv OPTIONS "360_MAX"
+setenv OPTIONS " "
+#
+#setenv UF_DEV "SPOL > /dev/null"
+setenv UF_DIRECTORY /scr/ale/oye/data/csu
+#setenv WATCH_FIXED_ANGLE
+#
+#setenv OPTIONS "ABSOLUTE_TIME"
+#setenv TIME_LIMITS "07/13/96:04:00 < 05:00"
+#setenv TIME_LIMITS "05/26/97:02:08 < 02:11"
+#setenv TIME_LIMITS "6/13/98:23:57:16 < 6/13/98:23:58:06"
+#
+setenv MAX_UF_CELLS 366
+setenv MAX_UF_CELLS 1040
+setenv MAX_UF_CELLS 1100
+#
+nice +11 gdb ./xltrs
+#
+exit 0
+#
+setenv MAX_UF_CELLS 512
+setenv MAX_UF_CELLS 390
+setenv MAX_UF_CELLS 768
+setenv MAX_UF_CELLS 1200
+setenv MAX_UF_CELLS 476
+setenv MAX_UF_CELLS 300
+#
+setenv DORADE_DIR /scr/hotlips/oye/chill
+setenv DORADE_DIR /scr/hotlips/oye/uf
+setenv DORADE_DIR /scr/hotlips/oye/spol/rain/sweepfiles
+setenv DORADE_DIR /scr/hotlips/oye/eldora/dorade/uf
+setenv DORADE_DIR /scr/hotlips/oye/fof/uf
+setenv DORADE_DIR /scr/dog3/oye/sweepfiles/forPD
+setenv DORADE_DIR /scr/hotlips/oye/cimm/uf
+setenv DORADE_DIR /scr/ale/oye/uf/
+setenv DORADE_DIR /hotlips/dt2/oye/uf/
+setenv DORADE_DIR /hotlips/dt2/oye/csu/alt
+setenv DORADE_DIR /hotlips/dt2/oye/csu/orig
+setenv DORADE_DIR /hotlips/dt2/oye/csu/tmp
+setenv DORADE_DIR /scr/ale/oye/csu
+#
+setenv SOURCE_DEV /net/josh/950603/backupsweeps/ufd.950603011019.DOW.0.tape
+setenv SOURCE_DEV /dev/rmt/1ln
+setenv SOURCE_DEV /scr/hotlips/oye/111.tape
+setenv SOURCE_DEV /scr/hotlips/oye/linux/data/ufd.950608233356.TF-ELDR.0.tape
+setenv SOURCE_DEV /scr/hotlips/oye/chill.tape
+setenv SOURCE_DEV /dev/rmt/4bn
+setenv SOURCE_DEV /scr/stout/oye/RHB_970715_1901.uf
+setenv SOURCE_DEV /scr/hotlips/oye/reo/rhb_970715_1901.uf
+setenv SOURCE_DEV /scr/stout/oye/vivek/ufd.960707012423.SPOL.0
+setenv SOURCE_DEV /scr/stout/oye/jay/ufd.950506015254.KICT.0.tape
+setenv SOURCE_DEV /dev/rmt/2bn
+setenv SOURCE_DEV /scr/dog2/oye/ufd.970501222927.SPOL.0.tape
+setenv SOURCE_DEV /dev/exa1
+setenv SOURCE_DEV /scr/hotlips/oye/eldora/dorade/ufd.950608201052.TA-ELDR.0.tape
+setenv SOURCE_DEV /dt/oye/ufbinary
+setenv SOURCE_DEV " /scr/hotlips/oye/chill.tape ufdata.tape "
+setenv SOURCE_DEV /scr/hotlips/oye/ufdata.tape
+setenv SOURCE_DEV /scr/hotlips/oye/etl/ufd.960610162201.MCWS-FOR.0.tape
+setenv SOURCE_DEV /dev/rst3
+setenv SOURCE_DEV /scr/hotlips/oye/fof/uf/ufd.870602044112.CP4-RP5.0.tape
+setenv SOURCE_DEV /dev/nrxb2
+setenv SOURCE_DEV /scr/ale/oye/uf9806151620.tape
+setenv SOURCE_DEV /scr/hotlips/oye/cimm/ufd.950604030100.CIMMARON.0.tape
+setenv SOURCE_DEV /scr/beer/rilling/copyinfo/UF_980917.files
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /scr/ale/brandes/may25b.tape
+setenv SOURCE_DEV /dev/rmt/0b
+setenv SOURCE_DEV /scr/hotlips/oye/spol/rain/sweepfiles/forUF/ufd.970530073847.SPOL.0.tape
+setenv SOURCE_DEV /dev/rmt/0bn
+setenv SOURCE_DEV /scr/ale/oye/tog_vol_990203_1200.uf
+setenv SOURCE_DEV /scr/ale/oye/etl/ufd.980927074105.MCWS-AFT.0.tape
+setenv SOURCE_DEV /hotlips/dt2/oye/dorade/ufd.990220184533.SPOL.0.tape
+setenv SOURCE_DEV /scr/ale/oye/csu/chill_25jul98_2150z_dop.puf
+setenv SOURCE_DEV /hotlips/dt2/oye/csu/orig/ufd.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /hotlips/dt2/oye/csu/orig/chill_25jul98_2150z_dop.puf
+setenv SOURCE_DEV /hotlips/dt2/oye/csu/tmp/ufd.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /hotlips/dt2/oye/data/vortex/ufd.950608233356.TA-ELDR.0.tape
+setenv SOURCE_DEV /hotlips/dt2/oye/data/uf/ufd.991024140055.SPOL.0.tape
+setenv SOURCE_DEV /dt/cathyk/chl_002318e2.tape
+setenv SOURCE_DEV /scr/ale/oye/uw/KWAJ.20000404.2242.uf
+setenv SOURCE_DEV /scr/ale/oye/CHL20000611_232540.uf
+setenv SOURCE_DEV /scr/ale/oye/KWAJ.20000330.1112.uf
+setenv SOURCE_DEV /scr/ale/oye/KWAJ.20000507.2312.uf
+#
+
+

@@ -1,0 +1,108 @@
+#!/usr/bin/python
+import sys,os,os.path,tempfile,shutil
+from string import Template
+"""
+    build an RPM package for soloii
+"""
+
+spec_skel = """
+#  This is a spec file for the $package package
+%define _topdir $topdir
+%define name $package
+%define release $release
+%define version $version
+%define buildroot %{_topdir}/%{name}-%{version}-root
+
+Requires: netcdf-static, hdf5-devel, udunits2-devel freeglut-devel perl qt4-devel mesa-libGLU-devel libX11-devel freeglut-devel glibc-devel libXext-devel
+
+
+BuildRoot:      %{buildroot}
+Summary:                NCAR  $package
+License:                ???
+Name:                   %{name}
+Version:                %{version}
+Release:                %{release}
+Source:                 %{name}-%{version}.src.tgz
+Prefix:                 /usr
+Group:                  Development/Tools
+
+%description
+NCAR $package provides radar editing and perusal tool
+
+%prep
+%setup -q
+
+%build
+./configure --prefix $$RPM_BUILD_ROOT/usr/local LDFLAGS='-lhdf5_hl -lhdf5'
+make
+
+%install
+make install
+
+%files
+%defattr(-,root,root)
+/usr/local
+"""
+def safe_mkdir (dir):
+    if not os.path.isdir(dir):
+	os.mkdir(dir)
+
+def safe_link(curfile, new_link):
+    if not os.path.islink(new_link):
+	os.symlink(curfile, new_link)
+
+def create_spec(build_dir,  package, version, release=0):
+
+    filename = 'SPECS/%s.spec' % package
+    spec = open(filename, 'w')
+    s = Template(spec_skel)
+    spec.write(s.substitute(topdir=build_dir, package=package, version=version,release=release) )
+    spec.close()
+    return filename
+
+
+def build_rpm(source_dir, build_dir,  package_name, version, release=0):
+    print 'source_dir = ', source_dir, 'version = ', package_name, 'version = ', version, 'release =', release
+    safe_mkdir(build_dir)
+    # create the necessary directories
+    for d in ('BUILD', 'RPMS', 'SOURCES', 'SPECS', 'SRPMS'):
+	safe_mkdir(os.path.join(build_dir, d))
+
+    os.chdir(os.path.join(source_dir,'..'))
+    newtar = "%s-%s.src.tgz" % (package_name, version ) 
+    newtar = os.path.join(build_dir, 'SOURCES', newtar)
+    newdir = '%s-%s' % (package_name, version)
+    safe_link(source_dir, newdir)
+   
+    os.system("tar zcf %s %s" % (newtar, newdir))
+    print 'tar complete'
+
+
+    os.chdir(build_dir)
+    spec_file = create_spec(build_dir, package_name, version, release)
+#    os.system("rpmbuild -v -bb --clean %s " % spec_file)
+    os.system("rpmbuild -v -bb  %s " % spec_file)
+
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 4 or len(sys.argv) >5:
+	print("usage %s source_dir build_directory version [release]" % sys.argv[0])
+	sys.exit(1)
+    source_dir = os.path.realpath(sys.argv[1])
+    build_dir = os.path.realpath(sys.argv[2])
+    version_str = sys.argv[3]
+    release_str = '0'
+    if len(sys.argv) == 5:
+	release_str = sys.argv[4]
+    package_name = 'soloii'
+    # the RPM tools don't like trailing slashes!
+    while build_dir[-1] == '/':
+	build_dir = build_dir[:-1]
+    if build_dir[0] != '/':
+	print("build_dir '%s' must start with '/'" % build_dir)
+	sys.exit(1)
+	
+
+
+    build_rpm(source_dir, build_dir,  package_name, version_str,release_str)

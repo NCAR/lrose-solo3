@@ -1,0 +1,1207 @@
+$Id$
+
+Created from README.xltrsii.html
+
+ ------------------------------------------------------------------------
+
+[Image] Preparing Data: the Data Translaters
+
+   * Introduction
+   * Batch mode
+   * Interactive mode
+   * Deleting sweep files
+   * Environment variables
+   * Mandatory Environment Variables
+        o INPUT_FORMAT
+        o SOURCE_DEV
+        o DORADE_DIR
+        o OUTPUT_FLAGS
+   * DORADE_DATA output.
+   * Universal Format or UF_DATA output.
+   * NETCDF_DATA output.
+
+last updated on 2 April 2003
+  ------------------------------------------------------------------------
+The first thing that needs to be done in order to look at radar data is to
+get it on disk in a format acceptable to SOLO. This is one of the purposes
+of the Data Translater. The Translater accepts several formats of radar data
+and produces one or more products. Most often the product is DORADE
+sweepfiles, which are used by SOLO to display the data. The translater can
+also produce a catalog of the data, and DORADE, UF format output tapes and
+netCDF sweepfiles. see
+
+The input formats that can be handled by the translater are DORADE_FORMAT,
+WSR_88D_FORMAT, UF_FORMAT, NCAR's FOF_FORMAT, HRD_FORMAT and NETCDF_FORMAT.
+References to P3 and HRD are considered synonymous in this context. In
+addition in-house formats (e.g., ELDORA_FORMAT and PIRAQ_FORMAT) may be used
+as input to SOLO.
+
+Translaters are driven with environment variables usually set in a script
+file. This file can be named by the user and must be executable. To make a
+file executable the protection must be changed with the chmod command.For
+example:
+
+        chmod 755 script_file_name
+
+This will give the owner, group and world executable privileges while
+providing only the owner with read and write abilities.
+
+A typical script might look like:
+
+        # Batch Mode C-Shell script to produce dorade sweep files
+        # from WSR_88D radar tapes
+        #
+        setenv BATCH_MODE  # omit for interactive mode
+        setenv INPUT_FORMAT "WSR_88D_FORMAT"
+        setenv OUTPUT_FLAGS "SWEEP_FILES"
+        setenv DORADE_DIR /scr/mead/nexrad
+        setenv PROJECT_NAME "NEXRAD"
+        setenv RADAR_NAME "KFTG"
+        setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+        setenv TIME_LIMITS "08/03/94:21:30 < 08/03/94:23:30"
+        setenv FIXED_ANGLES "0.0 < 2.0 4.0 < 5.0"
+        setenv SOURCE_DEV /dev/nexa
+        nice +11 /local/bin/xltrsii  # be sure to specify the proper
+                                     # path to the translater
+        #
+
+Typing this executable script name at the prompt should create compressed
+sweep files and a catalog of scans with elevation angles between 0 and 2
+degrees and 4 and 5 degrees in the "/scr/mead/nexrad" directory for the time
+period indicated on August 3, 1994 from the data tape in the source device
+/dev/nexa. The last line of the script invokes the actual translater
+program. Be sure that the full pathname of the executable is specified, or
+that your environment variable "PATH" is set to include the proper version
+of the executable. When substituting your source device, be sure to specify
+a device name which is Berkeley compatible. On Suns running Solaris, this
+might be /dev/rmt/0bn. If you are not sure which device to use, check with
+your system administrator.
+
+Interactive mode is also available. The script for the interactive mode can
+be exactly the same as the batch mode but the line "setenv BATCH_MODE" must
+be removed. A typical interactive mode script might look like:
+
+        # Interactive mode C-Shell script to produce dorade sweep files
+        # from WSR_88D radar tapes
+        #
+        setenv INPUT_FORMAT "WSR_88D_FORMAT"
+        setenv OUTPUT_FLAGS "SWEEP_FILES"
+        setenv DORADE_DIR /scr/mead/nexrad
+        setenv PROJECT_NAME "NEXRAD"
+        setenv RADAR_NAME "KFTG"
+        setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+        setenv SOURCE_DEV /dev/nexa
+        nice +11 /local/bin/xltrsii
+        #
+
+To invoke the translater, type the script filename at the prompt. The
+following menu should appear:
+
+
+        -1 = exit program (-2 exits from some other prompts)
+         0 = continue
+         1 = repeat last run
+
+You are now in the interactive version of the translater. Typing a 0 and
+hitting <return>, or just hitting <return> should bring up the next menu
+which looks like the following:
+
+        -2 = Exit
+        -1 = Begin processing
+         0 = Skip rays
+         1 = Inventory
+         2 = Skip files
+         3 = Rewind
+         4 = 16-bit integers
+         5 = hex display
+         6 = dump as characters
+         7 = Skip records
+         8 = Forward time skip
+         9 = Fixed angle search
+        10 = Set Input Limits
+        11 = Display headers
+        12 = Display data
+        13 = Time correction
+        14 = Sweep time tolerance
+        15 = Rotation angle tolerance
+        Option =
+
+This version of the translater gives you more flexibility to move around in
+and familiarize yourself with what the data contain, whereas batch mode is
+more useful if you are familiar with the data and with exactly what times
+and angles you want to use. The following is a brief description of the
+options in the above menu.
+
+ -1 =   Begin processing the data by loading in the number of
+        scans specified in option 10 of the menu or by cataloging
+        the data, whichever was specified in the script. After
+        the requested number of scans have been processed, the program
+        looks for an end-of-file mark and then stops. If the number of
+        scans is not specified before you begin processing, the
+        program will continue until reaching the end-of-tape,
+        unless a time limit was specified in the script.
+
+ 0 =    Skip through the data ray by ray. May not go back as far as
+        you want because only a certain number of records are kept
+        around. This is mainly for formats where there may be several
+        rays per physical record like NEXRAD, where you may want to back
+        up a few rays.
+
+  1 =   Inventory the data, beam by beam (display azimuth, elevation,
+        etc., for each beam).
+
+  2 =   Skip forward and backward through the data by files.
+
+  3 =   Rewind the tape to the begining.
+
+  4 =   Display the current record as 16-bit integers.
+
+  5 =   Display the current record as hexidecimal (base 16). Makes
+        it easier to see bit patterns.
+
+  6 =   Interpret a byte in the data as a character if it can.
+
+  7 =   Move around in the data by records. Negative numbers can
+        be used in order to skip back.
+
+  8 =   Skip ahead in time either by giving a specific time, or by
+        specifying the number of hours, minutes, or seconds to skip.
+
+  9 =   Search forward for a specified fixed angle.   Specify the
+        nominal angle, and a tolerance.  For example, typing 2.0 0.5
+        would set the translater searching for a fixed angle between,
+        and including, 1.5 and 2.5 degrees. You only need to give the
+        range number if you want to change its value other wise the
+        last one used will be remembered.  The default is a 0.2 degree
+        range.
+
+ 10 =   Brings up the following sub-menu, which allows you to set
+        different limits for the control of sweep file output.
+
+         0 = Cease - Go back to previous menu
+         1 = Enter time span - Specify time limits in which data is processed
+         2 = Enter scan count - Set the number of sweep files written to disk
+         3 = Enter volume count - Specifies the number of volumes to process
+         4 = Enter ray count - Number of rays translater will process
+         5 = Enter fixed angle limits - Used if you only want certain angles processed
+         6 = Enter PRF limits - Will only process scans with prf's within this limit
+         7 = Enter num lines in browser display - allows you to customize
+             the number of lines you want the translater to display in
+             your window
+
+ 11 =   Give a listing of the header information.
+
+ 12 =   Show the actual values for each field contained in the
+        data.
+
+When you are in the options that display headers or data (usually items
+after item 10), typing a positive number, n, causes a redisplay beginning n
+lines further than the first line in the current display; typing a negative
+number causes a redisplay beginning n lines previous to the first line of
+the display. Typing a number that is greater than the number of lines in the
+listing causes the final lines in the listing to be displayed, and typing a
+large negative number causes the first lines in the listing to be displayed.
+To exit the display, type a non-numeric character followed by a return.
+
+After some data (at least one full sweep) have been loaded to disk, you are
+ready to begin using SOLO. When using the interactive version of the
+translater to search through data, you may want to keep it going in one
+window and to open SOLO in another. SOLO is able to see new data as they are
+read to disk without exiting and re-entering the program. It may be
+necessary to "pop up" the sweep widget and display the list of sweeps to
+display the newer sweeps, since SOLO does not rescan the directory for every
+sweep it plots.
+
+You might also find it helpful to use the GNU emacs directory editor (dired)
+for selectively deleting sweep files. On many systems you type emacs
+preferably from the directory where you want to do the deletion. Then type
+<CTRL>x and then a "d" and you will be prompted for the directory name. If
+you are already in the directory you can just type <return>. Once you have a
+list of files you can move around with the arrows and type a "d" at each
+file you wish to delete. When you want to delete the files you have flagged,
+type an "x" and you will get a list of the files emacs is going to delete.
+Type "yes" to confirm.
+
+  ------------------------------------------------------------------------
+
+There are many environment variables besides the ones listed in the example
+scripts that can be set to control the translater. Some environment
+variables are unique to certain input formats and output flags. The user
+should be aware that on some systems in certain shells (most notably hpux
+and the csh environment), variables must have an argument. So a variable
+such as BATCH_MODE needs to be set with the following command:
+
+                setenv BATCH_MODE ""
+
+Since tokens in strings are expected to be seperated by spaces or tabs, all
+ordered triplets in environment variables such as "800 < 2000" in
+
+                setenv PRF_LIMITS "800 < 2000"
+
+should be seperated by spaces or tabs. The "<" has no significance except to
+emphasize the relationship between the two values on either side.
+
+Quotes are needed whenever the value of a variable includes blanks or
+unusual characters. Omission of necessary quotes will cause unexpected
+results!
+
+A list of currently defined environmental variables follows (in the list,
+the environment variable is provided first, followed by an example of its
+usage, followed by a description of usage):
+
+AC_NETCDF_FILE
+     setenv AC_NETCDF_FILES "/dt/oye/RF05.cdf"
+
+     Specifies a merge of RAF netCDF airborne data with the radar platform
+     descriptor parameters and also specifies what file is to be used.
+     Currently this should be a "low-rate" tape. The default set of RAF
+     netCDF field names used is: "HGME PITCH ROLL THDG VEWC VNSC VSPD LATC
+     LONC PALT UIC VIC WIC".
+
+AC_NETCDF_ALIASES
+     setenv AC_NETCDF_ALIASES "LATC < GLAT LONC < GLON"
+
+     Allows substitution for the default fields of the RAF netCDF aircraft
+     data tape which are used to revise various platform descriptor
+     parameters. Fields not referenced will use the default name. If you
+     wish not to replace some of the fields then you can indicate this with
+     the entry ROLL < NOT and the roll will not be replaced. If you wish to
+     substitude only one or two fields you can say "ONLY HGME < HGME LONC <
+     LON" for example.
+
+AC_TIME_CORRECTION
+     setenv AC_TIME_CORRECTION -172800.000
+
+     Allows for adjusting the RAF netCDF time stamp the units are plus or
+     minus seconds.
+
+AFT_ANGLE_LIMITS
+     setenv AFT_ANGLE_LIMITS "-25. < -5."
+
+     This applies primarily to HRD data and specifies the limits of the
+     elevation angles for the data assigned to be the aft radar.
+
+ALTITUDE_LIMITS
+     setenv ALTITUDE_LIMITS "-2.5 < 22.5"
+
+     Specifies the altitude limits for data in km. msl. All data below the
+     lower limit and above the upper limit will be assigned a bad data flag
+     and "compressed out" of the dataset, if you are using compression. The
+     program uses the elevation of the beam and the altitude of the radar to
+     cutoff the data above and below the two limits. For aircraft data, this
+     can cut UF files in half and for DORADE, the average sweep compresses
+     to one-third its non-compressed size.
+
+AZ_SECTORS
+     setenv AZ_SECTORS "22.0 < 33.0 66.0 < 77.0"
+
+     Ignores data outside the two sets of azimuth limits.
+
+BEAM_COUNT
+     setenv BEAM_COUNT 22
+
+     The beam count is a way of stopping the program if you are testing
+     things.
+
+COMPRESSION_SCHEME
+     setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+
+     Sweep files will probably be one third their normal size when
+     compressed if they contain aircraft data and appropriate
+     ALTITUDE_LIMITS are specified. Files are often less than one-third
+     their normal uncompressed size, especially for NEXRAD data.
+
+     This is the only compression scheme we employ at present. The algorithm
+     compresses on the basis of 16-bit boundaries. It is run-length-encoded
+     (RLE), and an RLE word indicates either the number of deleted (bad
+     flagged) 16-bit words or the number of 16-bit words to follow. The
+     compression is terminated by a 1 in an RLE word.
+
+DERIVED_FIELDS
+     setenv DERIVED_FIELDS "VE < VG VE < VU"
+
+     There are several specially derived fields available as part of the
+     translation process. The first two are for use with aircraft (P3 and
+     ELDORA) data.
+
+     "VE < VG VE < VU"
+          The left hand side of the ordered pair indicates the source field
+          id. The right hand side indicates the destination field id and a
+          specific process for deriving this field. VG implies just to
+          remove the aircraft motion from the velocity and force the result
+          velocity Nyquist interval to be centered on 0 while VU implies to
+          remove any aircraft motion and try to unfold it.
+
+     "VR < VH"
+          The left hand side of the ordered pair indicates the source field
+          id. VH implies just to remove the component of aircraft motion
+          from the velocity. This is meant to be used for ELDORA's new
+          unfolded velocities.
+
+     "VE < VT"
+          Generates a field called VT from VE that is thresholded on the
+          NCP. The NCP field and threshold value is specifield with an
+          environment variable A second number indicates an upper limit and
+          the absence of this variable forces the default to 999. (in this
+          example, everything below .333 is flagged bad):
+
+                  setenv NCP_THRESHOLD_VAL "NCP .333"
+
+     "VE < VW"
+          Generates a field called VW from VE that is thresholded on the
+          Spectral Width and is specified with an environment variable (in
+          the following example, everything above 6.0 is flagged bad):
+
+                  setenv SW_THRESHOLD_VAL "SW 6.0"
+
+     It is also possible to threshold on power using the environment
+     variable:
+
+          setenv PWR_THRESHOLD_VAL "DBZ -12.34"
+
+     It can apply to three cases:
+     "VE < VP"
+          generates a field, VP, by bad-flagging values in VE with dBZ below
+          -12.34
+
+     "DBZ < DP"
+          generates a field DP by bad-flagging values in DBZ below -12.34
+
+     "DBZ < DT"
+          generates a field DT by bad flagging values in DBZ ABOVE -12.34
+
+DORADE_DEV
+     setenv DORADE_DEV "/scr/mead/data"
+
+     If the string "/dev" occurs anywhere in this specification, the
+     software assumes you will be writing to tape(s); if not, the software
+     assumes you are specifying a destination directory for DORADE data
+     different from the DORADE_DIR directory. The name of the file will be
+     manufactured by the Translater program. With a /dev it is possible to
+     specify more than one device name between the double quotes. This
+     feature along with MAX_DORADE_TAPE_SIZE allows a user to specify output
+     to more than one physical device and the approximate amount of data in
+     gigabytes that can be written to a physical device.
+
+DORADE_DIR
+     setenv DORADE_DIR "/scr/mead/nexrad"
+
+     The destination directory for sweep files and catalog information and,
+     unless otherwise specified, the destination directory for UF and DORADE
+     tape image files. Older example scripts may use DD_DIR. They are
+     synonymous. This variable is not manditory but if you are going to
+     generate any ouput such as catalogs, sweepfiles, DORADE data, etc., you
+     will need to set this variable.
+
+DORADE_VOLUME_INTERVAL
+     setenv DORADE_VOLUME_INTERVAL 240
+
+     Volumes of aircraft data are often very long. This variable is the
+     maximum length in seconds of a volume of data. Normally for ground
+     based data it is desirable to respect the volume boundaries of the
+     original data.
+
+EL_SECTORS
+     setenv EL_SECTORS "0.0 < 0.9 3.3 < 4.4"
+
+     Ignores data outside the two sets of elevation limits.
+
+FIXED_ANGLES
+     setenv FIXED_ANGLES "0.0 < 1.0 2.0 < 3.0"
+
+     It is possible to filter the data to a specific list of fixed angle
+     ranges. This is the way to specify it. The "<" must be present, and the
+     values on either side of the "<" are inclusive.
+
+INPUT_FORMAT
+     setenv INPUT_FORMAT "DORADE_FORMAT"
+
+     This is a mandatory variable. Formats with headers require that the
+     source data device be positioned at the beginning of a file. The
+     following formats are recognized; specific notes about the formats
+     follow.
+
+             DORADE_FORMAT
+             WSR_88D_FORMAT
+             UF_FORMAT
+             ELDORA_FORMAT
+             FOF_FORMAT
+             NETCDF_FORMAT
+             SWEEPFILES_FORMAT
+
+     DORADE_FORMAT
+          This is NCAR's format for airbourne radar. The format was created
+          specifically to meet the needs of the NCAR ELDORA dual-antenna,
+          dual PRT, multi-frequency, high data rate system. Contributions to
+          the format were solicited from NOAA's HRD and other users of radar
+          data. The format is highly descriptive, and can be used for
+          airbourne radar, ground-based radar, lidar systems, and other
+          platforms collecting beam-based data.
+
+          What follows is a script for DORADE input. The only required
+          variables are INPUT_FORMAT, SOURCE_DEV, and DORADE_DIR. This would
+          produce a catalog of the data in the directory designated by
+          DORADE_DIR.
+
+          # C-Shell script to produce dorade sweep files
+          # from DORADE radar tapes or tape images on disk
+          setenv INPUT_FORMAT "DORADE_FORMAT"
+          setenv SOURCE_DEV /dev/rmt/0bn  # or a tape image on disk
+          setenv DORADE_DIR /dt/oye
+          setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES"
+          setenv TIME_LIMITS "02/09/93:16:50:50 < 02/09/93:16:53"
+          setenv COMPRESSION_SCHEME "HRD_COMPRESSION" # to save disk space
+          nice +11 /rdss/solo/bin/xltrsii
+          #
+
+          Other environment variables unique to this format are
+          ASCENDING_ONLY, TIME_CORRECTION, and OPTIONS "ROT_ANG_SECTORS".
+          ASCENDING_ONLY eliminates sweeps where the antenna has
+          repositioned to rescan a lower elevation within the same volume.
+          TIME_CORRECTION expects a floating point time in seconds to be
+          added to the time stamp of each beam. ROT_ANG_SECTORS enforces the
+          use of the rotation angle for the sectors defined by the
+          AZ_SECTORS environment variable.
+
+     WSR_88D_FORMAT
+          This format requires three tables to work properly. These tables
+          are installed in the SOLO/lib directory, and the translater will
+          expect to find them there unless the environment variable
+          NEXRAD_DIR is set. The file names begin with "nexrad" and end with
+          ".txt". One table is site information that has lat/lon/alt plus
+          receiver bandwidth and the two pulse durations. The user must
+          supply the four character radar id to access the proper entry in
+          the table (use the RADAR_NAME environment variable). These are
+          text files that can be examined and changed independent of the
+          software. Any reliable information concerning these parameters
+          would be welcome. The translater for this format can also ingest
+          user supplied information such as the lat/lon/alt of the radar,
+          project name, and site name (use RADAR_LATITUDE, RADAR_LONGITUDE,
+          RADAR_ALTITUDE, PROJECT_NAME, and SITE_NAME). See the example
+          script.
+
+          OPTIONS flags for this format are NEW_NCDC_BLOCKING,
+          REFLECTIVITY_ONLY, VELOCITY_ONLY, MAX_RANGE and RANGE_AMB:nnn (nnn
+          is the reflectivity value assigned whan the range ambiguity flag
+          is set). The NCDC blocking option applies to physical tapes
+          aquired from NCDC after May 2001. Reflectivity data is normally
+          truncated at the point where the velocity ends. For MAX_RANGE the
+          gate spacing becomes 500 meters rather than 250 meters yielding
+          the same number of gates with decimated velocity data.
+
+          If you're using the soloii version of the translaters (xltrsii),
+          all tables used for translating 88D data are internal. If you need
+          to supply new information not in the internal tables, use the
+          environment variables described above or if you have and edited
+          version of the NEXRAD site information file, you can supply it
+          with the NEXRAD_SITE_INFO environment variable.
+
+     UF_FORMAT
+          (a.k.a. Universal Format) This optimisticlly-named format has been
+          the designated radar data exchange format since 1981 (see SESAME
+          News in The Bulletin of the American Meteorological Society, Nov
+          1981). However, the format does not allow sufficient description
+          to allow easy use with current airbourne radar systems.
+
+          OPTIONS flags for this format are UF_360_MAX_SECTOR and
+          UF_FORCE_EOF_VOLS. Max sector forces a new sweep whenever the
+          antenna has swept through a total of 360 degrees and force vols
+          causes a new volume to be defined whenever and EOF is encountered
+          in the input stream.
+
+          Additional environment variables are MAX_UF_CELLS, RENAME,
+          WATCH_FIXED_ANGLE, GENERATE_SUBSECOND_TIMES, FORCE_EOF_VOLS, and
+          INPUT_FILES_LIST which points to a file containing more than one
+          source device name. This variable takes precedence over the
+          SOURCE_DEV variable.
+
+          Since the number of cells/bins/gates is fixed for DORADE for a
+          given volume, and the number of gates in UF can vary from field to
+          field and ray to ray, MAX_UF_CELLS fixes the DORADE cell vector
+          size in case the number of gates is varying in the UF data.
+
+          RENAME expects a set of ordered triplets of the form "old_name <
+          new_name" for changing the radar name (spaces are manditory).
+
+          WATCH_FIXED_ANGLE begins a new sweep when the fixed angle changes
+          in case the sweep number doesn't change.
+
+          GENERATE_SUBSECOND_TIMES addresses the situation where the time
+          stamp is to the nearest second and more than one beam is generated
+          per second. If a nonzero argument is provided it is assumed to be
+          the fraction of a second increment for subsequent beams within the
+          same second otherwise a calculation if performed based on the PRF
+          and the number of samples per beam.
+
+          FORCE_EOF_VOLS forces a new volume flag even if the volume number
+          has not changed in the source data.
+
+          # C-Shell script to produce dorade sweep files
+          # from UF radar tapes or tape images on disk
+          setenv INPUT_FORMAT "UF_FORMAT"
+          setenv SOURCE_DEV /dev/rmt/0bn  # or a tape image on disk
+          setenv DORADE_DIR /dt/oye
+          setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES"
+          setenv MAX_UF_CELLS 512  # sets max. cell vector size if num gates is varying
+          nice +11 /rdss/solo/bin/xltrsii
+          #
+
+     HRD_FORMAT
+          This is the format of the tapes from NOAA P3s. The project name
+          must be supplied by the user.
+
+          The translaters separate the HRD tail radar data as if it were two
+          radars, and data are designated as fore "TF" or aft "TA" depending
+          on the tilt angle. Environment variables unique to this format
+          are:
+
+          FORE_ANGLE_LIMITS specifies the limits of the elevation angles for
+          the data assigned to be the fore radar.
+
+          AFT_ANGLE_LIMITS specifies the limits of the elevation angles for
+          the data assigned to be the aft radar.
+
+          KEEP_ORTHOGONAL_DATA specifies that tail data outside the FORE and
+          AFT_ANGLE_LIMITS is to be preserved. The default is to discard
+          these data. These data have the designation TA (e.g. TA43P3).
+
+          HRD_RANGE_DELAY specifies the number of initial gates to ignore.
+          e.g. a value of 19 indicates that the 20th gate should be
+          considered the first gate of data. The range to the first gate is
+          still the same.
+
+          HRD_VOLUME_HEADER specifies a fortran-binary file containing
+          volume header information in case these data are missing from the
+          beginning of a particular input file.
+
+     ELDORA_FORMAT
+          Specifies raw ELDORA Field Format data.
+
+          Environment variables unique to this format are:
+
+          TIME_CORRECTION specifies the additive time correction in seconds.
+
+          YEAR_OF_DATA specifies the 4 digit year of the data.
+
+          ELDORA_VOLUME_HEADER specifies a fortran-binary file containing
+          volume header information in case these data are missing from the
+          beginning of a particular input file.
+
+          AC_NETCDF_FILES specifies the full path names of one or more
+          netCDF Aircraft insitu data files.
+
+          AC_NETCDF_ALIASES specifies replacment names for the following
+          variables that were originally assumed to be on the tape. HGME,
+          PITCH, ROLL, THDG, VEWC, VNSC, VNSC, LATC, LONC, PALT, UIC, VIC,
+          and WIC
+
+          In the following example LAT becomes the field searched for rather
+          that LATC and the NOT alias implies not to substitude the value
+          from the aircraft insitu tape for the value on the ELDORA raw
+          tape.
+
+          setenv AC_NETCDF_ALIASES "LATC < LAT PITCH < NOT"
+
+          The drift angle is derived from the heading and north-south and
+          east-west velocitites.
+
+          AC_TIME_CORRECTION specifies a additive time correction to the
+          aircraft time to help synchronize it with the current radar beam
+          time.
+
+          OPTIONS flags for this format are:
+
+          AC_COMPARE specifies sending navigation information plus the time
+          stamp to the catalog at the start of each sweep.
+
+          DESC_SEARCH specified a search for the next descripter rather than
+          using the size of the current descripter to move to the beginning
+          of the next descripter. There were some data sets where parts of
+          descripters were missing.
+
+          ROT_ANG_SECTORS specified using the rotation angle rather than the
+          azimuth in conjunction with the AZ_SECTORS environment variable.
+
+     PIRAQ_FORMAT
+          The raw field format generated by systems based on piraq cards.
+          Generally not useful to anyone outside of the data management
+          group.
+
+          Other applicable environment variables are:
+
+          RENAME which renames the radar.
+
+          UNIFORM_CELL_SPACING which forces the cell or gate spacing to be
+          the specified number of meters.
+
+          RADAR_LATITUDE in degrees as a decimal fraction.
+
+          RADAR_LONGITUDE in degrees as a decimal fraction.
+
+          RADAR_ALTITUDE in meters.
+
+          RCONST_CORRECTION is an additive correction to reflectivity.
+
+          IMPROVE_HZO_RCONST_CORR is an additive correction to reflectivity
+          in horizontal only mode.
+
+          ZDR_BIAS is an additive correction in db.
+
+          LDR_BIAS additive correction in db.
+
+          RANGE_CORRECTION additive correction in meters.
+
+          TIME_CORRECTION additive time correction as a floating point
+          seconds.
+
+          The following set of environment variables are used to attempt
+          scan delineation in the absence of the scan and volume counters in
+          later revs.
+
+          MIN_AZ_DIFF (default = .3) is used to detect a turnaround in the
+          SIMPLE_SWEEPS option by comparing the last two anglular
+          differences to this value.
+
+          az_turnaround =
+           ( fabs(ddaz) > min_az_diff && fabs(daz) > min_az_diff &&
+           (ddaz + daz) * pui->az_diff_sum < 0 )
+           || short_sum_az_diffs * pui->az_diff_sum < 0;
+
+          It's also used to detect a possible transitioning to the next RHI
+          by comparing it to the short_avg_az_diff so as not to trigger a
+          new sweep flag
+
+          if(fabs(short_avg_az_diff) > min_az_diff) { /* MIN_AZ_DIFF */
+              /* moving in azimuth hopefully to the next rhi */
+              return(NO);
+          }
+
+          to detect the beginning of a PPI;
+
+          if(fabs(short_avg_az_diff) > min_az_diff
+             && fabs(short_avg_el_diff) < ppi_el_tol ) {
+              /*
+               * using MIN_AZ_DIFF and PPI_EL_TOL
+               *
+               * moving in azimuth and not moving in elevation
+               */
+              gri->scan_mode = PPI;
+              pui->lag_rays = lag_rays;
+              return(YES);
+          }
+
+          and to detect a slowing of azimuthal motion indicating a
+          transition
+
+          if(fabs(avgDaz) < .5 * min_az_diff) { /* MIN_AZ_DIFF */
+              /*
+               * slowing down in azimuth
+               */
+              pui->transition_count++;
+              printf( "t2:" );
+              return(NO);
+          }
+
+          MIN_EL_DIFF (default = .2) is used to detect the start of the next
+          RHI after an RHI
+
+          if(fabs(short_avg_el) > min_el_diff) { /* MIN_EL_DIFF */
+              /* antenna moving vertically */
+              return(YES);
+          }
+
+          It's also used to detect if the antenna has stopped moving
+          vertically.
+
+          if((fabs(pui->el_diff_run_sum) < min_el_diff)) {
+              /*
+               * we are examining the sum of the differences between
+               * ths last NUM_EL_DIFFS_AVGD rays not the whole sweep
+               *
+               * the antenna has stopped moving vertically
+               */
+              printf( "t9:" );
+              pui->transition_count++;
+              return(NO);
+          }
+
+          to detect along with the RHI_AZ_TOL the beginning of an RHI
+
+          if( fabs(short_avg_el_diff) > min_el_diff
+              && fabs(short_avg_az_diff) < rhi_az_tol ) {
+              /*
+               * MIN_EL_DIFF and RHI_AZ_TOL
+               *
+               * moving in elevation and "not" moving in azimuth
+               */
+              gri->scan_mode = RHI;
+              pui->lag_rays = lag_rays;
+              return(YES);
+          }
+
+          MIN_FXD_DIFF (default = .15) is used to rule out the transition to
+          a new volume.
+
+          if(fabs(pui->swpang_diff_sum) < min_fxdang_diff) {
+              return(NO);
+          }
+
+          or to detect a new volume
+
+          if(fabs(diff = angdiff(sq->last->swpang, gri->fixed)) >
+              min_fxdang_diff) {
+              if(diff * pui->swpang_diff_sum < 0) {
+                  /* the antenna has reversed its normal increment */
+                  return(YES);
+              }
+          }
+
+          or along with the PPI_EL_TOL to detect new sweep
+
+          if( fabs(short_sum_el_diffs) < ppi_el_tol ) { /* PPI_EL_TOL */
+              /*
+               * antenna is stable for several beams but too far away
+               * from the current fixed angle (MIN_FXD_DIFF)
+               */
+              if(FABS(gri->fixed - short_avg_el ) > min_fxdang_diff) {
+                  printf( "t0:" );
+                  return(YES);
+              }
+          }
+
+          PPI_EL_TOL (default = .77) in addition to the above is used to
+          flag a transition
+
+          if( fabs(pui->el_diff_run_sum) > ppi_el_tol ) { /* PPI_EL_TOL */
+              /*
+               * moving away from cont. elev.
+               */
+              pui->transition_count++;
+              printf( "t1:" );
+              return(NO);
+          }
+
+          RHI_AZ_TOL (default = 1.5) see above.
+
+          MAX_RHI_DIFF (default = 9.0) is used to detect the start of a PPI
+          after an RHI
+
+          if( fabs(pui->x_az_diff_sum) > max_rhi_diff ) { /* MAX_RHI_DIFF */
+              /*
+               * change in az since transition began > next reasonable rhi
+               * end of RHIs
+               */
+              gri->scan_mode = PPI;
+              return(NO);
+          }
+
+          NUM_AZ_DIFFS_AVGD (default = 5) is used to detect a slow down in
+          azimuth motion,
+
+          NUM_EL_DIFFS_AVGD (default = 5)
+
+          NUM_SHORT_AVG (default = 5)
+
+          VOLUME_HEADER, full path name of a file containing the initial
+          radar header. TAPE_DIR, constructs a list of all the files with
+          the suffix ".tape" and passes through them. ,
+
+          OPTIONS flags for this format are:
+
+          SIMPLE_SWEEPS specifies scan delineation by detecting the antenna
+          turnaround points. This works for sector PPIs only.
+
+          RANGE0_DEFAULT forces the range to the first gate to be 150
+          meters.
+
+          FLIP_VELOCITIES corrects the sign error in somee of the earliest
+          velocity data.
+
+          FULL_MATRIX specifies the inclusion of cross correlation fields
+          and where present I and Q fields.
+
+          HEADER_SUBSEC specifies use of the subsecond value in the header
+          to assign a time stamp to the beam.
+
+          SPOL_HORZ_FLAG causes the pcorr_const to be 0x1000000/1.25E-7
+          instead of 0x2000000/1.25E-7.
+
+          DOW_FLAG flags the presence and use of scan and volume counters
+          for delineating sweeps and volumes.
+
+          DZ_TO_DBZ_FLAG forces the naming of the reflectivity field DBZ
+          rather than DZ.
+
+          IGNORE_TRANSITIONS specifies omitting beams where the transition
+          flag is on.
+
+          HZO_IMPROVE_FLAG sets a fudge factor for the range to the first
+          gate for horizontal only IMPROVE data (currently set to 6.0).
+
+          if( hdr->dataformat == DATA_SIMPLEPP && pui->options & HZO_IMPROVE_FLAG )
+              { gri->range_b1 = 150 - Improve_range0_offset * gri->bin_spacing; }
+
+     FOF_FORMAT
+          The internal format for NCAR ATD radar data; this format has been
+          in use for radar data collected from about 1980 through 1995, and
+          was not originally intended for exchange of radar data. Use of
+          this format requires access to an ATD-distributed database
+          containing radar calibratation and parameter information, grouped
+          by date/project, and by radar. This is a compact format, and a lot
+          of ATD ground-based radar data have been distributed in this form.
+          This format requires the OUTPUT_FIELDS attribute to specify a list
+          of the desired output fields.
+
+     SWEEPFILES_FORMAT
+          Sweep files can also be used to produce several products. See
+          OUTPUT_FLAGS.
+
+          There is a feature where the input and the output are sweepfiles.
+          This feature currently provides for rewriting the files with new
+          correction factors and remerging of aircraft navigation
+          parameters. This feature rewrites the input sweepfiles.
+
+IO_TYPE
+     setenv IO_TYPE "FB_IO"
+
+     This variable specifies that input files are FORTRAN-BINARY files. So
+     far this is applicable only to the MECTEX UF radar data where the UF
+     files do not conform completely to the FORTRAN-BINARY convention.
+
+MAX_DORADE_TAPE_SIZE
+     setenv MAX_DORADE_TAPE_SIZE 4.2
+
+     Specifies the approximate maximum number of gigbytes of DORADE output
+     that can be written to a single physical device. A switch to the next
+     device is triggered once this limit has been exceeded during the last
+     volume dump.
+
+MIN_RAYS_PER_SWEEP
+     setenv MIN_FREE_MB n
+
+     The program throws aways sweeps with less than the minimum number of
+     rays. The default is 11.
+
+NETCDF_DIRECTORY
+     setenv NETCDF_DIRECTORY "/my/netcdf/dir"
+
+     The destination directory for the netCDF files produced. See
+     NETCDF_DATA
+
+NETCDF_FIELDS
+     setenv NETCDF_FIELDS "DZ VE NC"
+
+     Defines a subset of the fields available to be included in the netCDF
+     sweepfiles. The default is to include all fields.
+
+OPTIONS
+     setenv OPTIONS "FLAG1 FLAG2 etc."
+
+     The various flags associated with the options environment variable are
+     often format specific.
+
+OUTPUT_FIELDS
+     setenv OUTPUT_FIELDS "DZ VP"
+
+     This attribute is required for FOF_FORMAT in order to specify which
+     output fields are desired. The above example produces a dBz field
+     thresholded on the MDS and a velocity field also thresholded on the
+     MDS. The file ../solo/catalog/fieldlist.job contains information used
+     to derive fields from the raw data and to decide which fields can be
+     derived.
+
+OUTPUT_FLAGS
+     setenv OUTPUT_FLAGS "DORADE_DATA UF_DATA"
+
+     This is how you specify the output for the program. The default is to
+     produce just a catalog of the data. None of the options listed below
+     are mutually exclusive; therefore, all the types of data listed below
+     can be produced simultaneously. This variable is also not mandatory but
+     you can't do too much except make a pass through the data without it.
+     The following outputs are recognized; specific notes about the formats
+     follow.
+
+             SWEEP_FILES
+             DORADE_DATA
+             UF_DATA
+             NETCDF_DATA
+             GECHO_DATA
+
+     SWEEP_FILES
+          Sweep files are simply the DORADE data broken up into one sweep
+          per disk file. All of the applicable DORADE headers are included
+          in the file plus some additional information such as a rotation
+          angle versus ray table. The files are the basis for functioning in
+          SOLO.
+
+     DORADE_DATA
+          Data in pure DORADE format are produced by accumulating a volume
+          of sweep files on the disk and then writing them to tape or disk.
+          It is not necessary to specify SWEEP_FILES as an additonal output
+          in order to produce DORADE, but the presence of the SWEEP_FILES
+          flag will prevent deletion of sweep files after a dorade volume
+          has been written out if that is desirable. PRESERVE_SWEEP_FILES
+          can also be used to preserve a file periodically. Aircraft data
+          are often broken into smaller volumes based on the
+          DORADE_VOLUME_INTERVAL. For disk files the software manufactures
+          the name of the file with the form "dor.920128010203.TA-ELDR.0";
+          i.e., a file type prefix, the date-time, the radar name and
+          version number. See also DORADE_DEV.
+
+          Environment variables unique to DORADE_DATA are:
+
+          MAX_VOLUME_SIZE in megabytes.
+
+          DORADE_VOLUME_INTERVAL Volumes of aircraft data are often very
+          long. This variable is the maximum length in seconds of a volume
+          of data. Normally for ground based data it is desirable to respect
+          the volume boundaries of the original data.
+
+          MAX_MEDIA_SIZE in megabytes.
+
+          MIN_VOLUME_TIME_SPAN in seconds.
+
+          MIN_TIME_GAP in seconds before going to a new volume.
+
+          PRESERVE_SWEEP_FILES (default = 0) specifies preserving a sweep
+          file every N seconds for each radar during DORADE output.
+
+          DORADE_IO_TYPE " BINARY_IO PHYSICAL_TAPE".
+
+          DORADE_DEV If the string "/dev" occurs anywhere in this
+          specification, the software assumes you will be writing to
+          tape(s); if not, the software assumes you are specifying a
+          destination directory for DORADE data different from the
+          DORADE_DIR directory. The name of the file will be manufactured by
+          the translater program.
+
+     UF_DATA
+          The UF data are produced on a ray-by-ray basis as each ray of
+          source data is read in. In the absence of the UF_DIRECTORY
+          variable, UF files will be produced in DORADE_DIR. These UF files
+          will have the form "ufd.921214163454.LF43P3.0.tape" and will be
+          produced in fortran-binary format.
+
+          Other applicable environment variables for UF_DATA are:
+
+          UF_OUTPUT_FIELDS "DBZ NCP VR" causes output of only the fields
+          listed otherwise all source fields are output.
+
+          OPTIONS "NO_UF_CLIP UF_VOL_TRAP" The option NO_UF_CLIP forces the
+          gate count to be the same for all rays otherwise the ray ends at
+          the last good gate. UF_VOL_TRAP monitors the fixed angle and
+          triggers a new volume when the current fixed angle is less than or
+          equal to the previous fixed angle.
+
+          UF_ALIASES. a set of ordered triples "DBZ -> DZ" to rename source
+          fields before they are written out. The first element is the
+          source name the second is an arbitrary separator and the third is
+          the new name. Elements need to be separated by white space
+
+          MAX_MEDIA_SIZE in megabytes.
+
+          UF_DEV "TF > /dev/nrsx0 TA > /dev/nrsx1". This variable is most
+          often used when going directly from an input to tape output. The
+          arguments are ordered triples where the first element is a unique
+          subset of the radar name, the second is a separator and the third
+          is the device name all separated by white space.
+     NO_UFEOFS
+          Suppresses the writing of EOFs for UF output. This can be helpful
+          if data are filtered down to one or two sweeps per volume.
+
+     NETCDF_DATA
+          A flexible OS independent format developed by UCAR's UNIDATA
+          program. See NETCDF_DIR and NETCDF_FIELDS.
+
+     NO_CATALOG
+          Suppress the production of a catalog of the source data being
+          processed. The catalog is a verbose ASCII text file.
+
+     GECHO_DATA
+          Produces a special-purpose file of text information that results
+          from an attempt to calculate and record reflectivity and velocity
+          cells around the intersection of a ray of data and the earth's
+          surface; uses navigation information for the ray. The software to
+          process these data and derive correction factors is not
+          distributable at this point.
+
+          Environment variables unique to GECHO_DATA are:
+
+          GECHO_MIN_GATES which sets the minimum number of cells for each
+          ray of ground echo information to include in the ground echo file.
+
+          GECHO_REFL specifies the parameter name of the reflectivities used
+          in the ground echo file.
+
+          GECHO_VEL specifies the parameter name of the velocities used in
+          the ground echo file.
+
+          GECHO_MSL specifies the use of the pressure altitude in the ground
+          echo calculation..
+
+          EARTH_RADIUS specifies the earth readius in km. to use in the
+          ground echo calculation.
+
+          GECHO_MAX_ROT_ANGLE (default = 100.) specified the CCW limit of
+          the sector where the ground echo location is calculated.
+
+          GECHO_MIN_ROT_ANGLE(default = 260.) specified the CW limit of the
+          sector where the ground echo location is calculated.
+
+          Unique OPTIONS flags for this output are:
+
+          GECHO_10 specified the output of the first 10 gates of data rather
+          than gates surrounding the calculated ground echo location.
+
+PCT_STATS
+     setenv PCT_STATS "ABOVE 20 DZ"
+
+     Generates statistics for the catalog that report the percentage of
+     cells that meet the indicated criteria. In this case it's the
+     percentage of cells in the field named DZ that are above 20. The first
+     argument can be ABOVE, BELOW, BETWEEN, and BEYOND. BETWEEN and BEYOND
+     require two values e.g. "BEYOND -10.0 10.0 VU".
+
+PRF_LIMITS
+     setenv PRF_LIMITS "800 < 2000"
+
+     Specifies filtering of input data on the basis of PRF. One or more
+     ordered pairs of upper and lower limits are accepted.
+
+PROJECT_NAME
+     setenv PROJECT_NAME "TNEXRAD"
+
+     Supplies a project name that is missing for some formats.
+
+RADAR_ALTITUDE
+     setenv RADAR_ALTITUDE "1.601"
+
+     Supplies the altitude for 88D data; units of km. msl.; over-rides
+     information that may exist in the input data, or in the SOLO tables.
+
+RADAR_LATITUDE
+     setenv RADAR_LATITUDE "39.531"
+
+     Supplies the latitude for 88D data, in decimal degrees; over-rides
+     information that may exist in the input data, or in the SOLO tables.
+
+RADAR_LONGITUDE
+     setenv RADAR_LONGITUDE "104.232"
+
+     Supplies the longitude for 88D data, in decimal degrees; over-rides
+     information that may exist in the input data, or in the SOLO tables.
+
+RADAR_NAME
+     setenv RADAR_NAME "KFTG"
+
+     Supplies the radar name for 88D data; mandatory for all NEXRAD data.
+
+RENAME
+     setenv RENAME "FWD < TF-ELDR AFT < TA-ELDR"
+
+     Permits renaming of radars during UF input. To the left of the "<" is
+     the old name and to the right is the replacement name.
+
+SELECT_RADARS
+     setenv SELECT_RADARS "TA TF"
+
+     Allows the user to filter the input for the radars indicated. The
+     patterns present need to uniquely match a pattern in the radar name in
+     order for it to be selected. In the production of ELDORA and HRD tail
+     data the translaters manufacture the radar name beginning with "TA" to
+     indicate and aft pointing radar and "TF" to indicate a fore pointing
+     radar. This option also works for selecting a particular radar from UF
+     data.
+
+SITE_NAME
+     setenv SITE_NAME "FRONTRNG"
+
+     Supplies a site name for UF production.
+
+SOURCE_DEV
+     setenv SOURCE_DEV "/dev/nexa"
+
+     This mandatory variable specifies the name of the source device or the
+     full path name of the source file. The presence of "/dev" in the name
+     causes the program to assume you are reading from a physical device. In
+     the case of DORADE the program will also try to distinguish between a
+     pure binary file and a fortran-binary file. Fortran-binary files are
+     different in that they have a 4-byte header and trailer around each
+     record indicating the length of the record in bytes. On most other
+     formats the assumption is that a disk file is in fortran-binary form.
+
+SOURCE_TAPE_ID
+     setenv SOURCE_TAPE_ID "P70066"
+
+     Causes the specified string to be included in the catalog as a source
+     tape identifier.
+
+SWEEP_COUNT
+     setenv SWEEP_COUNT 11
+
+     Specifies the maximum number of sweeps that the program can generate
+     for each radar.
+
+SWEEP_MODES
+     setenv SWEEP_MODES "PPI SUR"
+
+     Causes data for the sweep modes not listed to be excluded. The default
+     is to include all modes.
+
+SWEEP_SKIP
+     setenv SWEEP_SKIP n
+
+     Causes the program to skip n sweeps for each radar after reading in a
+     sweep for each radar; i.e., a SWEEP_SKIP of 1 means that every other
+     sweep is used.
+
+SWEEP_TRIP_ANGLE
+     setenv SWEEP_TRIP_ANGLE 0.0
+
+     This applies primarily to HRD and ELDORA data and specifies that when
+     the antenna rotation angle passes through 0.0 degrees, this is the
+     start of a new sweep. It is most likely that this option is not
+     necessary, since the software will automatically sum the deltas between
+     consecutive rotation angles and declare a new sweep when the
+     accumulated sum of the deltas, plus the current delta, is greater than
+     360 degrees.
+
+SWEEP_TRIP_DELTA
+     setenv SWEEP_TRIP_DELTA 45.0
+
+     This applies primarily to HRD and ELDORA data and specifies that
+     whenever there is a gap of at least 45 degrees between consecutive
+     rotation angles, a new sweep is declared. The default value is 100
+     degrees.
+
+TIME_DEFINED_VOLUMES
+     setenv TIME_DEFINED_VOLUMES ""
+
+     This permits the user to define volumes based on the TIME_LIMITS
+     variable below. i.e. each set of time limits defines a volume.
+
+TIME_LIMITS
+     setenv TIME_LIMITS "12/22/92:17:30 < 17:59"
+
+     Specifies one or more ordered pairs of time segments consisting of a
+     start time and a stop time, separated by a "<". The limits are
+     inclusive and all data outside these limits will be excluded. The
+     program will stop at the latest stop time. Be sure to reinclude the
+     date when the times cross midnight. YEARS are represented as YEAR-1900
+     or the 4-digit year.
+
+UF_DEV
+     setenv UF_DEV "TF > /dev/nrsx0 TA > /dev/nrsx1"
+
+     In producing UF, data for each radar selected is written to a separate
+     file or output device. If "/dev" is present anywhere in this string,
+     the program assumes you are specifying a separate physical device for
+     each radar.
+
+UF_DIRECTORY
+     setenv UF_DIRECTORY "/scr/mead/uf_dir"
+
+     Causes UF files to be written to this directory instead of the
+     DORADE_DIR.
+
+  ------------------------------------------------------------------------

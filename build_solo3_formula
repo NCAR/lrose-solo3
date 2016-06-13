@@ -1,0 +1,87 @@
+#!/usr/bin/python
+import subprocess
+import sys
+from urllib2 import urlopen
+import hashlib
+import os,os.path
+"""
+Build a Homebrew formula for solo3
+"""
+
+
+template = """
+require 'formula'
+
+# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+
+class Solo3 < Formula
+  homepage 'https://www.eol.ucar.edu/software/solo3'
+  url '{0}'
+  version '{1}'
+  sha256 '{2}'
+
+  depends_on 'gtk+'
+  depends_on 'gtkmm'
+  depends_on 'pkg-config' => :build
+
+  def install
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
+    system "make install"
+  end
+
+  def test
+    # Run the test with `brew test solo3`.
+     system "#{{bin}}/solo3", "-h"
+  end
+end
+"""
+
+# adding check_output function for systems prior to 2.7
+
+if "check_output" not in dir( subprocess ): # duck punch it in!
+    def f(*popenargs, **kwargs):
+        if 'stdout' in kwargs:
+            raise ValueError('stdout argument not allowed, it will be overridden.')
+        process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
+        output, unused_err = process.communicate()
+        retcode = process.poll()
+        if retcode:
+            cmd = kwargs.get("args")
+            if cmd is None:
+                cmd = popenargs[0]
+            raise CalledProcessError(retcode, cmd)
+        return output
+    subprocess.check_output = f
+
+def build_solo3_formula(url,  output_file):
+    """ build a Homebrew forumula file for solo3 """	
+    BUFSIZE=4096
+    # compute a sha256 digest for this file
+    sha256 = hashlib.sha256()
+    f = urlopen(url)
+    while True:
+	bytes = f.read(BUFSIZE)
+	l = len(bytes)
+	if l == 0:
+	    break
+	sha256.update(bytes)
+    f.close()
+    checksum = sha256.hexdigest()
+
+    # find the name of the tar file
+    tar_file = os.path.basename(url)
+    
+    dash = tar_file.find('-')
+    period = tar_file.find('.', dash)
+    version = tar_file[dash+1:period]
+    print 'checksum = ', checksum
+    formula = template.format(url, version, checksum)
+    outf = open(output_file, 'w')
+    print >>outf, formula
+    outf.close()
+
+if __name__ == '__main__':
+    if len(sys.argv) == 3:
+	build_solo3_formula( sys.argv[1],  sys.argv[2] )
+    else:
+	print "usage: {0} tar_url output_file".format(sys.argv[0])

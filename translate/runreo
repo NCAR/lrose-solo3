@@ -1,0 +1,11 @@
+# script to set environment vars and run programs
+setenv SCRATCH "/scr/amber/oye/tmp"
+setenv REO_DEBUG /rdss/solo/translate/reoktlx.dat
+setenv REO_DEBUG /rdss/solo/translate/reowoody.dat
+#
+#dbx /rdss/radar/reo/qreod.test
+#nice +11 gdb /rdss/radar/reo/qreod.test
+#nice +11 reod < reo_debug > reo.listing &
+#nice +11 /rdss/radar/reo/qreod.test > ktlx.listing
+nice +11 /rdss/radar/reo/qreod.test
+#

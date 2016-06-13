@@ -1,0 +1,50 @@
+# script to netCDF sweepfiles
+#
+#
+setenv BATCH_MODE
+setenv INPUT_FORMAT "SWEEP_FILES"
+setenv OUTPUT_FLAGS "NETCDF_DATA"
+#
+setenv SELECT_RADARS "SABL"
+setenv SELECT_RADARS "KOUN"
+setenv SELECT_RADARS "CIMMARON"
+setenv SELECT_RADARS "TF"
+setenv SELECT_RADARS "CHILL"
+setenv SELECT_RADARS "DOW3_JUN"
+setenv SELECT_RADARS "TA-E"
+setenv SELECT_RADARS "TF TA"
+setenv SELECT_RADARS "SPOL"
+#
+setenv DORADE_DIR /net/moosehead/cohn/dow/19991208/19991208_1851
+setenv DORADE_DIR /scr/port/oye/data/improve/dorade
+setenv DORADE_DIR /scr/zin/oye/data/improve/test
+setenv DORADE_DIR /scr/zin/oye/data/adnacs/dorade
+setenv DORADE_DIR /scr/ale/oye/data/adnacs/dorade
+setenv DORADE_DIR /scr/zin/oye/data/steps/tmp
+#
+#setenv OPTIONS " "
+#
+#setenv TIME_LIMITS "02/09/93:17:27:38 < 02/09/93:17:29"
+#setenv TIME_LIMITS "08/16/96:23:00 < 23:59"
+#
+#setenv ALTITUDE_LIMITS "-5 < 22.5"
+#
+#setenv NETCDF_FIELDS ""
+#setenv NETCDF_FIELDS "DZ VE NC ZD LD PH RH DM DX"
+#setenv NETCDF_FIELDS "DZ VE NCP ZDR LDR PHI RHO DM DX CH AH CV AV LVDR"
+#setenv NETCDF_FIELDS "DZ VE NC"	    # aircraft data
+#setenv NETCDF_FIELDS "DBZ ZDR LDR NCP VR PHIDP RHOHV SW DM DX "	
+#
+setenv NETCDF_DIRECTORY /scr/ale/oye/tmp
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/nc/vortex
+setenv NETCDF_DIRECTORY /scr/ale/oye/data/adnacs/nc
+setenv NETCDF_DIRECTORY /scr/ale/oye
+#
+gdb xltrs
+#
+#
+
+
+
+
+

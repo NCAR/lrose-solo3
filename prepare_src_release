@@ -1,0 +1,83 @@
+#! /bin/bash
+
+#--------------------------------------------------------------------
+#
+# prepare solo3 release
+#
+# Mike Dixon, EOL, NCAR, Boulder, CO, USA
+# May 2012
+#
+#--------------------------------------------------------------------
+
+# set the path
+
+export PATH=.:/bin:/usr/bin:/sbin:/usr/sbin:/usr/bin/X11:/usr/local/bin:/usr/local/sbin:$RAP_BIN_DIR
+
+#######################################################
+# get run time
+
+year=`date +'%Y'`
+month=`date +'%m'`
+day=`date +'%d'`
+hour=`date +'%H'`
+min=`date +'%M'`
+sec=`date +'%S'`
+
+#--------------------------------------------------------------------
+
+echo
+echo "*********************************************************************"
+echo
+echo "  Preparing SOLO3 source release"
+echo
+echo "  NCAR, Boulder, CO, USA"
+echo
+echo "  $year/$month/$day $hour:$min:$sec"
+echo
+echo "*********************************************************************"
+echo
+
+# run AutoConf
+
+runAutoConf.py
+
+# compute release name and dir name
+
+today=${year}${month}${day}
+distName=solo3-${today}
+tarName=${distName}.src.tgz
+echo Preparing release file $tarName
+
+# set the datestamp file
+
+set_release_date.pl
+
+# make dist dir and copy the required files there
+
+/bin/rm -rf ${distName}* || exit 1
+mkdir -p $distName || exit 1
+
+# move everything into distName subdir
+
+mv * $distName
+
+# make the tar file
+
+tar cvfz $tarName --dereference $distName
+
+# move everything back
+
+mv $distName/* .
+rmdir $distName
+
+#--------------------------------------------------------------------
+# done
+
+echo
+echo "  ************"
+echo "  *** Done ***"
+echo "  *** tar file name: $tarName ***"
+echo "  ************"
+echo
+
+exit 0

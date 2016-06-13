@@ -1,0 +1,26 @@
+# /bin/csh
+
+# Batch Mode C-Shell script to produce dorade sweep files
+# from WSR_88D radar tapes
+#
+
+setenv BATCH_MODE "1"
+setenv INPUT_FORMAT "UF_FORMAT"
+setenv OUTPUT_FLAGS "SWEEP_FILES"
+setenv RADAR_NAME "MITLL"
+setenv SOURCE_DEV "/scratch/.stolte/MITLL_19930223_f218.uf"
+
+valgrind ./xltrs3
+
+#setenv BATCH_MODE  # omit for interactive mode
+#setenv INPUT_FORMAT "WSR_88D_FORMAT"
+#setenv OUTPUT_FLAGS "SWEEP_FILES"
+#setenv DORADE_DIR /scr/mead/nexrad
+#setenv PROJECT_NAME "NEXRAD"
+#setenv RADAR_NAME "KFTG"
+#setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#setenv TIME_LIMITS "08/03/94:21:30 < 08/03/94:23:30"
+#setenv FIXED_ANGLES "0.0 < 2.0 4.0 < 5.0"
+#setenv SOURCE_DEV /dev/nexa
+#nice +11 /local/bin/xltrsii  # be sure to specify the proper #
+		 	     # path to the translator

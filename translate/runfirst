@@ -1,0 +1,127 @@
+# script to produce dorade sweep files from an eldora aircraft tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "ELDORA_FORMAT"
+#
+# SOURCE_DEV should point to the right thing
+# change SOURCE_TAPE_ID
+# check derived fields for VG or VH or?
+# CFAC files?
+# merge aircraft netCDF data?
+#
+setenv DORADE_DIR /scr/zin/oye/data/adnacs/dorade
+setenv DORADE_DIR /scr/zebu3-80/oye/data/eldora
+setenv DORADE_DIR /scr/ale/oye/data/tmp
+#
+setenv NETCDF_DIRECTORY /scr/zebu3-80/oye/data/eldora/nc
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/adnacs/nc
+setenv NETCDF_DIRECTORY /scr/ale/oye/nc/ac
+setenv NETCDF_FIELDS "VS VL SW VR NCP DBZ"
+setenv NETCDF_FIELDS "DBZ VR NCP"
+#
+#setenv SOURCE_TAPE_ID "Tape P70067" # tag for catalog
+setenv SOURCE_DEV " /scr/hotlips/oye/vortex.tape \
+    /scr/hotlips/oye/vortex.tape "
+setenv SOURCE_DEV /scr/zin/oye/tapes/mapadnacs.tape
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /dev/rmt/3bn
+setenv SOURCE_DEV /scr/zin/oye/tapes/vortex.tape
+setenv SOURCE_DEV /scr/ale/oye/cfacs_test.tape
+setenv SOURCE_DEV /dev/rmt/2bn
+setenv SOURCE_DEV /scr/ale/snorman/RF01.tape
+setenv SOURCE_DEV /scr/zebu3-80/oye/tapes/eld_test.tape
+setenv SOURCE_DEV /scr/zin/oye/tapes/plotscatter.tape
+setenv SOURCE_DEV /dev/rmt/0bn
+#
+setenv OUTPUT_FLAGS "NO_CATALOG GECHO_DATA"
+setenv OUTPUT_FLAGS ""
+setenv OUTPUT_FLAGS "NO _CATALOG DORADE._DATA UF._DATA NSSL._MRD SWEEP._FILES"
+setenv OUTPUT_FLAGS "NO_ CATALOG  SWEEP._FILES NETCDF_DATA"
+#
+setenv NCP_THRESHOLD_VAL "NCP .35 1.2"  # check with Wen-Chau
+#setenv SW_THRESHOLD_VAL "SW 3.0"
+setenv FIRST_GOOD_GATE 5
+setenv NO_WIND_INFO "USE_PREV_RAY"
+setenv NO_WIND_INFO ""
+setenv UF_DEV "TF > /dev/null TA > /dev/null"
+#setenv SWEEP_COUNT 11
+#setenv SELECT_RADARS "TF"
+#
+setenv DERIVED_FIELDS "SW <- ZAP  VR -> VT  VT -> VG  VT -> VU  VG <- ZAP"
+setenv DERIVED_FIELDS "VS -> VQ  VQ -> VT  VT -> VG  VT <- ZAP"
+setenv DERIVED_FIELDS "VR -> VW  VW -> VG"
+setenv DERIVED_FIELDS "DEFAULT(VR -> VG  VG -> VT VT -> VU) \
+ DUAL_PRT(VS -> VQ  VQ -> VG  VG -> VT  VT -> VU)"
+setenv DERIVED_FIELDS "VS -> VQB1 VR -> VRB1"
+setenv DERIVED_FIELDS "DEFAULT(VR -> VG  VG -> VT VT -> VU) \
+ DUAL_PRT(VS -> VQ  VQ -> VG  VG -> VT  VT -> VU)"
+setenv DERIVED_FIELDS ""
+setenv DERIVED_FIELDS "VS -> VQ  VQ -> VG  VG -> VT"
+#
+#setenv TIME_LIMITS "06/08/95:23:34 < 23:35"
+#setenv TIME_LIMITS "05/08/95:00:57 < 01:07"
+#
+#setenv OPTIONS "ABSOLUTE_TIME"
+setenv OPTIONS " "
+setenv OPTIONS "DESC_SEARCH VORTEX_FIXES NSSL_USE_PALT ROT_ANG_SECTORS"
+setenv OPTIONS " DESC_SEARCH GECHO_10 "
+setenv OPTIONS " DESC_SEARCH  "
+#setenv AZ_SECTORS "0 -> 180"
+#
+#setenv AC_NETCDF_FILES "/net/port/vortex/raflrt/17apr95.cdf "
+#setenv AC_NETCDF_FILES "/scr/science1/snorman/FASTEX/raf_cdf/10Jan97.cdf "
+#
+setenv AC_NETCDF_ALIASES "LATC < LAT LONC < LON \
+    PITCH < NOT  ROLL < NOT  VEWC < NOT  VNSC < NOT THDG < NOT \
+    UIC < UI  VIC < VI  WIC < WP3"
+#setenv AC_TIME_CORRECTION -172800   # seconds (added to time)
+#
+#setenv CFAC_FILES "TF > /home/vortex/oye/solo/cfac/17apr1905.fore \
+#        TA > /home/vortex/oye/solo/cfac/17apr1905.aft "
+#
+#setenv ELD_CFAC_FILES "\
+#TF:sensitivity3 > /data/dmg/map99/cfac_files/spol_map.cfac\
+#TA:sensitivity3 > /data/dmg/map99/cfac_files/spol_map.cfac\
+#TF:highres2 > /data/dmg/map99/cfac_files/spol_map.cfac\
+#TA:highres2 > /data/dmg/map99/cfac_files/spol_map.cfac\
+#"
+#
+#setenv TIME_LIMITS "09/15/99:14:50:00 < 09/15/99:15:05:00"
+setenv YEAR_OF_DATA "2002"
+setenv YEAR_OF_DATA "1999"
+#setenv ELD_CFAC_FILES "\
+# TA:highres2 > /code/oye/soloii/translate/highres2.cfac.aft\
+# TF:highres2 > /code/oye/soloii/translate/highres2.cfac.fore\
+# TA:sensitivity3 > /code/oye/soloii/translate/sensitivity3.cfac.aft\
+# TF:sensitivity3 > /code/oye/soloii/translate/sensitivity3.cfac.fore\
+# TA:default > /code/oye/soloii/translate/sensitivity3.cfac.aft\
+# TF:default > /code/oye/soloii/translate/sensitivity3.cfac.fore\
+#"
+##
+# TA:default > /code/oye/soloii/translate/sensitivity3.cfac.aft\ 
+# TF:default > /code/oye/soloii/translate/sensitivity3.cfac.fore\
+#
+#
+#
+#setenv CFAC_FILES "TF > /code/oye/soloii/translate/default.cfac.fore \
+#        TA > /code/oye/soloii/translate/default.cfac.aft "
+#
+#setenv ALTITUDE_LIMITS "-10. < 22.5"
+#setenv ALTITUDE_LIMITS "-3. < 12"
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+setenv DORADE_DEV "/dev/rmt/1bn /dev/null /dev/null"
+setenv PRESERVE_SWEEP_FILES 180    # every ?? seconds if an argument present
+setenv MAX_DORADE_TAPE_SIZE 4.4    # gigabytes!
+#setenv MAX_MEDIA_SIZE 100         # MB
+setenv DORADE_VOLUME_INTERVAL 240   # seconds
+setenv MAX_VOLUME_SIZE 108 # MB
+#
+nice +11 gdb ./xltrs
+#xltrs.tc
+#
+
+
+
+

@@ -1,0 +1,39 @@
+# script to netCDF sweepfiles
+#
+#
+setenv BATCH_MODE
+setenv INPUT_FORMAT "NETCDF_FORMAT"
+setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES"
+#
+#setenv OPTIONS " BISTATIC_FLAG "
+#
+#setenv TIME_LIMITS "02/09/93:17:27:38 < 02/09/93:17:29"
+#setenv TIME_LIMITS "08/16/96:23:00 < 23:59"
+#setenv TIME_LIMITS "01/09/101:21:00 < 21:11"
+#
+#setenv ALTITUDE_LIMITS "-5 < 22.5"
+#
+#setenv NETCDF_FIELDS "DZ VE NC ZD LD PH RH DM DX"
+#setenv NETCDF_FIELDS "DZ VE NCP ZDR LDR PHI RHO DM DX CH AH CV AV LVDR"
+#setenv NETCDF_FIELDS "DZ VE NC"	    # aircraft data
+#setenv NETCDF_FIELDS "DBZ ZDR LDR NCP VR PHIDP RHOHV SW DM DX "	
+#setenv NETCDF_FIELDS ""
+#
+setenv NETCDF_DIRECTORY  /scr/port4/oye/data/saved/20010109
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/nexnc/1998.06.23/KFTG
+setenv NETCDF_DIRECTORY /scr/ale/oye/nexnc/1998.05.25/KSGF
+setenv NETCDF_DIRECTORY /scr/ale/oye/nexnc/1998.05.25/KICT
+#
+setenv DORADE_DIR /net/moosehead/cohn/dow/19991208/19991208_1851
+setenv DORADE_DIR /scr/port4/oye/data/saved/20010109
+setenv DORADE_DIR /scr/zin/oye/data/bistatic/dorade
+setenv DORADE_DIR /scr/ale/oye/nexnc/dorade
+#
+gdb ./xltrs
+#
+#
+
+
+
+
+

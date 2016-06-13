@@ -1,0 +1,34 @@
+# script to produce dorade sweep files from NEXRAD radar tapes
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "WSR_88D_FORMAT"
+#
+setenv OUTPUT_FLAGS "NO_CATALOG NETCDF_DATA"
+#
+# data can be from tapes or files
+# files can be binary or Fortran-Binary
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /scr/zin/oye/tapes/nexrad.tape
+#
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/tmp
+setenv DORADE_DIR /scr/zin/oye/data/nexrad
+#
+#setenv TIME_LIMITS "5/11/92:16:02 < 16:03"
+#
+#setenv OPTIONS "NEW_NCDC_BLOCKING"
+setenv OPTIONS "MAX_RANGE NEW_NCDC_BLOCKING"
+#
+# NEW_NCDC_BLOCKING is necessary if recent data from NCDC
+# do not use for raw Level II (non NCDC) tapes on exabyte for example
+# use MAX_RANGE to get data beyond where velocities stop
+#     velocities are present but at 500m resolution
+#
+setenv RADAR_NAME "KGLD"    # triggers internal table lookup of lat/lon/alt
+#
+#setenv RADAR_LATITUDE 35.2361
+#setenv RADAR_LONGITUDE -97.4633
+#setenv RADAR_ALTITUDE 381.3
+#
+xltrs
+#
+

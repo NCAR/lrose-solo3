@@ -1,0 +1,29 @@
+# script to produce dorade sweep files from sigmet radar tapes
+#
+setenv INPUT_FORMAT "SIGMET_FORMAT"
+#
+setenv OUTPUT_FLAGS "UF_DATA NO_UFEOFS SWEEP._FILES"
+#
+setenv DD_DIR /scr/amber/oye/tmp/tmp
+setenv SITE_NAME "VICKERS"
+setenv PROJECT_NAME "TOGACOARE"
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#setenv ALTITUDE_LIMITS "-5. < 22."
+#
+#setenv TIME_LIMITS "03/09/93:09:53 < 03/17/93:06:00"
+#setenv TIME_LIMITS "03/09/93:08:53 < 03/10/93:13:41"
+#setenv TIME_LIMITS "12/09/92:17:30 < 12/09/92:23:59"
+#
+#setenv PRF_LIMITS "800 < 2000"
+#setenv FIXED_ANGLES "0.0 < 1.0"
+#setenv SWEEP_MODES "PPI SUR"
+#
+#setenv WSR_QC_FILE /rdss/solo/translate/sigmet/prc_cruises_qc.mrg
+#
+setenv SOURCE_DEV /dev/nexa1
+setenv SOURCE_DEV /scr/amber/oye/vickers921209.tape
+#
+#setenv UF_DEV "SIG > /dev/nexa2"
+#
+nice +11 gdb xltrs
+#

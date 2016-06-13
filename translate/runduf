@@ -1,0 +1,65 @@
+# script to convert dorade file format to uf
+#
+#
+setenv BATCH_MODE
+setenv INPUT_FORMAT "SWEEP_FILES"
+setenv OUTPUT_FLAGS "UF_DATA"
+#
+setenv SELECT_RADARS "SABL"
+setenv SELECT_RADARS "KOUN"
+setenv SELECT_RADARS "CP4-RP5"
+setenv SELECT_RADARS "CIMMARON"
+setenv SELECT_RADARS "MCWS-AFT"
+setenv SELECT_RADARS "TF"
+setenv SELECT_RADARS "TA-E"
+setenv SELECT_RADARS "CHILL"
+setenv SELECT_RADARS "TF-ELDR TA-ELDR"
+setenv SELECT_RADARS "SPOL"
+#
+#setenv ALTITUDE_LIMITS "-5 < 22.5"
+#
+#setenv TIME_LIMITS "02/09/93:17:27:38 < 02/09/93:17:29"
+#setenv TIME_LIMITS "08/16/96:23:00 < 23:59"
+#setenv TIME_LIMITS "05/07/95:20:13:25 < 05/07/95:20:20:12"
+
+setenv DORADE_DIR /scr/port/oye/data/steps
+setenv DORADE_DIR /scr/science9/wlee/950507/leg1
+setenv DORADE_DIR /scr/zin/oye/data/tmp
+setenv DORADE_DIR /scr/ale/oye/uw/tmp
+#
+#setenv MAX_SWEEPS_PER_VOLUME 10
+#setenv MIN_SWEEPS_PER_VOLUME 3
+setenv MIN_SWEEPS_PER_VOLUME 63
+#
+#setenv OPTIONS "NO_UF_CLIPPING"
+#
+#setenv UF_OUTPUT_FIELDS " DZ VE DP RHOHV"
+#setenv UF_OUTPUT_FIELDS " DBZ VR NCP "
+#setenv UF_OUTPUT_FIELDS "DZ DM ZDR PHI LDR RHOHV SW VE CH AH CV AV"
+#setenv UF_OUTPUT_FIELDS "DZ DM NCP DL DX ZDR PHI LDRV NKDP RHOHV SW VE PD WPD HDR"
+#setenv UF_OUTPUT_FIELDS "VG DBZ"
+#setenv UF_OUTPUT_FIELDS "DBZ"
+#
+#setenv UF_ALIASES " RHOHV -> RHO  DP -> PHI"
+#setenv UF_ALIASES " DBZ -> DZ  VR -> VT"
+#
+setenv UF_DIRECTORY /scr/ale/oye/data/csu/uf
+setenv UF_DIRECTORY /scr/zin/oye/data/uf
+setenv UF_DIRECTORY /scr/ale/oye/uw
+#
+#setenv UF_DEV "TF > /dev/null"
+#setenv UF_DEV "CP4 > /dev/null"
+#setenv UF_DEV "KOUN > /dev/null"
+#setenv UF_DEV "SABL > /dev/null"
+#setenv UF_DEV "SPOL > /dev/null"
+#setenv UF_DEV "SPOL > /dev/rmt/1b"
+#
+#setenv TIME_LIMITS "08/25/98:16:00 < 08/25/98:16:10"
+#setenv TIME_LIMITS "06/17/100:15:41 < 1550"
+#
+gdb ./xltrs
+#
+exit 0
+#
+
+

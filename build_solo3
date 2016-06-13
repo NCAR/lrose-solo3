@@ -1,0 +1,110 @@
+#! /bin/bash
+#
+# Building SOLO3 and required libraries
+# ====================================
+#
+# Downloading:
+# ------------
+#
+# Download into a single directory all of the files in:
+#
+#    ftp.rap.ucar.edu/pub/titan/solo3
+#
+# By default the libraries and applications will be installed in:
+#
+#   /usr/local/include
+#   /usr/local/lib
+#   /usr/local/bin
+#
+# You can change the install location by specifying it as
+# a single argument to this script.
+#
+# For example:
+#
+#   build_solo3 /tmp/solo3_build
+#
+# will install in:
+#
+#   /tmp/solo3_build/include
+#   /tmp/solo3_build/lib
+#   /tmp/solo3_build/bin
+#
+
+#--------------------------------------------------------------------
+# usage function
+#
+
+function usage() {
+    echo
+    echo "Usage: build_solo3 [ -h ] [ prefix ]"
+    echo
+    echo "  -h: produce this usage list"
+    echo "  optionally set the prefix"
+    echo
+}
+
+# set the path
+
+export PATH=.:/bin:/usr/bin:/sbin:/usr/sbin:/usr/bin/X11:/usr/local/bin:/usr/local/sbin
+
+# set the install prefix
+
+prefix=/usr/local
+
+if [ $# -gt 0 ]
+then
+  if [ "$1" == -h -o "$2" == -h ] 
+  then
+    usage
+    exit 0
+  fi
+  prefix=$1
+fi
+
+echo "Using prefix: $prefix"
+
+# set RPATH to be locatable relative to $ORIGIN, via LDFLAGS
+
+export "LDFLAGS=-L${prefix}/lib -Wl,-rpath,'\$\$ORIGIN'/solo3_runtime_libs:${prefix}/lib"
+
+# is this RH5?
+
+is_rh5=0
+if [ -f /etc/redhat-release ]
+then
+  grep 5 /etc/redhat-release 
+  if [ "$?" = 0 ]
+  then
+    is_rh5=1
+  fi
+fi
+echo "is_rh5: $is_rh5"
+
+# Build solo3
+# ----------
+
+if [ "$is_rh5" == 1 ]
+then 
+  ./configure --prefix=${prefix} --enable-centos
+else
+  ./configure --prefix=${prefix}
+fi
+
+make -j 4
+make install
+
+# Checking the build
+# ------------------
+
+echo
+echo
+echo
+echo "============= Checking libs for SOLO3 - ============="
+./check_libs -p $prefix
+echo "===================================================="
+echo
+echo
+echo
+echo "============= checking apps for SOLO3 ============="
+./check_apps -p $prefix
+echo "=================================================="

@@ -1,0 +1,99 @@
+# script to produce dorade sweep files from sigmet radar tapes
+#
+#
+#setenv BATCH_MODE
+#setenv LINES_IN_WINDOW 55
+setenv INPUT_FORMAT "WSR_88D_FORMAT"
+#
+setenv OUTPUT_FLAGS "NO_CATALOG UF._DATA NO._UFEOFS \
+    	DORADE._DATA SWEEP._FILES"
+#
+setenv DORADE_DIR /scr/science21/oye/data/chuck/
+setenv DORADE_DIR /scr/port/oye/data/nexrad/nolan
+setenv DORADE_DIR /scr/zin/oye/data/nexrad
+setenv DORADE_DIR /scr/zin/oye/data/craft
+setenv DORADE_DIR /scr/ale/oye/craft
+#
+setenv PROJECT_NAME "ETC."
+#
+#setenv SWEEP_COUNT 22
+#setenv SWEEP_COUNT 6
+#
+setenv SOURCE_DEV /dev/nDAT0
+setenv SOURCE_DEV /dev/rmt/4bn
+setenv SOURCE_DEV /dev/rmt/2bn
+setenv SOURCE_DEV /scr/zin/oye/tapes/ridds.tape
+setenv SOURCE_DEV /scr/port/oye/tapes/ljm.tape
+setenv SOURCE_DEV /scr/port/oye/dd_files/nolan.bin
+setenv SOURCE_DEV /scr/zin/oye/tapes/nexrad.tape
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /scr/ale/oye/kinx.tape
+setenv SOURCE_DEV /dev/rmt/3bn
+setenv SOURCE_DEV /scr/ale/oye/kict.tape
+setenv SOURCE_DEV /scr/ale/oye/craft/20020305223428__.ama
+setenv SOURCE_DEV /scr/ale/oye/craft/20020305224430__.fws
+setenv SOURCE_DEV /dev/rmt/0b
+setenv SOURCE_DEV /scr/ale/oye/kgld00.tape
+setenv SOURCE_DEV /scr/ale/oye/kgld00.dd
+setenv SOURCE_DEV /scr/zin/oye/data/craft/ii63.kftg
+setenv SOURCE_DEV /scr/ale/oye/v93.KFTG
+setenv SOURCE_DEV /scr/ale/oye/20020403014326.KFWS
+setenv SOURCE_DEV /scr/ale/oye/20020403160434.KFWS
+setenv SOURCE_DEV /scr/ale/oye/KTLX20010506_160426
+setenv SOURCE_DEV /scr/ale/oye/20020415195847.KAMA
+setenv SOURCE_DEV /scr/ale/oye/20020415195312.KTLX
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv TIME_LIMITS "5/11/92:16:02 < 16:03"
+#setenv OPTIONS "VEL_ONLY"
+#setenv OPTIONS "RAP_NEXRAD"
+#setenv OPTIONS "RANGE_AMB:123. MAX_RANGE"
+#setenv OPTIONS "REFL_ONLY"
+setenv OPTIONS " "
+setenv OPTIONS "MAX_RANGE"
+setenv OPTIONS " NEW._NCDC_BLOCKING"
+#
+#setenv ALTITUDE_LIMITS "-5. < 22."
+#setenv PRF_LIMITS "800 < 2000"
+#setenv FIXED_ANGLES "0.0 < 1.0"
+#setenv SWEEP_MODES "PPI SUR"
+#setenv VOLUME_COUNT 1
+setenv DORADE_VOLUME_INTERVAL 400   # seconds
+#
+setenv RADAR_NAME "KATL"
+setenv RADAR_NAME "KLBB"
+setenv RADAR_NAME "KRGX"
+setenv RADAR_NAME "KINX"
+setenv SITE_NAME "INX."
+setenv RADAR_NAME "KICT"
+setenv SITE_NAME "ICT."
+setenv RADAR_NAME "KMLB"
+setenv SITE_NAME "LMB."
+setenv RADAR_NAME "KFTG"
+setenv SITE_NAME "OUN."
+setenv RADAR_NAME "KGYX"
+setenv RADAR_NAME "KOUN"
+setenv RADAR_NAME "KSRX"
+setenv RADAR_NAME "KINX"
+setenv RADAR_NAME "KAMA"
+setenv RADAR_NAME "KFWS"
+setenv RADAR_NAME "KGLD"
+setenv RADAR_NAME "KFTG"
+#
+setenv PROJECT_NAME "NEXRAD"
+#
+#setenv RADAR_LATITUDE 35.2361
+#setenv RADAR_LONGITUDE -97.4633
+#setenv RADAR_ALTITUDE 381.3
+#
+#setenv FIXED_ANGLES "0.0 < 4."
+#setenv FIXED_ANGLES "0.4 < .6"
+#
+#setenv UF_DEV "KOUN > /dev/rmt/2b"
+#setenv UF_DEV "KICT > /dev/rmt/0b"
+#
+#/net/shared/solo/bin/xltrs
+gdb ./xltrs
+#
+

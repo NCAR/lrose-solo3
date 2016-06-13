@@ -1,0 +1,171 @@
+# script to produce dorade sweep files from a dorade tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "PIRAQ_FORMAT"
+#
+#setenv SWEEP_SKIP 4
+#setenv SWEEP_COUNT 11
+#setenv SWEEP_COUNT 2
+#
+#
+#setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv VOLUME_HEADER /scr/zin/oye/headers/spHdr980522.tape
+#
+setenv SOURCE_DEV /dev/nrst6
+setenv SOURCE_DEV /scr/science20/vivek/P25232_a.tape
+setenv SOURCE_DEV /hotlips/dt2/oye/brazil_bench.tape
+setenv SOURCE_DEV /scr/hotlips2/oye/tapes/prq1000215.tape
+setenv SOURCE_DEV /dev/rmt/1bn
+setenv SOURCE_DEV /dev/rmt/5b
+setenv SOURCE_DEV /dev/rmt/8bn
+setenv SOURCE_DEV /scr/hotlips2/oye/tapes/viraq15.tape
+setenv SOURCE_DEV "\
+/scr/beer4/oye/tapes/prq_SPOL_20000629_180000_.tape \
+/scr/beer4/oye/tapes/prq_SPOL_20000629_190000_.tape \
+/scr/beer4/oye/tapes/prq_SPOL_20000629_200000_.tape \
+ "
+setenv SOURCE_DEV /scr/zin/oye/tapes/horiz_clutter.tape
+setenv SOURCE_DEV /scr/port1/rilling/P25363_12.20.tape
+setenv SOURCE_DEV /scr/zin/oye/tapes/01viraq15.tape
+setenv SOURCE_DEV /scr/port4/oye/tapes/prq_SPOL_20010129_030956_.tape
+setenv SOURCE_DEV /scr/zin/oye/tapes/improve2.tape
+setenv SOURCE_DEV /scr/zin/oye/tapes/iqtest.tape
+setenv SOURCE_DEV /science/d3/oye/tapes/iqtest.tape
+setenv SOURCE_DEV /dev/rmt/4bn
+setenv SOURCE_DEV /scr/zin/oye/tapes/ihop.tape
+setenv SOURCE_DEV /dev/rmt/1bn
+
+#
+#setenv TAPE_DIR /scr/beer4/oye/tapes
+#
+setenv DORADE_DIR /scr/rerun/oye/data/dorade/980814
+setenv DORADE_DIR /scr/port6/oye/data/dorade
+setenv DORADE_DIR /scr/zin/oye/data/tmp2
+setenv DORADE_DIR /scr/ale/oye/off
+setenv DORADE_DIR /scr/ale/oye/data/improve
+#
+setenv OPTIONS "FORCE._POLYPP FORCE_REV_1"
+setenv OPTIONS " SPARC_ALIGNMENT "
+setenv OPTIONS "FORCE._POLYPP FORCE._REV_1 SPOL_HORZ_FLAG"
+setenv OPTIONS " RANGE0_DEFAULT FULL_MATRIX FORCE._POL12 "
+setenv OPTIONS "GUIFU_FLAG "
+setenv OPTIONS " RANGE0_DEFAULT FULL_MATRIX IGNORE_TRANSITIONS "
+setenv OPTIONS " "
+setenv OPTIONS " RANGE0_DEFAULT  IGNORE_TRANSITIONS  HEADER_SUBSEC"
+setenv OPTIONS " RANGE0_DEFAULT  HEADER_SUBSEC  HZO_IMPROVE_FLAG:6"
+#setenv IMPROVE_HZO_RCONST_CORR 1.5
+#
+setenv OUTPUT_FLAGS " NO._CATALOG NETCDF_DATA"
+setenv OUTPUT_FLAGS "NO_ CATALOG SWEEP._FILES UF._DATA DORADE._DATA \
+       NETCDF._DATA"
+setenv OUTPUT_FLAGS " "
+setenv OUTPUT_FLAGS " NO_ CATALOG SWEEP_FILES NETCDF._DATA"
+#
+setenv NETCDF_FIELDS "DZ VE NCP ZDR LDR PHI RHO DM DX CH AH CV AV LVDR"
+setenv NETCDF_FIELDS "DZ VE NC ZD LD PH RH DM DX"
+#
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/nc/steps 
+setenv NETCDF_DIRECTORY /scr/zin/oye/data/tmp
+
+#setenv TEST_PULSE_RANGES "170.001 176.001"
+#
+setenv RADAR_LATITUDE 39.99
+setenv RADAR_LONGITUDE -104.9899
+setenv RADAR_ALTITUDE 1601
+setenv PROJECT_NAME PRECIP96
+#
+setenv RADAR_LATITUDE 39.791333
+setenv RADAR_LONGITUDE -104.568333
+setenv RADAR_ALTITUDE 1710.2
+setenv PROJECT_NAME PROWS
+#
+setenv RADAR_LATITUDE 27.889441
+setenv RADAR_LONGITUDE -80.745552
+setenv RADAR_ALTITUDE 9.
+setenv PROJECT_NAME PRECIP98
+#
+setenv RADAR_LATITUDE 45.71667
+setenv RADAR_LONGITUDE 8.73333
+setenv RADAR_ALTITUDE 280.
+setenv PROJECT_NAME MAP99
+#
+setenv RADAR_LATITUDE -11.22126
+setenv RADAR_LONGITUDE -61.99820
+setenv RADAR_ALTITUDE 201
+setenv PROJECT_NAME BRAZIL
+#
+setenv RADAR_LATITUDE 45.71667
+setenv RADAR_LONGITUDE 8.73333
+setenv RADAR_ALTITUDE 280
+setenv PROJECT_NAME MAP99
+#
+setenv RADAR_LATITUDE 39.7611
+setenv RADAR_LONGITUDE -102.0935
+setenv RADAR_ALTITUDE 1103
+setenv PROJECT_NAME STEPS00
+#
+setenv RADAR_LATITUDE 46.9047
+setenv RADAR_LONGITUDE -124.1313
+setenv RADAR_ALTITUDE 10
+setenv PROJECT_NAME IMPROV01
+#
+setenv RADAR_LATITUDE 44.38647
+setenv RADAR_LONGITUDE -122.85475
+setenv RADAR_ALTITUDE 475
+setenv PROJECT_NAME IMPROV02
+#
+setenv RADAR_LATITUDE 46.9047
+setenv RADAR_LONGITUDE -124.1313
+setenv RADAR_ALTITUDE 10
+setenv PROJECT_NAME IMPROV01
+#
+#setenv PRF_LIMITS "800 < 2000"
+#
+#setenv SWEEP_MODES "PPI"
+#setenv SWEEP_MODES "SUR"
+setenv SWEEP_MODES "RHI"
+#
+#setenv MIN_RAYS_PER_SWEEP 22
+#setenv FIXED_ANGLES "2.3 < 2.7"
+#setenv FIXED_ANGLES "0.0 < 2.6"
+#
+setenv NCP_THRESHOLD_VAL "NCP .25"
+setenv PWR_THRESHOLD_VAL "DM -110"
+setenv PWR_THRESHOLD_VAL "DX -100"
+
+setenv DERIVED_FIELDS " PHI < KDP  \
+    SW < ZAP DCZ < ZAP RHOHV < ZAP NCP < ZAP  LDR < ZAP  DL < ZAP  DM < ZAP "
+setenv DERIVED_FIELDS " LDR < TLDR  SW < ZAP DCZ < ZAP DL < ZAP "
+setenv DERIVED_FIELDS " LDR < PZDR  SW < ZAP DCZ < ZAP DL < ZAP "
+setenv DERIVED_FIELDS ""
+#setenv DERIVED_FIELDS " SW < ZAP DCZ < ZAP"
+#
+#setenv TIME_LIMITS "05/30/97:02:10 < 02:25 05/30/97:10:35 < 10:55 "
+#setenv TIME_LIMITS " 09/05/98:19:20 < 21:40 "
+#setenv TIME_LIMITS " 02/17/99:19:30 < 20:00 "
+#setenv TIME_LIMITS "11/16/101:18:25:54 < 18:46:59 "
+#setenv TIME_LIMITS "11/16/101:18:57:32 < 19:18:22 "
+#
+#setenv AZ_SECTORS " 88 240 "
+#
+#setenv CFAC_FILES "SPOL > /scr/hotlips/oye/spol/spol_precip96.cfac"
+#setenv CFAC_FILES "SPOL > /data/dmg/precip96/cfac_files/spol_precip96.cfac"
+#
+#setenv RCONST_CORRECTION -.4
+#setenv ZDR_BIAS -.03
+#
+#setenv UF_DEV "TF > /dev/null   TA > /dev/null"
+setenv UF_DEV "SPOL > /dev/rmt/0bn"
+setenv MAX_MEDIA_SIZE 350   # MBytes
+setenv MAX_MEDIA_SIZE 3500   # MBytes
+#
+setenv DORADE_DEV "STACKERS /dev/rmt/2b /dev/rmt/3b"
+#setenv DORADE_DEV "/dev/rmt/1bn /dev/null"
+setenv DORADE_VOLUME_INTERVAL 660   # seconds
+#
+nice +11 gdb ./xltrs
+#
+
+
+

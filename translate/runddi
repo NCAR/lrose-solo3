@@ -1,0 +1,79 @@
+# script to produce dorade sweep files from a dorade tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "DORADE_FORMAT"
+#
+setenv OUTPUT_FLAGS "NO_CATALOG NSSL._MRD_DATA SWEEP_FILES \
+    UF._DATA DORADE._DATA GECHO._DATA NETCDF_DATA"
+#
+#setenv SWEEP_COUNT 5
+#setenv SWEEP_SKIP 3
+#setenv SELECT_RADARS "TF"
+#
+setenv DORADE_DIR /scr/ale/oye/tmp
+setenv DORADE_DIR /scr/zin/oye/data/adnacs/dorade
+setenv DORADE_DIR /scr/ale/oye/data/adnacs/dorade
+#
+setenv NETCDF_DIRECTORY /scr/ale/oye/data/adnacs/nc
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+# SGI device name
+setenv SOURCE_DEV /dev/rmt/tps0d7nrv.8500
+# HP device name
+setenv SOURCE_DEV /dev/rmt/c201d4hnb
+setenv SOURCE_DEV "/dev/rmt/1bn /dev/rmt/2bn"
+setenv SOURCE_DEV "/dev/rmt/2bn /dev/rmt/1bn"
+setenv SOURCE_DEV /scr/rerun/oye/data/dow/tmp/dor.990504025950.DOW3_ROT.0.tape
+setenv SOURCE_DEV /dev/rmt/0bn
+setenv SOURCE_DEV /scr/ale/oye/data/csu/dor.980725215000.CHILL.0.tape
+setenv SOURCE_DEV /dev/rmt/2bn
+setenv SOURCE_DEV /scr/ale/oye/part1.tape
+setenv SOURCE_DEV /dev/rmt/3bn
+setenv SOURCE_DEV /dev/rmt/1bn
+#
+#setenv TIME_LIMITS "01/12/97:16:15 < 16:25"
+#setenv TIME_LIMITS "02/13/99:18:00 < 19:50"
+#
+setenv NCP_THRESHOLD_VAL "NCP .35 1.2"  # check with Wen-Chau
+#setenv ALTITUDE_LIMITS "-4. < 10."
+setenv ALTITUDE_LIMITS "-4. < 25."
+#
+#setenv PWR_THRESHOLD_VAL "DM -112"
+setenv PWR_THRESHOLD_VAL "DX -100"
+#
+setenv DERIVED_FIELDS " LDR < TLDR "
+setenv DERIVED_FIELDS " VR -> VT "
+setenv DERIVED_FIELDS " NCP < ZAP SW < ZAP DZ < ZAP DCZ < ZAP ZDR < ZAP \
+       PHI < ZAP RHOHV < ZAP KDP < ZAP LDR < ZAP DL < ZAP DX < ZAP "
+setenv DERIVED_FIELDS "LDR < TLDR NCP < ZAP SW < ZAP DCZ < ZAP \
+    PHI < ZAP RHOHV < ZAP KDP < ZAP DL < ZAP"
+setenv DERIVED_FIELDS "LDR < TLDR  NCP < ZAP SW < ZAP  DCZ < ZAP PHI < ZAP"
+setenv DERIVED_FIELDS "ZDR < BIAS"
+setenv DERIVED_FIELDS ""
+setenv DERIVED_FIELDS "VS -> VQ  VQ -> VG  VG -> VT"
+#setenv BIAS 11.2345
+#
+#
+#setenv MAX_SWEEPS_PER_VOLUME 10
+#setenv MIN_SWEEPS_PER_VOLUME 3
+#
+#setenv FIXED_ANGLES "0.0 < 1.2"
+#setenv FIXED_ANGLES "1.9 < 2.1"
+#setenv ASCENDING_ONLY ""
+#setenv OPTIONS " ROT_ANG_SECTORS"
+setenv OPTIONS " "
+#setenv AZ_SECTORS "0 -> 180"
+#
+#setenv CFAC_FILES "SPOL > /scr/hotlips/oye/spol/cfac_front_range.txt"
+#
+#setenv UF_DEV "SPOL > /dev/rmt/1bn"
+#setenv UF_DEV "SPOL > /dev/null"
+setenv DORADE_DEV " /dev/null /dev/null"
+#
+#setenv SWEEP_MODES "PPI SUR"
+setenv OPTIONS "NO_UF_CLIPPING"
+setenv MAX_UF_CELLS 1040
+#
+gdb ./xltrs
+#

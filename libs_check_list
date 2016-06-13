@@ -1,0 +1,6 @@
+####################################
+# list of requried solo libraries
+####################################
+libsolo_dap.a
+libsolo_edit.a
+libsolo_s3.a

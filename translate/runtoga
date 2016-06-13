@@ -1,0 +1,24 @@
+# script to produce dorade sweep files from sigmet radar tapes
+#
+setenv INPUT_FORMAT "TOGA_FORMAT"
+#
+setenv OUTPUT_FLAGS "NO._CATALOG UF._DATA NO._UFEOFS SWEEP._FILES"
+setenv CATALOG_FLUSH_COUNT 5
+#
+setenv DORADE_DIR /scr/amber/oye/linda
+setenv SITE_NAME "TIAWAN"
+setenv PROJECT_NAME "TAMEX"
+setenv RADAR_NAME "TOGA"
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#setenv ALTITUDE_LIMITS "-5. < 22."
+#
+#setenv TIME_LIMITS "02/03/87:03:01 < 02/03/87:03:31"
+#setenv PRF_LIMITS "800 < 2000"
+setenv FIXED_ANGLES "0.0 < 1.5"
+#setenv SWEEP_MODES "PPI SUR"
+#
+setenv SOURCE_DEV /dev/nexa
+setenv SOURCE_DEV /scr/amber/oye/toga.tape
+#
+nice +11 gdb xltrs
+#

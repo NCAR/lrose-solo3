@@ -1,0 +1,38 @@
+# script to produce dorade sweep files from a dorade tape
+#
+#setenv BATCH_MODE
+setenv INPUT_FORMAT "PIRAQ_FORMAT"
+#
+setenv DORADE_DIR /scr/ale/oye/wards
+#
+setenv OUTPUT_FLAGS "NO_CATALOG SWEEP_FILES UF._DATA DORADE._DATA"
+#
+#setenv SWEEP_COUNT 6
+#setenv TIME_LIMITS "08/14/95:13:00 < 18:30"
+setenv MIN_RAYS_PER_SWEEP 7
+setenv MIN_RAYS_PER_SWEEP 11
+#
+#setenv RANGE_CORRECTION -1050.	    # S-BAND
+#setenv RANGE_CORRECTION -1100.	    # X-BAND
+#
+setenv COMPRESSION_SCHEME "HRD_COMPRESSION"
+#
+#setenv VOLUME_HEADER /scr/hotlips/oye/wxr700cHdr.tape
+setenv SOURCE_DEV /scr/hotlips/oye/96ACpiraq.tape
+setenv SOURCE_DEV /dev/rmt/0bn
+setenv SOURCE_DEV /dev/rmt/2bn
+#
+#setenv HRD_STD_TAPE /scr/science5/oye/standard.tape
+#setenv TIME_CORRECTION 3318		# seconds (55:18)
+#
+setenv PROJECT_NAME TEST_FLY
+setenv OPTIONS "SIMPLE_SWEEPS"
+#
+#setenv DORADE_DEV /dev/rmt/2bn
+#setenv DORADE_VOLUME_INTERVAL 600   # seconds
+#
+gdb ./xltrs
+#
+
+
+

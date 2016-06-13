@@ -1,0 +1,33 @@
+#
+# script to write a dorade tape from dorade sweep files
+#
+#
+#setenv TIME_DEFINED_VOLUMES
+#
+#setenv TIME_LIMITS "10/28/92:20:01:58 < 10/28/92:20:02:07 \
+#    	10/28/92:20:02:15 < 10/28/92:20:02:18"
+#
+#setenv TIME_LIMITS "05/08/93:23:00 < 05/08/93:23:06"
+#setenv TIME_LIMITS "05/08/93:23:00 < 05/08/93:23:05"
+#
+setenv INPUT_FORMAT "SWEEP_FILES"
+setenv OUTPUT_FLAGS "DORADE_DATA"
+#
+#setenv SELECT_RADARS "TF TA"
+setenv SELECT_RADARS "LF"
+setenv SELECT_RADARS "KFDR"
+setenv SELECT_RADARS "KOUN"
+setenv SELECT_RADARS "KTLX"
+#
+setenv DORADE_VOLUME_INTERVAL 24000  # seconds
+#setenv INTERLEAVE "SWEEPS"
+#
+setenv DORADE_DIR /dt/roberts
+setenv DORADE_DIR /scr/amber/oye/tmp
+#
+setenv DORADE_DEV /dev/null
+setenv DORADE_DEV /scr/amber/oye/tmp
+#
+nice +11 gdb xltrs
+#
+

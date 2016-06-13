@@ -1,0 +1,36 @@
+#! /bin/csh
+
+# loop through files
+
+foreach file (*.c)
+
+# get module name
+
+set module = $file:r
+
+# run cproto
+
+cproto -e -a -DPACKAGE_NAME=\"perusal/soloii.c\" -DPACKAGE_TARNAME=\"perusal-soloii-c\" -DPACKAGE_VERSION=\"1.20\" -DPACKAGE_STRING=\"perusal/soloii.c\ 1.20\" -DPACKAGE_BUGREPORT=\"\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_SYS_MTIO_H=1 -DHAVE_LIBM=1 -DUNIX -DLITTLENDIAN -I./ -I../include -I/usr/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/gtk-1.2 $file > tmp_protos
+
+# concatenate protos into header file
+
+set hdr_file = ${module}.hh
+
+echo "/* created using cproto */" > $hdr_file
+echo "/* `date -u`*/" >> $hdr_file
+echo "" >> $hdr_file
+echo "#ifndef ${module}_hh" >> $hdr_file
+echo "#define ${module}_hh" >> $hdr_file
+echo "" >> $hdr_file
+cat tmp_protos >> $hdr_file
+echo "" >> $hdr_file
+echo "#endif" >> $hdr_file
+
+# append to translate_functions.hh
+
+echo "#include <${hdr_file}>" >> translate_functions.hh
+
+# done
+
+end
+

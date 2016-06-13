@@ -1,0 +1,14 @@
+# script to create the ground echo files from dorade sweep files
+#
+#
+setenv INPUT_FORMAT "SWEEP_FILES"
+setenv SELECT_RADARS "TA-EL"
+#setenv BEAM_COUNT 500
+#setenv SWEEP_COUNT 5
+
+setenv OUTPUT_FLAGS "GECHO_DATA"
+#
+setenv DORADE_DIR "/scr/amber/oye/linda"
+#
+nice +11 gdb xltrs
+#
