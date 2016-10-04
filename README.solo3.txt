@@ -4,14 +4,9 @@ This README is for version 3.00 of solo and xltrs
 Downloading
 ===========
 
-Download from
+Check out from
 
-  https://www.eol.ucar.edu/software/solo3
-
-The solo3 distribution will be in a file similar to:
-
-
-  solo3-20131208.src_.tgz
+  https://github.com/NCAR/lrose-solo3
 
 Dependencies
 ============
@@ -42,8 +37,7 @@ Building
 
 Use configure to build solo. For example:
 
-  tar xvfz solo3-20120514.src.tgz
-  cd solo3-20120514
+  runAutoConf.py
   ./configure --prefix=/usr/local
   make
   make install
