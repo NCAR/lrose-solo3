@@ -1,0 +1,45 @@
+# .gitignore at top level
+
+# build files
+
+*.so
+*.o
+*.a
+*.la
+*.lo
+~*
+*~
+
+# cvs
+
+Entries.Log
+Entries.static
+
+# configure
+
+makefile
+.dirstamp
+.deps
+makefile.in
+makefile.am
+__makefile.template
+
+VERSION
+aclocal.m4
+ar-lib
+autom4te.cache/
+config.guess
+config.h
+config.h.in
+config.log
+config.status
+config.sub
+configure
+depcomp
+missing
+perusal/solo3
+stamp-h1
+translate/ddex3
+translate/nx_reblock3
+translate/xltrs3
+
