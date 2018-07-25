@@ -20,10 +20,6 @@
 
 #define         SOLO_BAD_DIR_NAME 1
 
-#define                        K64 65536
-#define                        K32 32768
-#define                          K 1024
-
 // Frame configs
 
 #define            SMALL_RECTANGLE 0

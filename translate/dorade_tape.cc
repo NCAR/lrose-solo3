@@ -14,10 +14,7 @@ static char vcid[] = "$Id$";
 # define PMODE 0666
 # define SIZEOF_FILE_MARK 250000
 
-//# include <dorade_headers.h>
-# ifndef K32
-# define K32 32768
-# endif
+static const int BUFSIZE = 32768;
 
 #include <LittleEndian.hh>
 #include <string.h>
@@ -159,13 +156,13 @@ static void dd_tape_dump (struct dd_sweep_list_entries *top,
 
     if(first) {
 	first = NO;
-	vtbuf = (char *)malloc(K32);
+	vtbuf = (char *)malloc(BUFSIZE);
 	tbuf = (char *)malloc(2*MAX_REC_SIZE);
-	sbuf = (char *)malloc(K32);
+	sbuf = (char *)malloc(BUFSIZE);
 	dts = (DD_TIME *)malloc(sizeof(DD_TIME));
 	if(hostIsLittleEndian()) {
-	   swap_buf = (char *)malloc(K32);
-	   memset(swap_buf, 0, K32);
+	   swap_buf = (char *)malloc(BUFSIZE);
+	   memset(swap_buf, 0, BUFSIZE);
 	}
     }
 
@@ -253,7 +250,7 @@ static void dd_tape_dump (struct dd_sweep_list_entries *top,
 		       , str, swp_fid);
 		this_list->ignore_this_sweep = YES;
 	    }
-	    else if((n = read(swp_fid, sbuf, K32)) <= size_gd) {
+	    else if((n = read(swp_fid, sbuf, BUFSIZE)) <= size_gd) {
 		printf("\nUnable to read %s status:%d ... Ignoring it!\n"
 		       , str, swp_fid);
 		this_list->ignore_this_sweep = YES;
@@ -306,7 +303,7 @@ static void dd_tape_dump (struct dd_sweep_list_entries *top,
 	printf(" fid: %d\n", swp_fid);
 
 	/* absorb a chunk of the sweep file */
-	if((slen = read(swp_fid, sbuf, K32)) <= 0) {
+	if((slen = read(swp_fid, sbuf, BUFSIZE)) <= 0) {
 	    printf("vs Unable to read %s status: %d\n", str, slen);
 	    exit(1);
 	}	

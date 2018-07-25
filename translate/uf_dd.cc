@@ -534,8 +534,8 @@ uf_logical_read (void)
 	       rtep = (RECORD_TABLE_ENTRY *)(irq->top->at
 					     +rthp->header.bytes2table);
 	       /* skip 64K bytes of header info */
-	       irq->top->at += K64;
-	       irq->top->bytes_left -= K64;
+	       irq->top->at += 65536;
+	       irq->top->bytes_left -= 65536;
 	       uui->options |= OLD_INDEXED_UF_FILES;
 	       continue;
 	    }
@@ -970,7 +970,7 @@ Option = "
     if(ival == 0 || ival == 7) {
 	printf("Type record skip # or hit <return> to read next rec:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -1006,7 +1006,7 @@ Option = "
     else if(ival == 2) {
 	printf("Type skip: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}

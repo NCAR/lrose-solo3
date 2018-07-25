@@ -234,13 +234,13 @@ produce_shanes_data (DGI_PTR dgi)
 		    fm_last->next = fm;
 		}
 		fm_last = fm;
-		if(!(fm->buf = (char *)malloc(K64))) {
+		if(!(fm->buf = (char *)malloc(65536))) {
 		    printf("Unable to malloc buffer in shanes data\n");
 		    exit(1);
 		}
 		fm->parm_num = pn;
-		memset(fm->buf, 0, K64);
-		fm->sizeof_buf = K64;
+		memset(fm->buf, 0, 65536);
+		fm->sizeof_buf = 65536;
 		    
 		strcpy(fm->field_name, str_ptrs[ii]);
 	    }

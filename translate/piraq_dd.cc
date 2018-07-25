@@ -81,6 +81,9 @@ static char vcid[] = "$Id$";
 # define       HZO_IMPROVE_FLAG 0x200000
 # define         DZ_TO_DBZ_FLAG 0x400000
 
+/* lookup table size */
+static const int LUT_SIZE = 65536;
+
 extern int hostIsLittleEndian();
 
 static RADARV *rhdr=NULL, *xrhdr;
@@ -165,7 +168,7 @@ do_Noise_lut12 (double noise, double scale2ln, float *lut)
     int ii;
     double xx;
     
-    for(ii = 0 ; ii < K64; ii++ ) {
+    for(ii = 0 ; ii < LUT_SIZE; ii++ ) {
 	xx = exp( (double)((short)ii * scale2ln ));
 	*(lut + ii) = ( xx - noise < 0 ) ? SMALL : (float)log( xx - noise );
     }
@@ -178,7 +181,7 @@ do_Noise_lut15 (double noise, double scale2ln, float *lut)
     int ii;
     double xx;
     
-    for(ii = 0 ; ii < K64; ii++ ) {
+    for(ii = 0 ; ii < LUT_SIZE; ii++ ) {
 	xx = exp( (double)((short)ii * scale2ln ));
 	*(lut + ii) = ( xx - noise < 0 ) ? (float)log((double)SMALLplus)
 	    : (float)log( xx - noise );
@@ -195,11 +198,11 @@ do_Noise_lut (double noise, double scale2ln)
     if( fabs((double)( noise - pui->prev_noise)) > .1 ) {
 	 /* create a new noise correction lookup table  */
 	if( !pui->Noise_lut ) {
-	    pui->Noise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->Noise_lut, 0, K64 * sizeof(float));
+	    pui->Noise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->Noise_lut, 0, LUT_SIZE * sizeof(float));
 	}
 
-	for(ii = 0 ; ii < K64; ii++ ) {
+	for(ii = 0 ; ii < LUT_SIZE; ii++ ) {
 	    xx = exp( (double)((short)ii * scale2ln ));
 	    *(pui->Noise_lut + ii) = ( xx - noise > 0 )
 		? (float)log( xx - noise ) : -10.e22;
@@ -2874,7 +2877,7 @@ Option = "
     else if(ival == 0) {
 	printf("Type number of rays to skip:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 20 * K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 20 * 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -2929,7 +2932,7 @@ Option = "
     else if(ival == 2) {
 	printf("Type skip: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -2979,7 +2982,7 @@ Option = "
     else if(ival == 7) {
 	printf("Type record skip # or hit <return> to read next rec: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 20 * K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 20 * 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -4299,12 +4302,12 @@ void dualpol12(DWELL *dwellness, RADARV *radar, float *prods) {
 	fabs((double)( vchan_noise_power - prev_vchan_noise_power)) > .1  ||
 	fabs((double)( coher_noise_power - prev_coher_noise_power)) > .1  ) {
 	if( !pui->hNoise_lut ) {
-	    pui->hNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->hNoise_lut, 0, K64 * sizeof(float));
-	    pui->vNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->vNoise_lut, 0, K64 * sizeof(float));
-	    pui->cNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->cNoise_lut, 0, K64 * sizeof(float));
+	    pui->hNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->hNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->vNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->vNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->cNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->cNoise_lut, 0, LUT_SIZE * sizeof(float));
 	}
 	do_Noise_lut12( hchan_noise_power, scale2ln, pui->hNoise_lut );
 	do_Noise_lut12( vchan_noise_power, scale2ln, pui->vNoise_lut );
@@ -4670,12 +4673,12 @@ void fullpolplus(DWELL *dwellness, RADARV *radar, float *prods) {
 	fabs((double)( vchan_noise_power - prev_vchan_noise_power)) > .1  ||
 	fabs((double)( coher_noise_power - prev_coher_noise_power)) > .1  ) {
 	if( !pui->hNoise_lut ) {
-	    pui->hNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->hNoise_lut, 0, K64 * sizeof(float));
-	    pui->vNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->vNoise_lut, 0, K64 * sizeof(float));
-	    pui->cNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->cNoise_lut, 0, K64 * sizeof(float));
+	    pui->hNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->hNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->vNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->vNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->cNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->cNoise_lut, 0, LUT_SIZE * sizeof(float));
 	}
 	do_Noise_lut15( hchan_noise_power, scale2ln, pui->hNoise_lut );
 	do_Noise_lut15( vchan_noise_power, scale2ln, pui->vNoise_lut );
@@ -5132,12 +5135,12 @@ void dualpolplus(DWELL *dwellness, RADARV *radar, float *prods) {
 	fabs((double)( vchan_noise_power - prev_vchan_noise_power)) > .1  ||
 	fabs((double)( coher_noise_power - prev_coher_noise_power)) > .1  ) {
 	if( !pui->hNoise_lut ) {
-	    pui->hNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->hNoise_lut, 0, K64 * sizeof(float));
-	    pui->vNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->vNoise_lut, 0, K64 * sizeof(float));
-	    pui->cNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->cNoise_lut, 0, K64 * sizeof(float));
+	    pui->hNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->hNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->vNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->vNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->cNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->cNoise_lut, 0, LUT_SIZE * sizeof(float));
 	}
 	do_Noise_lut12( hchan_noise_power, scale2ln, pui->hNoise_lut );
 	do_Noise_lut12( vchan_noise_power, scale2ln, pui->vNoise_lut );
@@ -5501,12 +5504,12 @@ void dualpolplusGf(DWELL *dwellness, RADARV *radar, float *prods) {
 	fabs((double)( vchan_noise_power - prev_vchan_noise_power)) > .1  ||
 	fabs((double)( coher_noise_power - prev_coher_noise_power)) > .1  ) {
 	if( !pui->hNoise_lut ) {
-	    pui->hNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->hNoise_lut, 0, K64 * sizeof(float));
-	    pui->vNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->vNoise_lut, 0, K64 * sizeof(float));
-	    pui->cNoise_lut = (float *)malloc( K64 * sizeof(float));
-	    memset(pui->cNoise_lut, 0, K64 * sizeof(float));
+	    pui->hNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->hNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->vNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->vNoise_lut, 0, LUT_SIZE * sizeof(float));
+	    pui->cNoise_lut = (float *)malloc( LUT_SIZE * sizeof(float));
+	    memset(pui->cNoise_lut, 0, LUT_SIZE * sizeof(float));
 	}
 	do_Noise_lut12( hchan_noise_power, scale2ln, pui->hNoise_lut );
 	do_Noise_lut12( vchan_noise_power, scale2ln, pui->vNoise_lut );

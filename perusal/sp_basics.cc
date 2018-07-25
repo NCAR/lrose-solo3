@@ -309,15 +309,15 @@ struct solo_window_ptrs *solo_return_wwptr (int ww_num)
 
   // Data coloration parameters
 
-  next->data_color_lut = (u_int32_t *)malloc(K64*sizeof(int32_t));
+  next->data_color_lut = (u_int32_t *)malloc(65536*sizeof(int32_t));
   if (next->data_color_lut == 0)
   {
     printf("Unable to malloc next->data_color_lut for frame: %d\n", ww_num);
     exit(1);
   }
-  memset (next->data_color_lut, 0, K64*sizeof (int32_t));
+  memset (next->data_color_lut, 0, 65536*sizeof (int32_t));
   // Now center it
-  next->data_color_lut += K32;
+  next->data_color_lut += 32768;
 
   next->data_cell_lut = (short *)malloc(10000*sizeof(short));
   if (next->data_cell_lut == 0)

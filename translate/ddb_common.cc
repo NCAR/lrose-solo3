@@ -763,7 +763,7 @@ void dd_get_cfac(FILE *stream, struct correction_d *cfac)
 void 
 dd_get_difs (struct dd_input_filters *difs)
 {
-    int ii, jj, kk, nn, nt, sizeof_env=K64, num_ptrs=999;
+    int ii, jj, kk, nn, nt, sizeof_env=65536, num_ptrs=999;
     char *a, *bb, str[2048], *str_ptrs[99];
     char *env=NULL, **env_ptrs;
     DD_TIME dts;

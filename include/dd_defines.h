@@ -7,9 +7,6 @@
 
 # define DD_DEFINES
 
-# ifndef K64
-# define K64 65536
-# endif
 # define ANGSCALE 0.005493164
 # define BIN_ANG_TO_RADIANS .00009587379924
 # define BA2F(x) ((float)(x)*ANGSCALE)
@@ -71,7 +68,6 @@
 /* ray quality */
 # define  UNACCEPTABLE 0x0001
 
-# define BLOCK_SIZE K64
 # define GS_TOLERANCE .001	/* meters */
 
 # define     DD_FLUSH_ALL -1
@@ -231,7 +227,6 @@ typedef  int32_t *LONG_PTR;
 # define     MAX_PREV_RAYS 5
 # define       MAX_SENSORS 16
 # define     MAX_PREV_SWPS 5
-# define          MAX_READ 5*K64
 # define          BAD_TIME -MAX_FLOAT
 
 # define SIZE_COMMENTS 32768
@@ -246,6 +241,9 @@ typedef  int32_t *LONG_PTR;
 
 # ifndef DD_BYTE_ARRAYS
 # define DD_BYTE_ARRAYS
+
+static const int BLOCK_SIZE = 65536;
+static const int MAX_READ = 5 * BLOCK_SIZE;
 
 /* structure for four byte words */
 typedef struct

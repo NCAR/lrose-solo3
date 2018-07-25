@@ -77,7 +77,7 @@ void DataInfo::addCommands(const std::vector< std::string > &cmd_list)
 
   // Don't save more than 64K of edit information.
 
-  if (_sizeofSeds + long_size >= K64)
+  if (_sizeofSeds + long_size >= 65536)
     return;
 
   int padding = long_size - size;
@@ -140,7 +140,7 @@ void DataInfo::addCommands(const std::vector< std::string > &cmd_list)
 
   // Don't save more than 64K of edit information.
 
-  if (_info->sizeof_seds + long_size >= K64)
+  if (_info->sizeof_seds + long_size >= 65536)
     return;
 
   int padding = long_size - size;

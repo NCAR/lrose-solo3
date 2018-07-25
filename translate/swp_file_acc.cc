@@ -797,7 +797,7 @@ dd_absorb_seds (DGI_PTR dgi, int gottaSwap)
 
     dgi->sizeof_seds = dds->sswb->key_table[ii].size;
 
-    if((dgi->sizeof_seds = dds->sswb->key_table[ii].size) >= K64) {
+    if((dgi->sizeof_seds = dds->sswb->key_table[ii].size) >= 65536) {
        dgi->seds = NULL;
        dgi->sizeof_seds = 0;
        return(1);

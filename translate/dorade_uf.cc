@@ -869,8 +869,8 @@ ufp_write (struct uf_production *ufp, int size)
     
     if(hostIsLittleEndian() && size > 0) {
        if(!le_buf) {
-	  le_buf = (short *)malloc(K64);
-	  memset(le_buf, 0, K64);
+	  le_buf = (short *)malloc(65536);
+	  memset(le_buf, 0, 65536);
        }
        /* remember uf_buf is a short pointer not a character pointer
 	*/

@@ -287,8 +287,8 @@ void set_color_bar (SiiFrameConfig *sfc, WW_PTR wwptr)
     gint scaled_data_value =
       (gint)DataManager::scaleValue(f_val, wwptr->parameter_scale,
 				    wwptr->parameter_bias);
-    if (scaled_data_value < -K32) scaled_data_value = -K32;
-    if (scaled_data_value >= K32) scaled_data_value = K32-1;
+    if (scaled_data_value < -32768) scaled_data_value = -32768;
+    if (scaled_data_value > 32767) scaled_data_value = 32767;
     *cb_pattern++ = *(wwptr->data_color_lut + scaled_data_value);
   }
 
@@ -642,9 +642,9 @@ bool solo_hardware_color_table(gint frame_num)
 	     &bnum, &bden);
       int kk = num_colors++;
       GdkColor *gcolor = gclist +kk;
-      gcolor->red =   (gushort)((rnum/rden)*(K64 - 1));
-      gcolor->green = (gushort)((gnum/gden)*(K64 - 1));
-      gcolor->blue =  (gushort)((bnum/bden)*(K64 - 1));
+      gcolor->red =   (gushort)((rnum/rden)*(65536 - 1));
+      gcolor->green = (gushort)((gnum/gden)*(65536 - 1));
+      gcolor->blue =  (gushort)((bnum/bden)*(65536 - 1));
 
       // NOTE: gdk_color_alloc is deprecated and should not be used in
       // newly-written code. Use gdk_colormap_alloc_color() instead.
@@ -662,9 +662,9 @@ bool solo_hardware_color_table(gint frame_num)
       sscanf(line, "%f %f %f", &red, &green, &blue);
       int kk = num_colors++;
       GdkColor *gcolor = gclist +kk;
-      gcolor->red =   (gushort) (red*(K64 - 1));
-      gcolor->green = (gushort) (green*(K64 - 1));
-      gcolor->blue =  (gushort) (blue*(K64 - 1));
+      gcolor->red =   (gushort) (red*(65536 - 1));
+      gcolor->green = (gushort) (green*(65536 - 1));
+      gcolor->blue =  (gushort) (blue*(65536 - 1));
       gboolean ok2 = gdk_color_alloc (cmap, gcolor);
       gcolor->pixel = kk;
       if (!ok2)

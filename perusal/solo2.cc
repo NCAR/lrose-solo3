@@ -1039,19 +1039,19 @@ void solo_data_color_lut(int frame_num)
 			  wwptr->parameter_bias); 
   int max = (int)DD_SCALE(f_max, wwptr->parameter_scale,
 			  wwptr->parameter_bias);
-  min = min >= (-K32) ? min : -K32;
-  max = max < K32 ? max : K32-1;
+  min = (min >= -32768) ? min : -32768;
+  max = (max <= 32767) ? max : 32767;
 
   wwptr->color_table.setColors(f_min, f_max,
 			       wwptr->num_colors_in_table);
   
   // Fill in values outside of the data range with the exceeded color
 
-  for (int i = (-K32); i < min; i++)
+  for (int i = -32768; i < min; i++)
   {
     *(wwptr->data_color_lut+i) = wwptr->exceeded_color_num;
   }
-  for (int i = max + 1; i < K32; i++)
+  for (int i = max + 1; i < 32768; i++)
   {
     *(wwptr->data_color_lut+i) = wwptr->exceeded_color_num;
   }
@@ -1079,8 +1079,8 @@ void solo_data_color_lut(int frame_num)
 			    wwptr->parameter_bias);
     int max = (int)DD_SCALE(emax, wwptr->parameter_scale,
 			    wwptr->parameter_bias);
-    min = min >= (-K32) ? min : -K32;
-    max = max < K32 ? max : K32-1;
+    min = (min >= -32768) ? min : -32768;
+    max = (max <= 32767) ? max : 32767;
 
     for (int i = min; i <= max; i++)
     {

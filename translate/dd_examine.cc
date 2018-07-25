@@ -23,9 +23,8 @@ static char vcid[] = "$Id$";
 #include "ddb_common.hh"
 
 
-# ifndef K64
-# define K64 65536
-# endif
+static const int K64 = 65536;
+
 # define UPPER(c) ((c) >= 'A' && (c) <= 'Z')
 
 # ifdef sparc

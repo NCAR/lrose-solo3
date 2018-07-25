@@ -1347,7 +1347,7 @@ eld_lut (DGI_PTR dgi, int pn, short *dst)
 	    extend_sign = 0xf000;
 	    bit11 = 0x0800;
 	    scale = 1.;
-	    for(i=0; i < K64; i++){
+	    for(i=0; i < 65536; i++){
 # ifdef obsolete		
 		*ss++ = i & bit11 ? i | extend_sign : i;
 # else
@@ -1356,7 +1356,7 @@ eld_lut (DGI_PTR dgi, int pn, short *dst)
 	    }
 	}
 	else {
-	    for(i=0; i < K64; i++) {
+	    for(i=0; i < 65536; i++) {
 		*ss++ = (short)DD_SCALE((float)i, scale, (float)0);
 	    }
 	}
@@ -1366,7 +1366,7 @@ eld_lut (DGI_PTR dgi, int pn, short *dst)
 
 	if(ts > start_vortex_fix_1 && ts < end_vortex_tests &&
 	   strstr("VR VS VL", name)) {
-	    for(i=0; i < K64; i++){
+	    for(i=0; i < 65536; i++){
 		f = - ELD_UNSCALE((float)i, rcp_scale, bias);
 		/* sign of the velocity was reversed during this time span
 		 */
@@ -1377,7 +1377,7 @@ eld_lut (DGI_PTR dgi, int pn, short *dst)
 	else if(ts > start_vortex_fix_1 && ts < end_vortex_fix_1 &&
 		strstr("DBZ", name) &&
 		dgi->dds->radd->num_ipps_trans == 2) {
-	    for(i=0; i < K64; i++){
+	    for(i=0; i < 65536; i++){
 		f = ELD_UNSCALE((float)i, rcp_scale, bias) -3.0;
 		/* subtracting 3 to fix dBz calculation in dual PRT mode
 		 */
@@ -1386,7 +1386,7 @@ eld_lut (DGI_PTR dgi, int pn, short *dst)
 	    }
 	}
 	else {
-	    for(i=0; i < K64; i++){
+	    for(i=0; i < 65536; i++){
 		f = ELD_UNSCALE((float)i, rcp_scale, bias);
 		j = (int)DD_SCALE(f, scale, (float)0);
 		*ss++ = j & mask16;
@@ -2814,7 +2814,7 @@ Option = "
     if(ival == 0) {
 	printf("Type number of rays to skip:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -2865,7 +2865,7 @@ Option = "
     else if(ival == 2) {
 	printf("Type skip: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -2902,7 +2902,7 @@ Option = "
     else if(ival == 7) {
 	printf("Type record skip # or hit <return> to read next rec: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}

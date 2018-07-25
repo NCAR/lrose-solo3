@@ -90,10 +90,7 @@ static char vcid[] = "$Id$";
 /* #define	SEEK_SET		0	absolute offset */
 /* #define	SEEK_CUR		1	relative to current offset */
 /* #define	SEEK_END		2	relative to end of file */
-# ifndef K64
-# define K64 65536
-# endif
-
+static const int K64 = 65536;
 
 static struct source_devs_mgmt *devs_top=NULL;
 static int lines_in_display=26;

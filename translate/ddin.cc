@@ -1065,7 +1065,7 @@ Option = "
     if(ival == 0) {
 	printf("Type number of rays to skip:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -1116,7 +1116,7 @@ Option = "
     else if(ival == 2) {
 	printf("Type skip: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -1153,7 +1153,7 @@ Option = "
     else if(ival == 7) {
 	printf("Type record skip # or hit <return> to read next rec:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}

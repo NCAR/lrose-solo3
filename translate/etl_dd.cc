@@ -183,8 +183,8 @@ void etl_ini (void)
      malloc(sizeof(struct cov_header_struct_mcws));
    memset(mc_cov_ptr, 0, sizeof(struct cov_header_struct_mcws));
 
-   scr_buf = (char *)malloc(K64);
-   memset(scr_buf, 0, K64);
+   scr_buf = (char *)malloc(65536);
+   memset(scr_buf, 0, 65536);
    
    etui = (struct etl_useful_info *)
      malloc(sizeof(struct etl_useful_info));
@@ -193,12 +193,12 @@ void etl_ini (void)
    etui->new_sweep = etui->new_vol = YES;
    etui->lidar_number = _2MICRON;
 
-   etui->mom_data = (char *)malloc(K64/2);
-   memset(etui->mom_data, 0, K64/2);
-   etui->cov_data = (char *)malloc(K64);
-   memset(etui->cov_data, 0, K64);
-   etui->raw_data = (char *)malloc(K64);
-   memset(etui->raw_data, 0, K64);
+   etui->mom_data = (char *)malloc(65536/2);
+   memset(etui->mom_data, 0, 65536/2);
+   etui->cov_data = (char *)malloc(65536);
+   memset(etui->cov_data, 0, 65536);
+   etui->raw_data = (char *)malloc(65536);
+   memset(etui->raw_data, 0, 65536);
   
    for(ii=0; ii < MAX_MC_LIDARS; ii++) {
       etui->mc_lidars[ii] = mli =
@@ -1260,7 +1260,7 @@ Option = "
     else if(ival == 0) {
 	printf("Type number of rays to skip:");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -1315,7 +1315,7 @@ Option = "
     else if(ival == 2) {
 	printf("Type skip: ");
 	nn = getreply(str, sizeof(str));
-	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > K64) {
+	if(cdcode(str, nn, &ival, &val) != 1 || fabs((double)val) > 65536) {
 	    printf( "\nIllegal Option!\n" );
 	    goto menu2;
 	}
@@ -1737,8 +1737,8 @@ void etl_moment_fields (void)
     for(pn=0; pn < 3; pn++) {
        if(!(ss = etui->mom_lut[pn])) {
 	  ss = etui->mom_lut[pn] = (short *)
-	    malloc(K64 * sizeof(short));
-	  memset(ss, 0, K64 * sizeof(short));
+	    malloc(65536 * sizeof(short));
+	  memset(ss, 0, 65536 * sizeof(short));
        }
     }
     nbins = gri->num_bins;
@@ -1759,7 +1759,7 @@ void etl_moment_fields (void)
 
     ss = etui->mom_lut[pn];
 
-    for(ii = 0; ii < K64; ii++) {
+    for(ii = 0; ii < 65536; ii++) {
        sval = (short)ii;	/* turn it into a signed short */
        f = (float)sval * vel_scale;
        *(ss + ii) = (short)DD_SCALE(f, scale, bias);
@@ -1780,7 +1780,7 @@ void etl_moment_fields (void)
 
     ss = etui->mom_lut[pn];
 
-    for(ii = 0; ii < K64; ii++) {
+    for(ii = 0; ii < 65536; ii++) {
        sval = (short)ii;
        f = (float)sval * intensity_scale;
        *(ss + ii) = (short) DD_SCALE(f, 1, bias);
@@ -1801,7 +1801,7 @@ void etl_moment_fields (void)
 
     ss = etui->mom_lut[pn];
 
-    for(ii = 0; ii < K64; ii++) {
+    for(ii = 0; ii < 65536; ii++) {
        f = (float)ii * ncp_scale;
        *(ss + ii) = (short) DD_SCALE(f, scale, bias);
     }
