@@ -5,55 +5,110 @@ This is version 3 of the NCAR solo polar radar viewer and editor.
 This is effectively the the soloii application, converted to C++.
 It depends on updated version of the gtk libraries.
 
-## Downloading
+1. [prepare](#prepare)
+2. [download](#download)
+3. [build](#build)
+4. [install](#install)
 
-Check out from
+<a name="prepare"/>
 
-  https://github.com/NCAR/lrose-solo3
+## 1. Prepare
 
-## Dependencies
+Most good, up-to date LINUX distributions should work.
 
-To build solo3, you need to install:
+Recommended distributions are:
 
-```
-  X11-dev
-  gtk+-2.0-dev
-  gtkmm-2.4-dev
-  glib-2.0-dev
-  glibmm-2.4-dev
-```
+  * Debian
+  * Ubuntu (based on Debian)
+  * RedHat
+  * Centos (based on RedHat)
+  * Fedora (based on RedHat)
 
-For some RedHat releases, the libraries may be named:
+First, you will need to install the required packages.
 
-```
-  libX11-devel
-  gtk+-devel
-  gtkmm24-devel
-  glib-devel
-  glibmm24-devel
-```
+### RedHat
 
-## Building
-
-Use configure to build solo. For example:
+On a RedHat-based system, run the following:
 
 ```
-  runAutoConf.py
+yum install -y epel-release && \
+yum install -y tcsh wget git \
+    tkcvs emacs rsync python \
+    m4 make libtool autoconf automake \
+    gcc gcc-c++ gcc-gfortran glibc-devel \
+    libX11-devel libXext-devel \
+    libpng-devel libtiff-devel zlib-devel \
+    expat-devel libcurl-devel \
+    flex-devel fftw3-devel \
+    gtk+-devel gtkmm24-devel glib-devel glibmm24-devel  \
+    bzip2-devel \
+    hdf5-devel netcdf-devel \
+    xorg-x11-xauth xorg-x11-apps \
+    rpm-build redhat-rpm-config \
+    rpm-devel rpmdevtools
+```
+
+### Debian / Ubuntu
+
+On a Debian-based system, run the following:
+
+```
+apt-get update && \
+    apt-get install -y \
+    git gcc g++ gfortran cmake rsync mlocate \
+    automake make libtool pkg-config python \
+    libcurl3-dev curl \
+    libfl-dev libbz2-dev libx11-dev libpng-dev \
+    libgtk2.0-dev gtkmm-2.4-dev \
+    glib-2.0-dev glibmm-2.4-dev \
+    libfftw3-dev libexpat1-dev \
+    libgeographic-dev libeigen3-dev libzip-dev \
+    libnetcdf-dev netcdf-bin libhdf5-dev hdf5-tools
+```
+
+<a name="download"/>
+
+## 2. Downloading
+
+### Create a working directory for building the distribution:
+
+```
+  mkdir ~/solo3_build
+  cd ~/solo3_build
+```
+
+### Download the source release
+
+```
+  git clone https://github.com/NCAR/lrose-solo3 
+```
+
+<a name="build"/>
+
+## 3. Build
+
+Run configure to create the makefiles:
+
+```
+  autoreconf --install
   ./configure --prefix=/usr/local
-  make
+```
+
+The do the build:
+
+```
+  make -j 4
+```
+
+<a name="install"/>
+
+## 4. Install
+
+```
   make install
 ```
 
-If you are compiling on Centos, you will need to explicitly create an m4
-subdirectory for the autoconf utilities to use and include the --enable-centos
-flag on your configure command line.  For example:
-
-```
-  mkdir m4
-  ./configure --prefix=/usr/local --enable-centos
-```
-
-The following apps are installed:
+The following apps will be installed in /usr/local/bin:
 
 ```
   solo3 (previously soloii)
@@ -62,14 +117,11 @@ The following apps are installed:
   nx_reblock3 (previously nx_reblock)
 ```
 
-## Notes for 64-bit OS build
+<a name="changelog"/>
 
-solo3 is natively supported on 64-bit operating systems.
+## 5. Change Log - including soloii versions
 
-Therefore the build should be the same on both 32-bit and 64-bit
-operating systems.
-
-## Change Log - including soloii versions
+This includes the soloii versions, the predecessor of solo3.
 
 ### version 3.00 (2012/05/14):
 
