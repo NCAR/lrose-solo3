@@ -91,6 +91,7 @@ apt-get update && \
 Run configure to create the makefiles:
 
 ```
+  cd ~/solo3_build/lrose-solo3
   autoreconf --install
   ./configure --prefix=/usr/local
 ```
