@@ -15,7 +15,10 @@ brew link --force gettext  # needed for -lintl
 ./configure PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig 
 make
 
-
+For Mac OS X, HomeBrew, http://brew.sh/ is the supported environment for 
+building solo3.  Install Homebrew from http://brew.sh/
+To build and install solo3:
+brew install ftp://ftp.eol.ucar.edu/pub/archive/rdpdist/solo3.rb
 
 Formula maintainers instructions:
 =========================================================
