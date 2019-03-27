@@ -122,7 +122,7 @@ The following apps will be installed in /usr/local/bin:
 
 ## 5. For Mac Users - install using brew
 
-See [Homebrew install](./homebrew_install.mac_osx.md) |
+See [Homebrew install](./homebrew_install.mac_osx.md)
 
 <a name="changelog"/>
 
