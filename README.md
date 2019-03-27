@@ -9,6 +9,7 @@ It depends on updated version of the gtk libraries.
 2. [download](#download)
 3. [build](#build)
 4. [install](#install)
+5. [for-the-mac](#forthemac)
 
 <a name="prepare"/>
 
@@ -117,13 +118,37 @@ The following apps will be installed in /usr/local/bin:
   nx_reblock3 (previously nx_reblock)
 ```
 
+<a name="forthemac"/>
+
+## 5. For Mac Users - install using brew
+
+See [Homebrew install](./homebrew_install.mac_osx.md) |
+
 <a name="changelog"/>
 
-## 5. Change Log - including soloii versions
+## 6. Change Log - including soloii versions
 
 This includes the soloii versions, the predecessor of solo3.
 
-### version 3.00 (2012/05/14):
+### update on 2014/07/28
+
+Increased line buffer size in dor_print_sswb() to keep things from crashing
+if SSWB contains absurd d_start_time or d_stop_time, e.g., with date from 
+year 200000000.
+
+### update on 2014/07/11
+
+* PIRAQX updates for better handling of Rapid-scan DOW data.
+* Homebrew improvements for Mac.
+* Fixed bugs in reading color tables from text files.
+* Fixed a buffer overflow issue which causes crashes on Ubuntu 14.04 systems.
+* Better handling when there are sweepfile header load failures.
+
+### update on 2013/12/08
+
+In persusal/sp_lists.cc removed unneeded include of <bits/localefwd.h>.
+
+### initial version 3.00 (2012/05/14):
 
 * upgraded to C++
 * 64-bit native support
