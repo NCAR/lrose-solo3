@@ -1,7 +1,5 @@
 # lrose-solo3
 
-This README is for version 3.00 of solo and xltrs
-
 This is version 3 of the NCAR solo polar radar viewer and editor.
 
 This is effectively the the soloii application, converted to C++.
