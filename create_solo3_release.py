@@ -42,7 +42,7 @@ def main():
     usage = "usage: " + thisScriptName + " [options]"
     homeDir = os.environ['HOME']
     package = 'lrose-solo3'
-    logDirDefault = '/tmp/create_solo3_src_release/logs'
+    logDirDefault = '/tmp/create_solo3_release/logs'
     parser = OptionParser(usage)
     parser.add_option('--debug',
                       dest='debug', default=True,
