@@ -42,7 +42,7 @@ def main():
     homeDir = os.environ['HOME']
     package = 'lrose-solo3'
     defaultReleaseDir = os.path.join(homeDir, 'releases')
-    defaultReleaseDir = os.path.join(defaultReleaseTopDir, package)
+    defaultReleaseDir = os.path.join(defaultReleaseDir, package)
     logDirDefault = '/tmp/create_solo3_release/logs'
     parser = OptionParser(usage)
     parser.add_option('--debug',
@@ -113,10 +113,15 @@ def main():
 
     createTmpDir()
 
-    # get repos from git
+    # checkout solo3 into the tmp dir
 
     logPath = prepareLogFile("git-checkout");
-    gitCheckout()
+    os.chdir(tmpDir)
+    shellCmd("git clone https://github.com/NCAR/lrose-solo3")
+
+    # go to the base directory
+
+    os.chdir(baseDir)
 
     # run autoconf
 
@@ -127,7 +132,7 @@ def main():
 
     logPath = prepareLogFile("set_release_date");
     shellCmd("./set_release_date.pl")
-
+    
     # create the release information file
     
     createReleaseInfoFile()
@@ -220,14 +225,6 @@ def createTmpDir():
     # make it clean
 
     os.makedirs(tmpDir)
-
-########################################################################
-# check out repos from git
-
-def gitCheckout():
-
-    os.chdir(tmpDir)
-    shellCmd("git clone https://github.com/NCAR/lrose-solo3")
 
 ########################################################################
 # write release information file
