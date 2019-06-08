@@ -104,7 +104,7 @@ def main():
         print("  versionStr: ", versionStr, file=sys.stderr)
         print("  releaseName: ", releaseName, file=sys.stderr)
         print("  tarName: ", tarName, file=sys.stderr)
-        
+
     # save previous releases
 
     savePrevReleases()
@@ -142,6 +142,8 @@ def main():
     logPath = prepareLogFile("create-brew-formula");
     createBrewFormula()
 
+    sys.exit(1)
+    
     # create the tar file
 
     logPath = prepareLogFile("create-tar-file");
@@ -279,9 +281,8 @@ def createBrewFormula():
     tarUrl = "https://github.com/NCAR/lrose-solo3/releases/download/" + \
              package + "-" + versionStr + "/" + tarName
     formulaName = package + ".rb"
-    scriptName = "formulas/build_" + package + "_formula"
-    buildDirPath = os.path.join(tarDir, "build")
-    scriptPath = os.path.join(buildDirPath, scriptName)
+    scriptName = "build_solo3_formula"
+    scriptPath = os.path.join(baseDir, scriptName)
 
     # check if script exists
 
