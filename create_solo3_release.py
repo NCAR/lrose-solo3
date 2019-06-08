@@ -11,12 +11,12 @@ import os
 import sys
 import shutil
 import subprocess
-from optparse import OptionParser
+import glob
 import time
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
-import glob
+from optparse import OptionParser
 
 def main():
 
@@ -26,7 +26,6 @@ def main():
     thisScriptName = os.path.basename(__file__)
 
     global options
-    global releaseDir
     global tmpDir
     global baseDir
     global versionStr
@@ -42,6 +41,8 @@ def main():
     usage = "usage: " + thisScriptName + " [options]"
     homeDir = os.environ['HOME']
     package = 'lrose-solo3'
+    defaultReleaseDir = os.path.join(homeDir, 'releases')
+    defaultReleaseDir = os.path.join(defaultReleaseTopDir, package)
     logDirDefault = '/tmp/create_solo3_release/logs'
     parser = OptionParser(usage)
     parser.add_option('--debug',
@@ -53,8 +54,8 @@ def main():
                       action="store_true",
                       help='Set verbose debugging on')
     parser.add_option('--releaseDir',
-                      dest='releaseTopDir', default='releases',
-                      help='Top-level release dir')
+                      dest='releaseDir', default=defaultReleaseDir,
+                      help='Release directory')
     parser.add_option('--logDir',
                       dest='logDir', default=logDirDefault,
                       help='Logging dir')
@@ -77,8 +78,7 @@ def main():
 
     # set directories
 
-    releaseDir = os.path.join(options.releaseTopDir, package)
-    tmpDir = os.path.join(releaseDir, "tmp")
+    tmpDir = os.path.join(options.releaseDir, "tmp")
     baseDir = os.path.join(tmpDir, "lrose-solo3")
 
     # compute release name and dir name
@@ -97,8 +97,7 @@ def main():
     if (options.debug):
         print("Running %s:" % thisScriptName, file=sys.stderr)
         print("  package: ", package, file=sys.stderr)
-        print("  releaseTopDir: ", options.releaseTopDir, file=sys.stderr)
-        print("  releaseDir: ", releaseDir, file=sys.stderr)
+        print("  releaseDir: ", options.releaseDir, file=sys.stderr)
         print("  logDir: ", options.logDir, file=sys.stderr)
         print("  tmpDir: ", tmpDir, file=sys.stderr)
         print("  force: ", options.force, file=sys.stderr)
@@ -121,8 +120,8 @@ def main():
 
     # run autoconf
 
-    logPath = prepareLogFile("run-autoconf");
-    shellCmd("./runAutoConf.py")
+    #logPath = prepareLogFile("run-autoconf");
+    #shellCmd("./runAutoConf.py")
 
     # set the datestamp file
 
@@ -145,9 +144,9 @@ def main():
 
     # move the tar file into release dir
 
-    os.chdir(releaseDir)
+    os.chdir(options.releaseDir)
     os.rename(os.path.join(baseDir, tarName),
-              os.path.join(releaseDir, tarName))
+              os.path.join(options.releaseDir, tarName))
               
     # delete the tmp dir
 
@@ -161,11 +160,11 @@ def main():
 
 def savePrevReleases():
 
-    if (os.path.isdir(releaseDir) == False):
+    if (os.path.isdir(options.releaseDir) == False):
         return
     
-    os.chdir(releaseDir)
-    prevDirPath = os.path.join(releaseDir, 'previous_releases')
+    os.chdir(options.releaseDir)
+    prevDirPath = os.path.join(options.releaseDir, 'previous_releases')
 
     # remove if file instead of dir
 
@@ -303,7 +302,7 @@ def createBrewFormula():
     # move it up into the release dir
 
     os.rename(os.path.join(baseDir, formulaName),
-              os.path.join(releaseDir, formulaName))
+              os.path.join(options.releaseDir, formulaName))
 
 ########################################################################
 # prepare log file
