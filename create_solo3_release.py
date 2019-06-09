@@ -304,7 +304,7 @@ require 'formula'
 
 # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
 
-class Solo3 < Formula
+class LroseSolo3 < Formula
   homepage 'https://github.com/NCAR/lrose-solo3'
   url '{0}'
   version '{1}'
