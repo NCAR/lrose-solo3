@@ -13,7 +13,6 @@ import shutil
 import subprocess
 import glob
 import time
-#from urllib2 import urlopen
 import hashlib
 from datetime import datetime
 from datetime import date
@@ -34,8 +33,6 @@ def main():
     global releaseName
     global tarName
     global tarDir
-    global logPath
-    global logFp
     global package
     
     # parse the command line
@@ -45,7 +42,6 @@ def main():
     package = 'lrose-solo3'
     defaultReleaseDir = os.path.join(homeDir, 'releases')
     defaultReleaseDir = os.path.join(defaultReleaseDir, package)
-    logDirDefault = '/tmp/create_solo3_release/logs'
     parser = OptionParser(usage)
     parser.add_option('--debug',
                       dest='debug', default=True,
@@ -58,9 +54,6 @@ def main():
     parser.add_option('--releaseDir',
                       dest='releaseDir', default=defaultReleaseDir,
                       help='Release directory')
-    parser.add_option('--logDir',
-                      dest='logDir', default=logDirDefault,
-                      help='Logging dir')
     parser.add_option('--force',
                       dest='force', default=False,
                       action="store_true",
@@ -89,18 +82,10 @@ def main():
     tarName = releaseName + ".tgz"
     tarDir = os.path.join(baseDir, releaseName)
 
-    # initialize logging
-
-    if (os.path.isdir(options.logDir) == False):
-        os.makedirs(options.logDir)
-    logPath = os.path.join(options.logDir, "no-logging");
-    logFp = open(logPath, "w+")
-
     if (options.debug):
         print("Running %s:" % thisScriptName, file=sys.stderr)
         print("  package: ", package, file=sys.stderr)
         print("  releaseDir: ", options.releaseDir, file=sys.stderr)
-        print("  logDir: ", options.logDir, file=sys.stderr)
         print("  tmpDir: ", tmpDir, file=sys.stderr)
         print("  force: ", options.force, file=sys.stderr)
         print("  versionStr: ", versionStr, file=sys.stderr)
@@ -117,7 +102,6 @@ def main():
 
     # checkout solo3 into the tmp dir
 
-    # logPath = prepareLogFile("git-checkout");
     os.chdir(tmpDir)
     shellCmd("git clone https://github.com/NCAR/lrose-solo3")
 
@@ -127,12 +111,10 @@ def main():
 
     # run autoconf
 
-    #logPath = prepareLogFile("run-autoconf");
     #shellCmd("./runAutoConf.py")
 
     # set the datestamp file
 
-    # logPath = prepareLogFile("set_release_date");
     shellCmd("./set_release_date.pl")
     
     # create the release information file
@@ -141,16 +123,12 @@ def main():
 
     # create the tar file
 
-    # logPath = prepareLogFile("create-tar-file");
     createTarFile()
 
     # create the brew formula for OSX builds
 
-    # logPath = prepareLogFile("create-brew-formula");
     createBrewFormula()
 
-    sys.exit(1)
-    
     # move the tar file into release dir
 
     os.chdir(options.releaseDir)
@@ -161,7 +139,6 @@ def main():
 
     shutil.rmtree(tmpDir)
 
-    logFp.close()
     sys.exit(0)
 
 ########################################################################
@@ -193,8 +170,8 @@ def savePrevReleases():
     for name in oldReleases:
         newName = os.path.join(prevDirPath, name)
         if (options.debug):
-            print("saving oldRelease: ", name, file=logFp)
-            print("to: ", newName, file=logFp)
+            print("saving oldRelease: ", name, file=sys.stderr)
+            print("to: ", newName, file=sys.stderr)
         os.rename(name, newName)
 
 ########################################################################
@@ -289,9 +266,9 @@ def createBrewFormula():
     # check if script exists
 
     if (os.path.isfile(scriptPath) == False):
-        print("WARNING - ", thisScriptName, file=logFp)
-        print("  No script: ", scriptPath, file=logFp)
-        print("  Will not build brew formula for package", file=logFp)
+        print("WARNING - ", thisScriptName, file=sys.stderr)
+        print("  No script: ", scriptPath, file=sys.stderr)
+        print("  Will not build brew formula for package", file=sys.stderr)
         return
 
     # create the brew formula file
@@ -369,33 +346,6 @@ def build_solo3_formula(tar_path, release_url, rb_file):
     print(formula, file=outf)
     outf.close()
 
-#if __name__ == '__main__':
-##    if len(sys.argv) == 3:
-#	build_solo3_formula( sys.argv[1],  sys.argv[2] )
-#    else:
-#	print "usage: {0} tar_url output_file".format(sys.argv[0])
-
-
-########################################################################
-# prepare log file
-
-def prepareLogFile(logFileName):
-
-    global logFp
-
-    logFp.close()
-    logPath = os.path.join(options.logDir, logFileName + ".log");
-    if (logPath.find('no-logging') >= 0):
-        return logPath
-    print("========================= " + logFileName + " =========================", file=sys.stderr)
-    if (options.verbose):
-        print("====>> Creating log file: " + logPath + " <<==", file=sys.stderr)
-    logFp = open(logPath, "w+")
-    logFp.write("===========================================\n")
-    logFp.write("Log file from script: " + thisScriptName + "\n")
-
-    return logPath
-
 ########################################################################
 # Run a command in a shell, wait for it to complete
 
@@ -403,15 +353,8 @@ def shellCmd(cmd):
 
     print("Running cmd:", cmd, file=sys.stderr)
     
-    if (logPath.find('no-logging') >= 0):
-        cmdToRun = cmd
-    else:
-        print("Log file is:", logPath, file=sys.stderr)
-        print("    ....", file=sys.stderr)
-        cmdToRun = cmd + " 1>> " + logPath + " 2>&1"
-
     try:
-        retcode = subprocess.check_call(cmdToRun, shell=True)
+        retcode = subprocess.check_call(cmd, shell=True)
         if retcode != 0:
             print("Child exited with code: ", retcode, file=sys.stderr)
             sys.exit(1)
