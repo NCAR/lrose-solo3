@@ -87,6 +87,18 @@ GtkWidget * anglr_fill_item;
 
 int main( int argc, char *argv[])
 {
+
+  // check for usage
+
+  if (argc > 1) {
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+      fprintf(stderr, "Usage: solo3\n");
+      fprintf(stderr, "  cd to directory containing DORADE files\n");
+      fprintf(stderr, "  run `solo3` with no args\n");
+      return 0;
+    }
+  }
+
   // Set some global variables.
   // NOTE: These will probably be replaced with objects.  I need to look
   // into them further.  Also need to decide how they fit into the rest of
