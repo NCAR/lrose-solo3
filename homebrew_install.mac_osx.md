@@ -59,19 +59,17 @@ Run the following ruby script:
 You need to download the brew formula from the solo3 repository.
 This formula is used to perform the homebrew build.
 
-For example, download lrose-solo3.rb from:
+Download lrose-solo3.rb from:
 
 ```
   https://github.com/NCAR/lrose-solo3
 ```
 
-Choose from the appropriate distribution.
-
 <a name="install"/>
 
-## 3. Install
+## 3. Build and install
 
-Let us assume you have downloaded the latest core distribution, containing all of the core apps.
+Let us assume you have downloaded lrose-solo3.rb to your Downloads directory.
 
 ```
   cd ~/Downloads
@@ -83,16 +81,13 @@ While homebrew is building, it creates log files so you can track the progress.
 You can ignore the following message:
 
 ```
-  Warning: lrose-core dependency gcc was built with a different C++ standard
+  Warning: lrose-solo3 dependency gcc was built with a different C++ standard
 ```
 
-The location of the log files for the various distributions will be:
+The location of the log files will be:
 
 ```
-  ~/Library/Logs/Homebrew/lrose-core
-  ~/Library/Logs/Homebrew/lrose-blaze
-  ~/Library/Logs/Homebrew/lrose-cyclone
-  ~/Library/Logs/Homebrew/radx
+  ~/Library/Logs/Homebrew/lrose-solo3
 ```
 
 You will see the following log files:
@@ -112,16 +107,17 @@ You can watch the progress using:
   tail -f 02.make
 ```
 
-If the build is successful, lrose will be installed in:
+If the build is successful, the following binaries will be installed:
 
 ```
-  /usr/local/opt/lrose/include
-  /usr/local/opt/lrose/lib
-  /usr/local/opt/lrose/bin
+  /usr/local/bin/solo3
+  /usr/local/bin/xltrs3
+  /usr/local/bin/ddex3
+  /usr/local/bin/nx_reblock3
 ```
 
-In these directories, links will be created that point to the actual files
-in ```/usr/local/Cellar```.
+These will be links that point to the actual files
+in ```/usr/local/Cellar/lrose-solo3```.
 
 See also: [Homebrew Notes](./homebrew_notes.md)
 
@@ -131,10 +127,7 @@ See also: [Homebrew Notes](./homebrew_notes.md)
 
 Try the commands:
 ```
-  /usr/local/opt/lrose/bin/RadxPrint -h
-  /usr/local/opt/lrose/bin/RadxConvert -h
-  /usr/local/opt/lrose/bin/Radx2Grid -h
-  /usr/local/opt/lrose/bin/HawkEye
+  /usr/local/bin/solo3 -h
 ```
 
 <a name="upgrade"/>
@@ -143,25 +136,21 @@ Try the commands:
 
 When the time comes to upgrade, you will first need to uninstall the current version.
 
-To find the name of the currently-installed lrose package, run:
+To find the name of the currently-installed lrose-solo3 package, run:
 
 ```
   brew list
 ```
 
-This could be ```lrose```, ```lrose-core```, ```radx``` etc.
-
-Suppose it is ```lrose-core```.
-
 Uninstall it as follows:
 
 ```
-  brew uninstall lrose-core
+  brew uninstall lrose-solo3
 ```
 Next, download the new version of the brew formula, from:
 
 ```
-  https://github.com/NCAR/lrose-core/releases 
+  https://github.com/NCAR/lrose-solo3/releases 
 ```
 
 Choose from the appropriate distribution.
@@ -170,7 +159,7 @@ Then:
 
 ```
   cd ~/Downloads
-  brew install lrose-core.rb
+  brew install lrose-solo3.rb
 ```
 
 See [install](#install) for checking on the install.
