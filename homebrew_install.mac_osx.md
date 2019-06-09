@@ -33,12 +33,9 @@ You may also need to run:
 
 ### Installing stand-alone XCode command line tools
 
-Alternatively, you can install the stand-alone XCode command line tools by downloading
-"Command Line Tools" from:
+Alternatively, you can install the stand-alone XCode command line tools.
 
-```
-  http://developer.apple.com/downloads
-```
+Download [Command Line Tools](http://developer.apple.com/downloads)
 
 You will need to register for a free Apple id, no credit card is required.
 
@@ -59,11 +56,7 @@ Run the following ruby script:
 You need to download the brew formula from the solo3 repository.
 This formula is used to perform the homebrew build.
 
-Download lrose-solo3.rb from:
-
-```
-  https://github.com/NCAR/lrose-solo3
-```
+Download [lrose-solo3.rb](https://github.com/NCAR/lrose-solo3)
 
 <a name="install"/>
 
@@ -147,11 +140,7 @@ Uninstall it as follows:
 ```
   brew uninstall lrose-solo3
 ```
-Next, download the new version of the brew formula, from:
-
-```
-  https://github.com/NCAR/lrose-solo3/releases 
-```
+Next, download the new version of [lrose-solo3.rb](https://github.com/NCAR/lrose-solo3/releases)
 
 Choose from the appropriate distribution.
 
