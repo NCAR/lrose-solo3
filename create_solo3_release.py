@@ -7,12 +7,14 @@
 #===========================================================================
 
 from __future__ import print_function
-import os
+import os, os.path
 import sys
 import shutil
 import subprocess
 import glob
 import time
+#from urllib2 import urlopen
+import hashlib
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -91,7 +93,7 @@ def main():
 
     if (os.path.isdir(options.logDir) == False):
         os.makedirs(options.logDir)
-    logPath = os.path.join(options.logDir, "master");
+    logPath = os.path.join(options.logDir, "no-logging");
     logFp = open(logPath, "w+")
 
     if (options.debug):
@@ -115,7 +117,7 @@ def main():
 
     # checkout solo3 into the tmp dir
 
-    logPath = prepareLogFile("git-checkout");
+    # logPath = prepareLogFile("git-checkout");
     os.chdir(tmpDir)
     shellCmd("git clone https://github.com/NCAR/lrose-solo3")
 
@@ -130,25 +132,25 @@ def main():
 
     # set the datestamp file
 
-    logPath = prepareLogFile("set_release_date");
+    # logPath = prepareLogFile("set_release_date");
     shellCmd("./set_release_date.pl")
     
     # create the release information file
     
     createReleaseInfoFile()
 
+    # create the tar file
+
+    # logPath = prepareLogFile("create-tar-file");
+    createTarFile()
+
     # create the brew formula for OSX builds
 
-    logPath = prepareLogFile("create-brew-formula");
+    # logPath = prepareLogFile("create-brew-formula");
     createBrewFormula()
 
     sys.exit(1)
     
-    # create the tar file
-
-    logPath = prepareLogFile("create-tar-file");
-    createTarFile()
-
     # move the tar file into release dir
 
     os.chdir(options.releaseDir)
@@ -294,13 +296,85 @@ def createBrewFormula():
 
     # create the brew formula file
 
-    shellCmd(scriptPath + " " + tarUrl + " " +
-             tarName + " " + formulaName)
+    build_solo3_formula(tarName, tarUrl, formulaName)
+
+#    shellCmd(scriptPath + " " + tarUrl + " " +
+#             tarName + " " + formulaName)
 
     # move it up into the release dir
 
     os.rename(os.path.join(baseDir, formulaName),
               os.path.join(options.releaseDir, formulaName))
+
+#################################################
+# Template for homebrew formula file
+
+template = """
+
+require 'formula'
+
+# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+
+class Solo3 < Formula
+  homepage 'https://github.com/NCAR/lrose-solo3'
+  url '{0}'
+  version '{1}'
+  sha256 '{2}'
+
+  depends_on 'gtk+'
+  depends_on 'gtkmm'
+  depends_on 'pkg-config' => :build
+  depends_on :x11
+
+  def install
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
+    system "make install"
+  end
+
+  def test
+    # Run the test with `brew test solo3`.
+     system "#{{bin}}/solo3", "-h"
+  end
+end
+"""
+
+####################################################################
+# build a Homebrew forumula file for solo3
+#
+
+def build_solo3_formula(tar_path, release_url, rb_file):
+
+    # compute a sha256 digest for this file
+    BUFSIZE=4096
+    sha256 = hashlib.sha256()
+    f = open(tar_path)
+    while True:
+        bytes = f.read(BUFSIZE)
+        l = len(bytes)
+        if l == 0:
+            break
+        sha256.update(bytes)
+    f.close()
+    checksum = sha256.hexdigest()
+
+    # find the name of the tar file
+    tar_file = os.path.basename(tar_path)
+    
+    dash = tar_file.find('-')
+    period = tar_file.find('.', dash)
+    version = tar_file[dash+1:period]
+    print('checksum = ', checksum, file=sys.stderr)
+    formula = template.format(release_url, version, checksum)
+    outf = open(rb_file, 'w')
+    print(formula, file=outf)
+    outf.close()
+
+#if __name__ == '__main__':
+##    if len(sys.argv) == 3:
+#	build_solo3_formula( sys.argv[1],  sys.argv[2] )
+#    else:
+#	print "usage: {0} tar_url output_file".format(sys.argv[0])
+
 
 ########################################################################
 # prepare log file
