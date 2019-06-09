@@ -51,12 +51,12 @@ Run the following ruby script:
   /usr/local/bin/brew update
 ```
 
-## 2. Download
+## 2. Download brew formula
 
-You need to download the brew formula from the solo3 repository.
+You need to download the brew formula from the lrose-solo3 repository.
 This formula is used to perform the homebrew build.
 
-Download [lrose-solo3.rb](https://github.com/NCAR/lrose-solo3)
+Download ```lrose-solo3.rb``` from the ```releases``` tab in [https://github.com/NCAR/lrose-solo3](https://github.com/NCAR/lrose-solo3)
 
 <a name="install"/>
 
@@ -140,9 +140,8 @@ Uninstall it as follows:
 ```
   brew uninstall lrose-solo3
 ```
-Next, download the new version of [lrose-solo3.rb](https://github.com/NCAR/lrose-solo3/releases)
 
-Choose from the appropriate distribution.
+Download the latest version of ```lrose-solo3.rb``` from the ```releases``` tab in [https://github.com/NCAR/lrose-solo3](https://github.com/NCAR/lrose-solo3)
 
 Then:
 
