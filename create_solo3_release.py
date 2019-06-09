@@ -131,10 +131,12 @@ def main():
 
     # move the tar file into release dir
 
+    finalTarPath = os.path.join(options.releaseDir, tarName)
     os.chdir(options.releaseDir)
-    os.rename(os.path.join(baseDir, tarName),
-              os.path.join(options.releaseDir, tarName))
-              
+    os.rename(os.path.join(baseDir, tarName), finalTarPath)
+    print("=====>> release dir: ", options.releaseDir, file=sys.stderr)
+    print("==>> final tar path: ", finalTarPath, file=sys.stderr)
+    
     # delete the tmp dir
 
     shutil.rmtree(tmpDir)
