@@ -113,9 +113,9 @@ def main():
 
     #shellCmd("./runAutoConf.py")
 
-    # set the datestamp file
+    # update the datestamp header file
 
-    shellCmd("./set_release_date.pl")
+    updateDateStampHeader(now.tm_year, now.tm_mon, now.tm_mday);
     
     # create the release information file
     
@@ -248,6 +248,16 @@ def createTarFile():
 
     shellCmd("tar cvfzh " + tarName + " " + releaseName)
     
+########################################################################
+# update the date stamp header file
+
+def updateDateStampHeader(year, month, day):
+
+    versionStr = '{:04d}'.format(year) + '/' + '{:02d}'.format(month) + '/' + '{:02d}'.format(day)
+    header = open('./include/date_stamp.h', 'w')
+    header.write('static const char *sii_date_stamp = \"Version ' + versionStr + '\";\n')
+    header.close()
+
 ########################################################################
 # create the brew formula for OSX builds
 
