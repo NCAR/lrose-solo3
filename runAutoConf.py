@@ -9,6 +9,7 @@
 import os
 import sys
 import subprocess
+import shutil
 from optparse import OptionParser
 from datetime import datetime
 
@@ -51,10 +52,24 @@ def main():
 
     os.chdir(options.dir)
 
+    # clean up any link files from previous configs
+
+    linkFiles = [ 'ar-lib', 'config.guess', 'config.sub', 'depcomp', 'missing' ]
+    for (linkFile in linkFiles):
+        unlink(linkFile)
+
     # run autoconffix the configure
 
     runAutoConf()
             
+    # turn links into actual files
+
+    for (linkFile in linkFiles):
+        tmpName = linkName + ".tmp"
+        os.rename(linkName, tmpName)
+        shutil.copyFile(tmpName, linkName)
+        os.unlink(tmpName)
+
     sys.exit(0)
 
 ########################################################################
