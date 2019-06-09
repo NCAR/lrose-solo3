@@ -9,7 +9,7 @@ It depends on updated version of the gtk libraries.
 2. [download](#download)
 3. [build](#build)
 4. [install](#install)
-5. [for-the-mac](#forthemac)
+5. [install-for-the-mac](./homebrew_install.mac_osx.md)
 
 <a name="prepare"/>
 
@@ -118,8 +118,6 @@ The following apps will be installed in /usr/local/bin:
   ddex3 (previously ddex)
   nx_reblock3 (previously nx_reblock)
 ```
-
-<a name="forthemac"/>
 
 ## 5. For Mac Users - install using brew
 
