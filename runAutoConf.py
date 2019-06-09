@@ -54,9 +54,10 @@ def main():
 
     # clean up any link files from previous configs
 
-    linkFiles = [ 'ar-lib', 'config.guess', 'config.sub', 'depcomp', 'missing' ]
-    for (linkFile in linkFiles):
-        unlink(linkFile)
+    linkNames = [ 'ar-lib', 'config.guess', 'config.sub', 'depcomp', 'missing' ]
+    for linkName in linkNames:
+        if (os.path.lexists(linkName)):
+            os.unlink(linkName)
 
     # run autoconffix the configure
 
@@ -64,10 +65,10 @@ def main():
             
     # turn links into actual files
 
-    for (linkFile in linkFiles):
+    for linkName in linkNames:
         tmpName = linkName + ".tmp"
         os.rename(linkName, tmpName)
-        shutil.copyFile(tmpName, linkName)
+        shutil.copyfile(tmpName, linkName)
         os.unlink(tmpName)
 
     sys.exit(0)
