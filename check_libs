@@ -50,7 +50,7 @@ shift `expr $OPTIND - 1`
 echo "Checking solo3 build"
 
 ./check_libs.pl \
-  -list .libs_check_list \
+  -list ./libs_check_list \
   -dir $prefix/lib \
   -label "SOLO3"  
 
