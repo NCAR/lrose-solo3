@@ -11,6 +11,16 @@ It depends on updated version of the gtk libraries.
 4. [install](#install)
 5. [install-for-the-mac](./homebrew_install.mac_osx.md)
 
+## DOI
+
+The DOI for lrose-solo3 is:
+
+* [https://doi.org/10.5065/sv4e-7z49](https://doi.org/10.5065/sv4e-7z49)
+
+The DOI entry information is stored at:
+
+* [https://search.datacite.org/works/10.5065/sv4e-7z49](https://search.datacite.org/works/10.5065/sv4e-7z49)
+
 <a name="prepare"/>
 
 ## 1. Prepare
