@@ -18,3 +18,21 @@ Entries.static
 # configure
 
 autom4te.cache
+config.h
+config.log
+config.status
+editor/.deps/
+editor/.dirstamp
+editor/makefile
+makefile
+perusal/.deps/
+perusal/.dirstamp
+perusal/makefile
+perusal/solo3
+stamp-h1
+translate/.deps/
+translate/ddex3
+translate/makefile
+translate/nx_reblock3
+translate/xltrs3
+VERSION

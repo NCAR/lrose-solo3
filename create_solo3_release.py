@@ -310,10 +310,11 @@ class LroseSolo3 < Formula
   version '{1}'
   sha256 '{2}'
 
+  depends_on 'pkg-config'
   depends_on 'gtk+'
   depends_on 'gtkmm'
-  depends_on 'pkg-config' => :build
-  depends_on :x11
+  depends_on 'libx11'
+  depends_on 'libxext'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
