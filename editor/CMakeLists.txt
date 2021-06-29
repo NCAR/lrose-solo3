@@ -7,6 +7,14 @@ include_directories(.)
 include_directories(../include)
 include_directories(../perusal)
 
+include_directories(${GTK_INCLUDE_DIRS})
+include_directories(${GTKMM_INCLUDE_DIRS})
+include_directories(${GDKMM_INCLUDE_DIRS})
+include_directories(${GLIBMM_INCLUDE_DIRS})
+include_directories(${GLIB_INCLUDE_DIRS})
+include_directories(${CAIRO_INCLUDE_DIRS})
+include_directories(${PANGO_INCLUDE_DIRS})
+
 add_library(solo_edit
   ASpeckleCmd.cc
   AbsoluteValueCmd.cc

@@ -11,6 +11,13 @@ add_definitions(-std=c++11)
 include_directories(.)
 include_directories(../include)
 
+include_directories(${GTK_INCLUDE_DIRS})
+include_directories(${GTKMM_INCLUDE_DIRS})
+include_directories(${GDKMM_INCLUDE_DIRS})
+include_directories(${GLIBMM_INCLUDE_DIRS})
+include_directories(${GLIB_INCLUDE_DIRS})
+include_directories(${CAIRO_INCLUDE_DIRS})
+include_directories(${PANGO_INCLUDE_DIRS})
 
 # Link
 
@@ -84,6 +91,13 @@ add_executable (
 
 target_link_libraries(${PROJECT_NAME} solo_edit})
 target_link_libraries(${PROJECT_NAME} solo_s3)
+
+target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GTKMM_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GDKMM_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GLIBMM_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GLIB_LIBRARIES})
+
 
 # install
 

@@ -19,8 +19,13 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # Use the package PkgConfig to detect GTK+ headers/library files
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK REQUIRED)
-pkg_check_modules(GTKMM REQUIRED)
+pkg_check_modules(GTK REQUIRED gtk+)
+pkg_check_modules(GTKMM REQUIRED gtkmm-2.4)
+pkg_check_modules(GDKMM REQUIRED gdkmm-2.4)
+pkg_check_modules(GLIBMM REQUIRED glibmm-2.4)
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(PANGO REQUIRED pango)
 
 # enable testing for this dir and below
 
@@ -39,6 +44,8 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-new-dtags")
 endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 ")
 
 # recurse into src directory for the build
 
