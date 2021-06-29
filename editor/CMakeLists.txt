@@ -3,6 +3,10 @@
 cmake_minimum_required (VERSION 2.8)
 project (solo3)
 
+include_directories(.)
+include_directories(../include)
+include_directories(../perusal)
+
 add_library(solo_edit
   ASpeckleCmd.cc
   AbsoluteValueCmd.cc
@@ -130,18 +134,18 @@ add_library(solo_edit
   sxm_examine.cc
   )
 
-target_include_directories (${PROJECT_NAME}
+target_include_directories (solo_edit
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
         $<INSTALL_INTERFACE:include>
     )
 
-install(TARGETS solo_edit EXPORT MyLibraryConfig
-    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
+#install(TARGETS solo_edit EXPORT MyLibraryConfig
+#    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#    )
 
-install(DIRECTORY ../include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+#install(DIRECTORY ../include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Make sure those using this library also get our LROSE dependencies
 #target_link_libraries(${PROJECT_NAME} PUBLIC ${LROSE_LINK_FLAGS} ${LROSE_LIBRARIES})

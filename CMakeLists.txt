@@ -12,11 +12,15 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_PREFIX_PATH ${CMAKE_MODULE_PATH})
 
+# verbose make
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # Use the package PkgConfig to detect GTK+ headers/library files
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK REQUIRED gtkmm-3.0)
-pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
+pkg_check_modules(GTK REQUIRED)
+pkg_check_modules(GTKMM REQUIRED)
 
 # enable testing for this dir and below
 

@@ -8,7 +8,9 @@ add_definitions(-std=c++11)
 
 # includes
 
+include_directories(.)
 include_directories(../include)
+
 
 # Link
 

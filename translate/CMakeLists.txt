@@ -3,6 +3,9 @@
 cmake_minimum_required (VERSION 2.8)
 project (solo3)
 
+include_directories(.)
+include_directories(../include)
+
 add_library(solo_s3
   dd_files.cc
   dda_common.cc
@@ -70,21 +73,21 @@ add_executable (nx_reblock3
   )
 target_link_libraries(nx_reblock3 solo_s3 solo_dap)
 
-target_include_directories (${PROJECT_NAME}
+target_include_directories (xltrs3
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
         $<INSTALL_INTERFACE:include>
     )
 
 install(TARGETS solo_s3 EXPORT MyLibraryConfig
-    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
     )
 
 install(TARGETS solo_dap EXPORT MyLibraryConfig
-    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
     )
 
-install(DIRECTORY ../include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ../include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 
