@@ -39,6 +39,10 @@ def main():
     parser.add_option('--dir',
                       dest='dir', default=".",
                       help='Directory containing configure script')
+    parser.add_option('--shared',
+                      dest='shared', default='False',
+                      action="store_true",
+                      help='Create shared lib objects')
 
     (options, args) = parser.parse_args()
 
@@ -78,6 +82,10 @@ def main():
 # run autoconf commands
 
 def runAutoConf():
+
+    if (options.shared == True):
+        cmd = "libtoolize"
+        runCommand(cmd)
 
     cmd = "aclocal"
     runCommand(cmd)
