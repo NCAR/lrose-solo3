@@ -29,7 +29,7 @@ def main():
     
     # parse the command line
 
-    usage = "usage: %prog [options]: prints catalog to stdout"
+    usage = "usage: %prog [options]: installs $ORIGIN lib files"
     ignoreDefault = 'libc.so,libpthread.so,libdl.so'
 
     parser = OptionParser(usage)
