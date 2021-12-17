@@ -487,6 +487,7 @@ ddfnp_list (int dir_num, int radar_num, int list_type)
     ddfn_ptr_list(this_node, list_type);
     return(0);
 }
+
 /* c------------------------------------------------------------------------ */
 
 int 
@@ -617,6 +618,142 @@ ddir_files_v3 (const int dir_num, const char *dir)
     closedir(dir_ptr);
     return(file_count);
 }
+
+/* c------------------------------------------------------------------------ */
+
+int 
+  ddir_files_from_command_line (const int dir_num, const char *dir,
+                                int argc, char *argv[])
+{
+    /* The purpose of this routine is to provide info
+     * on dorade files in the command line list
+     */
+
+    struct dd_file_name_v3 *ddfn;
+    char fpath[4096];
+    char *fname=0;
+    static int counth=0, count=0;
+    int ii, rn, mark, file_count=0;
+    int inFileList = 0;
+    struct ddir_info_v3 *ddir;
+    struct dd_radar_name_info_v3 *rni;
+
+    counth++;
+    if(!(ddir = return_ddir(dir_num)))
+	  return(0);
+
+    if(ddir->num_hits && !ddir->rescan_urgent) {
+	ddir->num_hits++;
+	if(ddir->num_hits < ddir->auto_rescan_hit_max) {
+	    return(1);
+	}
+    }
+
+    strcpy(ddir->directory, dir);
+    ddir->num_hits = 1;
+    ddir->rescan_urgent = NO;
+
+    /*
+     * put all the ddfns for this directory back on the spairs queue
+     */
+    for(rn=0; rn < ddir->num_radars; rn++) {
+        /* 
+         * Save a pointer to the last dd_file_name_v3 before we give away
+         * top_ddfn.
+         */
+        struct dd_file_name_v3 *last = ddir->rni[rn]->top_ddfn->last;
+        struct dd_file_name_v3 *next = 0;
+        for (ddfn = ddir->rni[rn]->top_ddfn; ddfn; ddfn = next) {
+            next = (ddfn == last) ? 0 : ddfn->next;
+            ddfn_push_spair(ddfn);
+        }
+    }
+    ddir->num_radars = 0;
+    /*
+     * loop through the files in this directory
+     */
+
+    for (ii = 1; ii < argc; ii++) {
+
+      if (strcmp(argv[ii], "-f") == 0) {
+        inFileList = 1;
+        continue;
+      }
+
+      if (!inFileList) {
+        continue;
+      }
+
+
+      strcpy(fpath, argv[ii]);
+      fname = fpath + strlen(dir);
+
+      if(strncmp(fname, "swp.", 4) == 0) { /* only want sweep files */
+        if(strstr(fname, ".tmp")) { /* not a complete file */
+          continue;
+        }
+        count++;
+        file_count++;
+        ddfn = ddfn_pop_spair();
+        if(strstr(fname, "ARMAR")) {
+          mark = 0;
+        }
+        if(craack_ddfn( fname, ddfn ) < 1) /* not a valid name */
+          continue;
+        /*
+         * find out which radar
+         */
+        for(rn=0; rn < ddir->num_radars; rn++) {
+          if(strcmp(ddir->radar_name[rn], ddfn->radar_name) == 0)
+            break;
+        }
+        if(rn == ddir->num_radars) { /* new radar */
+          ddir->num_radars++;
+          if(!ddir->rni[rn]) {
+            /* really new */
+            rni = ddir->rni[rn] = (struct dd_radar_name_info_v3 *)
+              malloc(sizeof(struct dd_radar_name_info_v3));
+            memset(rni, 0, sizeof(struct dd_radar_name_info_v3));
+            /*
+             * see Sedgewick's "Algorithms" for explantions
+             * of h and z nodes
+             */
+            rni->z_node = ddfn_pop_spair();
+            rni->z_node->time_stamp = -1;
+            rni->z_node->left = rni->z_node->right = rni->z_node;
+            
+            rni->h_node = ddfn_pop_spair();
+            rni->h_node->time_stamp = 0;
+            rni->h_node->left = rni->z_node;
+          }
+          else {
+            rni = ddir->rni[rn];
+          }
+          ddir->radar_name[rn] = ddfn->radar_name;
+          rni->top_ddfn = rni->h_node->right = NULL;
+          rni->num_sweeps = 0;
+          rni->prev_req_type = DD_TIME_NEAREST;
+        }
+        else {
+          rni = ddir->rni[rn];
+        }
+        rni->num_sweeps++;
+        if(!rni->top_ddfn) {
+          rni->top_ddfn = ddfn;
+        }
+        else {
+          rni->top_ddfn->last->next = ddfn;
+        }
+        rni->top_ddfn->last = ddfn;
+        /*
+         * send off to insert/sort
+         */
+        ddfn_sort_insert(rni, ddfn);
+      }
+    } /* ii */
+    return(file_count);
+}
+
 /* c------------------------------------------------------------------------ */
 
 int 

@@ -77,6 +77,8 @@ extern void ddfn_sort_insert(struct dd_radar_name_info_v3 *rni, struct dd_file_n
 extern double ddfn_time(struct dd_file_name_v3 *ddfn);
 extern int ddfnp_list(int dir_num, int radar_num, int list_type);
 extern int ddir_files_v3(const int dir_num, const char *dir);
+extern int ddir_files_from_command_line (const int dir_num, const char *dir,
+                                         int argc, char *argv[]);
 extern int ddir_radar_num_v3(int dir_num, char *radar_name);
 extern void ddir_rescan_urgent(int dir_num);
 extern double d_mddir_file_info_v3(int dir_num, int radar_num, double target_time, int req_type, int version, int *true_version_num, char *info_line, char *file_name);

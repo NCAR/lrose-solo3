@@ -638,6 +638,8 @@ public:
    */
 
   int compileFileList(const int dir_num, const std::string &dir);
+  int compileFileList(const int dir_num, const std::string &dir,
+                      int argc, char *argv[]);
   
   // NOTE: Change this to return a vector of strings and get rid of the
   // solo_list_mgmt object.
