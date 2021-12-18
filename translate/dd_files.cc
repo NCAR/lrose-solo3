@@ -684,7 +684,6 @@ int
         continue;
       }
 
-
       strcpy(fpath, argv[ii]);
       fname = fpath + strlen(dir);
 
@@ -698,8 +697,11 @@ int
         if(strstr(fname, "ARMAR")) {
           mark = 0;
         }
-        if(craack_ddfn( fname, ddfn ) < 1) /* not a valid name */
+        if(craack_ddfn(fname, ddfn ) < 1) { /* not a valid name */
           continue;
+        }
+        fprintf(stderr, "-->> adding sweep file: %s\n", fname);
+
         /*
          * find out which radar
          */

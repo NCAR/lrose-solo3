@@ -921,6 +921,8 @@ gchar *sii_get_swpfi_dir (gchar *dir, int argc, char *argv[])
      dir = (gchar *)"./";
    }
 
+   fprintf(stderr, "solo3 - using dir: %s\n", dir);
+
    if (argc > 1) {
      nn = DataManager::getInstance()->compileFileList(0, dir, argc, argv);
    } else {
