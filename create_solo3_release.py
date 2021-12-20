@@ -260,6 +260,69 @@ def updateDateStampHeader(year, month, day):
     header.write('static const char *sii_date_stamp = \"Version ' + versionStr + '\";\n')
     header.close()
 
+#################################################
+# Template for homebrew formula file
+
+formulaBody = """
+
+require 'formula'
+
+# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+
+class LroseSolo3 < Formula
+
+  homepage 'https://github.com/NCAR/lrose-solo3'
+
+  url '{0}'
+  version '{1}'
+  sha256 '{2}'
+
+  depends_on 'pkg-config'
+  depends_on 'gtk+'
+  depends_on 'gtkmm'
+  depends_on 'libx11'
+  depends_on 'libxext'
+
+  def install
+
+    # Build/install solo3
+    ENV['LROSE_INSTALL_DIR'] = prefix
+    system "cmake", "-DCMAKE_INSTALL_PREFIX=#{{prefix}}", "."
+    system "make install"
+
+#   system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
+
+  end
+
+  def test
+    # Run the test with `brew test solo3`.
+     system "#{{bin}}/solo3", "-h"
+  end
+
+end
+"""
+
+####################################################################
+# build a Homebrew forumula file for solo3
+#
+
+def buildSolo3Formula(tar_url, tar_name, formula_name):
+
+    print("=======>> tar_name: ", tar_name, file=sys.stderr)
+    print("=======>> tar_url: ", tar_url, file=sys.stderr)
+    print("=======>> formula_name: ", formula_name, file=sys.stderr)
+
+    """ build a Homebrew forumula file for lrose-solo3 """	
+    dash = tar_name.find('-')
+    period = tar_name.find('.', dash)
+    version = tar_name[dash+1:period]
+    result = subprocess.check_output(("sha256sum", tar_name))
+    checksum = result.split()[0].decode('ascii')
+    formula = formulaBody.format(tar_url, version, checksum)
+    outf = open(formula_name, 'w')
+    outf.write(formula)
+    outf.close()
+
 ########################################################################
 # create the brew formula for OSX builds
 
@@ -272,92 +335,15 @@ def createBrewFormula():
     tarUrl = "https://github.com/NCAR/lrose-solo3/releases/download/" + \
              package + "-" + versionStr + "/" + tarName
     formulaName = package + ".rb"
-    scriptName = "build_solo3_formula"
-    scriptPath = os.path.join(baseDir, scriptName)
-
-    # check if script exists
-
-    if (os.path.isfile(scriptPath) == False):
-        print("WARNING - ", thisScriptName, file=sys.stderr)
-        print("  No script: ", scriptPath, file=sys.stderr)
-        print("  Will not build brew formula for package", file=sys.stderr)
-        return
 
     # create the brew formula file
 
-    build_solo3_formula(tarName, tarUrl, formulaName)
-
-#    shellCmd(scriptPath + " " + tarUrl + " " +
-#             tarName + " " + formulaName)
+    buildSolo3Formula(tarUrl, tarName, formulaName)
 
     # move it up into the release dir
 
     os.rename(os.path.join(baseDir, formulaName),
               os.path.join(options.releaseDir, formulaName))
-
-#################################################
-# Template for homebrew formula file
-
-template = """
-
-require 'formula'
-
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-
-class LroseSolo3 < Formula
-  homepage 'https://github.com/NCAR/lrose-solo3'
-  url '{0}'
-  version '{1}'
-  sha256 '{2}'
-
-  depends_on 'pkg-config'
-  depends_on 'gtk+'
-  depends_on 'gtkmm'
-  depends_on 'libx11'
-  depends_on 'libxext'
-
-  def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
-    system "make install"
-  end
-
-  def test
-    # Run the test with `brew test solo3`.
-     system "#{{bin}}/solo3", "-h"
-  end
-end
-"""
-
-####################################################################
-# build a Homebrew forumula file for solo3
-#
-
-def build_solo3_formula(tar_path, release_url, rb_file):
-
-    # compute a sha256 digest for this file
-    BUFSIZE=4096
-    sha256 = hashlib.sha256()
-    f = open(tar_path)
-    while True:
-        bytes = f.read(BUFSIZE)
-        l = len(bytes)
-        if l == 0:
-            break
-        sha256.update(bytes)
-    f.close()
-    checksum = sha256.hexdigest()
-
-    # find the name of the tar file
-    tar_file = os.path.basename(tar_path)
-    
-    dash = tar_file.find('-')
-    period = tar_file.find('.', dash)
-    version = tar_file[dash+1:period]
-    print('checksum = ', checksum, file=sys.stderr)
-    formula = template.format(release_url, version, checksum)
-    outf = open(rb_file, 'w')
-    print(formula, file=outf)
-    outf.close()
 
 ########################################################################
 # Run a command in a shell, wait for it to complete
