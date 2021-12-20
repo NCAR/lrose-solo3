@@ -21,6 +21,7 @@ include_directories(${GLIBMM_INCLUDE_DIRS})
 include_directories(${GLIB_INCLUDE_DIRS})
 include_directories(${CAIRO_INCLUDE_DIRS})
 include_directories(${PANGO_INCLUDE_DIRS})
+include_directories(/opt/X11/include)
 
 # Link
 
