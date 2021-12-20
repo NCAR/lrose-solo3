@@ -61,7 +61,7 @@ extern void sii_check_image_size (guint frame_num);
 extern void sii_plot_data2 (guint frame_num, guint plot_function);
 extern void sii_plot_data (guint frame_num, guint plot_function);
 extern gboolean sii_batch (gpointer argu);
-extern gchar *sii_get_swpfi_dir (gchar *dir);
+extern gchar *sii_get_swpfi_dir (gchar *dir, int argc, char *argv[]);
 extern int sii_default_startup (const gchar *swpfi_dir);
 extern void solo_data_color_lut (int frme);
 extern void yes_exit(void);

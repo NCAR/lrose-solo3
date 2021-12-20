@@ -894,19 +894,40 @@ void solo_message(const char *message)
 // to think about memory management before fixing this, so for now we are
 // just casting the "./" to get rid of the compiler warning
 
-gchar *sii_get_swpfi_dir (gchar *dir)
+gchar *sii_get_swpfi_dir (gchar *dir, int argc, char *argv[])
 {
    gint nn;
+   int ii;
+   static char fpath[4096];
+   char *fname = 0;
+
+   if (argc > 1) {
+     for (ii = 1; ii < argc; ii++) {
+       strcpy(fpath, argv[ii]);
+       fname = strstr(fpath, "swp."); /* only want sweep files */
+       if (fname != NULL) {
+         /* terminate the dir with a NULL */
+         *fname = '\0';
+         dir = fpath;
+         break;
+       }
+     } /* ii */
+   }
 
    if (!dir) {
      dir = getenv ("DORADE_DIR");
    }
-   if (!dir)
-   {
+   if (!dir) {
      dir = (gchar *)"./";
    }
 
-   nn = DataManager::getInstance()->compileFileList(0, dir);
+   fprintf(stderr, "solo3 - using dir: %s\n", dir);
+
+   if (argc > 1) {
+     nn = DataManager::getInstance()->compileFileList(0, dir, argc, argv);
+   } else {
+     nn = DataManager::getInstance()->compileFileList(0, dir);
+   }
    return (nn < 1) ? NULL : dir;
 }
 

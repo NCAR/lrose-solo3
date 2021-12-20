@@ -95,6 +95,9 @@ int main( int argc, char *argv[])
       fprintf(stderr, "Usage: solo3\n");
       fprintf(stderr, "  cd to directory containing DORADE files\n");
       fprintf(stderr, "  run `solo3` with no args\n");
+      fprintf(stderr, "OR run with -f arg to specify sweep files\n");
+      fprintf(stderr, "  e.g. solo3 -f /tmp/data/swp*\n");
+      fprintf(stderr, "  the dir will be set to that containing the files\n");
       return 0;
     }
   }
@@ -170,7 +173,7 @@ int main( int argc, char *argv[])
   // are no sweep files in the dorade directory, sii_get_swpfi_dir() returns
   // NULL.
 
-  if (!aa && (aa = sii_get_swpfi_dir (NULL))) {
+  if (!aa && (aa = sii_get_swpfi_dir (NULL, argc, argv))) {
     sii_default_startup (aa);
     main_window->configFrames(2, 2);
     g_string_assign (gs_initial_dir_name, aa);

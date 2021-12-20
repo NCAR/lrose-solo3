@@ -20,7 +20,6 @@
 
 #include "DataManager.hh"
 
-
 // Global variables
 
 // NOTE: Currently, this value MUST match the MAX_PARMS value defined in
@@ -111,6 +110,12 @@ void DataManager::checkSweepFile()
 int DataManager::compileFileList(const int dir_num, const std::string &dir)
 {
   return ddir_files_v3(dir_num, dir.c_str());
+}
+
+int DataManager::compileFileList(const int dir_num, const std::string &dir,
+                                 int argc, char *argv[])
+{
+  return ddir_files_from_command_line(dir_num, dir.c_str(), argc, argv);
 }
 
 
