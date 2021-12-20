@@ -6,6 +6,8 @@ project (solo3)
 include_directories(.)
 include_directories(../include)
 include_directories(../perusal)
+include_directories(../editor)
+include_directories(../translate)
 
 include_directories(${GTK_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})

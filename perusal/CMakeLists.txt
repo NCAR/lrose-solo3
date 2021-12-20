@@ -10,6 +10,9 @@ add_definitions(-std=c++11)
 
 include_directories(.)
 include_directories(../include)
+include_directories(../perusal)
+include_directories(../editor)
+include_directories(../translate)
 
 include_directories(${GTK_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
@@ -89,7 +92,7 @@ add_executable (
 
 # link
 
-target_link_libraries(${PROJECT_NAME} solo_edit})
+target_link_libraries(${PROJECT_NAME} solo_edit)
 target_link_libraries(${PROJECT_NAME} solo_s3)
 
 target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES})

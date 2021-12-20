@@ -19,7 +19,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # Use the package PkgConfig to detect GTK+ headers/library files
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK REQUIRED gtk+)
+pkg_check_modules(GTK REQUIRED gtk+-2.0)
 pkg_check_modules(GTKMM REQUIRED gtkmm-2.4)
 pkg_check_modules(GDKMM REQUIRED gdkmm-2.4)
 pkg_check_modules(GLIBMM REQUIRED glibmm-2.4)

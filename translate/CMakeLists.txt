@@ -5,6 +5,9 @@ project (solo3)
 
 include_directories(.)
 include_directories(../include)
+include_directories(../perusal)
+include_directories(../editor)
+include_directories(../translate)
 
 add_library(solo_s3
   dd_files.cc

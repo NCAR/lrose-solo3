@@ -278,8 +278,13 @@ class LroseSolo3 < Formula
   sha256 '{2}'
 
   depends_on 'pkg-config'
-  depends_on 'gtk+'
-  depends_on 'gtkmm'
+  depends_on 'gtk+-2.0'
+  depends_on 'gtkmm-2.4'
+  depends_on 'gdkmm-2.4'
+  depends_on 'glibmm-2.4'
+  depends_on 'glib-2.0'
+  depends_on 'cairo'
+  depends_on 'pango'
   depends_on 'libx11'
   depends_on 'libxext'
 
@@ -289,8 +294,6 @@ class LroseSolo3 < Formula
     ENV['LROSE_INSTALL_DIR'] = prefix
     system "cmake", "-DCMAKE_INSTALL_PREFIX=#{{prefix}}", "."
     system "make install"
-
-#   system "./configure", "--disable-dependency-tracking", "--prefix=#{{prefix}}"
 
   end
 
