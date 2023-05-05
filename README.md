@@ -56,7 +56,9 @@ yum install -y tcsh wget git \
     hdf5-devel netcdf-devel \
     xorg-x11-xauth xorg-x11-apps \
     rpm-build redhat-rpm-config \
-    rpm-devel rpmdevtools
+    rpm-devel rpmdevtools \
+    atk-2.28.1-2.el7.x86_64 \
+    libXrandr-devel-1.5.1-2.el7.x86_64
 ```
 
 ### Debian / Ubuntu
