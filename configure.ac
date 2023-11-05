@@ -6,7 +6,6 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.50])
 AC_INIT([solo3], [2.0.0], [http://www.ral.ucar.edu/projects/titan/docs])
 
-AC_CONFIG_MACRO_DIR([m4])
 
 # Explicit archiver needed for later automake
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
