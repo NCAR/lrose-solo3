@@ -79,6 +79,21 @@ apt-get update && \
     libnetcdf-dev netcdf-bin libhdf5-dev hdf5-tools
 ```
 
+On Ubuntu 22.04:
+
+```
+apt update && \
+apt install -y \
+git gcc g++ gfortran cmake rsync mlocate \
+automake make libtool pkg-config python3.11 \
+libcurl3-dev curl libfl-dev libbz2-dev libx11-dev libpng-dev \
+libgtk2.0-dev libgtkmm-2.4-dev \
+glibc-source glibc-tools libglibmm-2.4-dev \
+libfftw3-dev libexpat1-dev \
+libgeographic-dev libeigen3-dev libzip-dev \
+libnetcdf-dev netcdf-bin libhdf5-dev hdf5-tools build-essential
+```
+
 <a name="download"/>
 
 ## 2. Downloading
